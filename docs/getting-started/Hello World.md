@@ -1,15 +1,19 @@
 ## 第一个程序
-首先编写一个 nature 源码文件，总是以 .n 结尾，名称随意。
 
-这里我们就叫 main.n， 创建文件并写入以下内容
+> 以下代码编译与执行都在 linux 设备上完成，如果你没有 linux 设备，可以使用 docker 进行尝试。
+
+首先编写一个 nature 源码文件，总是以 .n 结尾，名称随意。这里我们就叫 main.n， 创建文件并写入以下内容
+
 ```nature
 print("hello world")
 ```
 
 编译
+
 ```shell
 > nature build main.n
 ```
+
 现在能够在目录下看到一个 main 文件, main 是默认名称，如果你想修改可以使用 -o 参数调整，例 `nature build -o hello main.n`
 
 运行
@@ -17,6 +21,7 @@ print("hello world")
 > ./main
 hello world
 ```
+
 
 ## 稍微复杂一点
 
@@ -49,4 +54,5 @@ println(result)
 最后和输出 hello world 一样，通过 println 函数可以输出 result 的结果并自动换行。
 
 ## 总结
+
 通过上面的两个示例，已经包含 nature 的大部分语法了，到这里你已经了解并入门 nature 了。这毕竟是编程语言的使用文档，所以后面大部分都是比较枯燥语法细节介绍。
