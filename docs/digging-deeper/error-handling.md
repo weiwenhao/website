@@ -3,10 +3,9 @@ title: 错误处理
 sidebar_position: 20
 ---
 
+在编程语言中，错误处理是一个广泛且复杂的概念，需要考虑处理和无法处理的错误、预期和非预期的错误等等。
 
-编程语言中错误处理是非常广泛且复杂的概念，能够处理的，不能处理的，意料之内的，意料之外的等等。这里我们不讨论广泛的错误处理的方式，主要还是把 nature 错误处理语法描述清楚。
-
-nature 中使用 throw 和 catch 关键字以及刚刚学习过的 tuple 语法来处理错误。通过 throw 关键字，可以将错误抛出，此时函数将立刻退出，并将错误信息沿着调用链向上丢出去
+在 nature 语言中，我们采用 throw 和 catch 关键字以及 tuple 语法来处理错误。使用 throw 关键字可以抛出错误，使得函数立即退出，并将错误信息传递到调用链上游。
 
 ```nature
 fn rem(int dividend, int divisor):int {
@@ -17,13 +16,15 @@ fn rem(int dividend, int divisor):int {
 	return dividend % divisor
 }
 
-// v 由于除数为 0， 所以此时一定会出现异常，这里没有拦截该异常，所以代码不会像下执行，而是将错误向上传递，直到遇到 catch 或者到达进程的出口
+// v 由于第二个参数为 0，会导致除数为 0，从而抛出异常。因为我们没有捕获该异常，它会继续向上传递，直到遇到 catch 块或程序退出。
+// 因此，后面的语句 println("hello world") 不会被执行。
 var result = rem(10, 0)
 println("hello world")
 ```
 
-来看一看输出，最终 error 一直抛到了 runtime 出口，runtime 拦截了这个错误并进行了输出，可以看到后续的 hello world 并没有输出出来。
-```
+通过输出我们发现，error 一直像上传递直到 runtime，runtime 拦截了这个错误并 dump 出来。`println("hello world")` 也和预期一样没有执行。
+
+```shell
 > ./main
 runtime catch error: divisor cannot zero
 ```
@@ -40,17 +41,18 @@ fn rem(int dividend, int divisor):int {
 }
 
 // v 对可能出现的错误使用 catch 关键字进行拦截
-// 如果不存在错误， err == null，在 if 判断中会进行隐式类型转换为 false
-var (result, err) = catch rem(10, 0) // tuple 解构快速赋值
+// 当不存在错误时 err == null，在 if 判断中, null 会进行隐式类型转换为 false
+// 同时利用了 tuple 解构快速赋值来将 catch 的返回结果进行解构
+var (result, err) = catch rem(10, 0)
 if (err) {
-	// error handle, errort 结构中包含 msg 字段存储了错误的信息
+	// error handle， errort 结构中包含 msg 字段存储了错误的信息
 	println(err.msg)
 } else {
 	println(result)
 }
 
 // v 不存在异常的情况下使用 catch 拦截
-// 上面已经定义好了 result 和 err 变量，这里就不需要重复定义了，直接使用其值就可以了
+// 上面已经定义好了 result 和 err 变量，这里就不需要重复定义了，直接赋值即可
 (result, err) = catch rem(10, 3)
 if (err) {
 	println(err.msg)
@@ -67,8 +69,15 @@ divisor cannot zero
 1
 ```
 
+catch 关键字只能用于函数调用的前面，其读取本次函数调用是否 throw 了 error。
 
-catch 关键字只能用于函数调用的前面，其读取本次函数调用是否 throw 了 error，无论 error 是否有值，其都将创建一个拥有两个元素的 tuple，第一个元素是函数原来的返回值，第二个元素则是 errort 类型的错误数据。 这是当前版本 errort 类型的定义
+**当原函数包含返回值时，catch 将创建一个拥有两个元素的 tuple，第一个元素是函数原来的返回值，第二个元素则是 errort 类型的错误数据。 当原函数没有返回值时，catch 直接返回一个 errort 类型的数据。**
+
+:::info
+当函数没有返回值时，由于 nature 不支持单元素的 tuple，所以 `var (err) = catch void_fn()` 降级为 `var err = catch void_fn()`
+:::
+
+这是 errort 类型的定义
 
 ```nature
 type errort = struct {
@@ -76,6 +85,4 @@ type errort = struct {
 }
 ```
 
-上面的示例中都使用了 tuple 解构快速赋值，如果你像， `var tuple = catch rem(10, 0)`  的形式也是可以的。你只需要记住 catch 的返回值是一个两个元素的 tuple 即可。
-
-👏   相信你已经掌握了 throw 和 catch 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。 但是错误处理的哲学远比这两个语法要来的困难且重要。
+👏 相信你已经掌握了 throw 和 catch 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。语法简单不代表错误处理是一件简单的事情，它涉及到如何在程序中设计、捕获、记录和处理错误，是编写健壮、可靠和高质量软件的关键。

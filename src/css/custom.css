@@ -4,6 +4,13 @@
  * work well for content-centric websites.
  */
 
+.banner-button:hover {
+    filter: grayscale(20%);
+    /* background-color: #ddd; */
+    /* color: black; */
+    cursor: pointer;
+}
+
 /* You can override the default Infima variables here. */
 :root {
     /* --ifm-color-primary: #5bc2e7;
@@ -20,18 +27,18 @@
     --ifm-color-primary-light: #fa4e48;
     --ifm-color-primary-lighter: #fa5c57;
     --ifm-color-primary-lightest: #fb8581;
-    --ifm-code-font-size: 100%;
+    --ifm-code-font-size: 95%;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --ifm-color-primary: #5bc2e7;
+    --ifm-color-primary-dark: #3fb8e3;
+    --ifm-color-primary-darker: #31b2e1;
+    --ifm-color-primary-darkest: #1d98c5;
+    --ifm-color-primary-light: #77cceb;
+    --ifm-color-primary-lighter: #85d2ed;
+    --ifm-color-primary-lightest: #afe1f3;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }

@@ -6,9 +6,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "The Nature Programming Language",
+  title: "Nature Programming Language",
   tagline:
-    "Nature is an programming language that strives for simplicity and elegance in syntax, focusing on a pleasant experience for both writing and reading code.",
+    "is a programming language, may you be able to experience the joy of programming.",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
@@ -68,7 +68,7 @@ const config = {
         title: "Nature",
         logo: {
           alt: "Nature Logo",
-          src: "img/logo_bg.png",
+          src: "img/logo.png",
         },
         items: [
           {

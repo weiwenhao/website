@@ -10,24 +10,40 @@ import styles from './index.module.css';
 function HomepageHeader() {
     const { siteConfig } = useDocusaurusContext();
     return (
-        <header className={clsx('hero hero--primary', styles.heroBanner)}>
+        <header className={clsx('hero hero--dark', styles.heroBanner)}>
             <div className="container">
-                <h1 className="hero__title">{siteConfig.title}</h1>
-                <p className="hero__subtitle">{siteConfig.tagline}</p>
-                <div className={styles.buttons}>
+                <div className="row">
+                    <div className="col col--8">
+                        <h1 className="hero__title" style={{ fontSize: "4rem" }}>Nature</h1>
+                        <p className="hero__subtitle" style={{ fontSize: "2.5rem" }}>{siteConfig.tagline}</p>
+                        <Link
+                            style={{ marginRight: '40px', marginTop: '40px', backgroundColor: '#F9322C', color: "white" }}
+                            className="button button--lg banner-button"
+                            to="/docs/getting-started/installation">
+                            GET STARTED
+                        </Link>
+                        <Link
+                            style={{ marginRight: '40px', marginTop: '40px', backgroundColor: '#5BC2E7', color: "white" }}
+                            className="button button--lg banner-button"
+                            to="https://github.com/nature-lang/nature/releases">
+                            DOWNLOAD
+                        </Link>
+                    </div>
+                    <div className="col col--4">
+                        <img
+                            className={styles.logoShip} src="/img/nature.png" alt="nature logo"
+                            style={{ width: '85%', height: 'auto' }}
+                        />
+                    </div>
+                </div>
+
+                {/* <div className={styles.buttons}>
                     <Link
                         className="button button--secondary button--lg"
                         to="/docs/intro">
-                        Docusaurus Tutorial - 5min ⏱️
+                        ️DOWNLOAD
                     </Link>
-                </div>
-                <div className={styles.buttons}>
-                    <Link
-                        className="button button--secondary button--lg"
-                        to="/docs/intro">
-                        Docusaurus Tutorial - 5min ⏱️
-                    </Link>
-                </div>
+                </div> */}
             </div>
         </header>
     );
@@ -37,7 +53,7 @@ export default function Home(): JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     return (
         <Layout
-            title={`Hello from ${siteConfig.title}`}
+            title={`${siteConfig.title}`}
             description="Description will go into a meta tag in <head />">
             <HomepageHeader />
             <main>
