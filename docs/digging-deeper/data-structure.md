@@ -1,3 +1,9 @@
+---
+title: 数据结构
+sidebar_position: 10
+---
+
+
 nature 中内置了常用的 4 种数据结构 list/map/set/tuple 下面来一起学习一下吧
 
 ## list

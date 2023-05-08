@@ -1,3 +1,9 @@
+---
+title: 错误处理
+sidebar_position: 20
+---
+
+
 编程语言中错误处理是非常广泛且复杂的概念，能够处理的，不能处理的，意料之内的，意料之外的等等。这里我们不讨论广泛的错误处理的方式，主要还是把 nature 错误处理语法描述清楚。
 
 nature 中使用 throw 和 catch 关键字以及刚刚学习过的 tuple 语法来处理错误。通过 throw 关键字，可以将错误抛出，此时函数将立刻退出，并将错误信息沿着调用链向上丢出去
@@ -24,7 +30,7 @@ runtime catch error: divisor cannot zero
 
 我们再来看看使用 catch 关键字主动拦截错误的情况
 
-```
+```nature
 fn rem(int dividend, int divisor):int {
 	if (divisor == 0) {
 		throw "divisor cannot zero"
@@ -70,6 +76,6 @@ type errort = struct {
 }
 ```
 
-上面的示例中都使用了 tuple 解构快速赋值，如果你像， `var tuple = catch rem(10， 0)`  的形式也是可以的。你只需要记住 catch 的返回值是一个两个元素的 tuple 即可。
+上面的示例中都使用了 tuple 解构快速赋值，如果你像， `var tuple = catch rem(10, 0)`  的形式也是可以的。你只需要记住 catch 的返回值是一个两个元素的 tuple 即可。
 
 👏   相信你已经掌握了 throw 和 catch 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。 但是错误处理的哲学远比这两个语法要来的困难且重要。

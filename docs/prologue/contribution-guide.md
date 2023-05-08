@@ -5,11 +5,11 @@ sidebar_position: 20
 
 ## 错误与建议
 
-如果你希望提交错误报告，你的问题应包含标题和清晰的问题描述。你还应尽可能提供相关信息和演示问题的代码示例。错误报告的目的是使自己和其他人能够轻松地复制错误并开发修复程序。
+如果你希望提交错误报告，你的问题应包含标题和清晰的问题描述。你还应尽可能提供相关信息和演示问题的代码示例。错误报告的目的是使自己和其他人能够轻松地重现错误并开发修复程序。
 
-提交建议时尽量阐述清楚自己的想法，最好带上有说服力的资料，让你意见能够得到更好的采纳。无论是语法意见，编译器设计，源码的编码规范，或者是学习资料等等都希望大家能够积极的参与。
+提交建议时尽量阐述清楚自己的想法，最好带上有说服力的资料，让你建议能够得到更好的采纳。无论是语法，编译器设计，编码规范，学习资料等等都希望大家能够提供建议。
 
-你可以通过 nature 主仓库的 issue 来提交你的错误报告或者建议 [nature-lang/nature](https://github.com/nature-lang/nature/issues)
+你可以通过 issue 来提交你的错误报告或者建议 [nature-lang/nature](https://github.com/nature-lang/nature/issues)
 
 
 ## 源码编译
@@ -61,7 +61,7 @@ sidebar_position: 20
 4. [crafting interpreters](https://craftinginterpreters.com/) 非常推荐
 5. 自己动手构造编译系统 —— 编译、汇编、与连接，主要看了汇编部分
 6. Linear Scan Register Allocation for the Java HotSpotTM Client Compiler 线性扫描寄存器分配是基于该论文编写
-7. Linear Scan Register Allocation on SSA Form 由于 nature 中的 lir 是 ssa 形式的，所以参考这篇文章改进了基于 ssa 形式的寄存器分配
+7. Linear Scan Register Allocation on SSA Form 由于 nature 中的 lir 是 ssa 形式的，所以参考这篇文章改进为基于 ssa 形式的寄存器分配
 8. [Writing a Memory Allocator](http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/) 内存分配与垃圾回收课程
 9. golang/tcmalloc，内存分配和垃圾回收实现上参考，不过我源码阅读能力有限，所以看的都是细碎的文章解析。
 10. [bspaans/jit-compiler](https://github.com/bspaans/jit-compiler) 汇编器部分参考实现，具体指令编码参考 intel 手册第二卷
