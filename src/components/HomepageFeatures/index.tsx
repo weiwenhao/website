@@ -1,9 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
-import Feature1Svg from '@site/static/img/feature_1.svg'
-import Feature2Svg from '@site/static/img/feature_2.svg'
-import Feature3Svg from '@site/static/img/feature_3.svg'
 
 export default function HomepageFeatures(): JSX.Element {
     return (

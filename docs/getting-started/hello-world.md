@@ -34,7 +34,7 @@ hello world
 
 ## 复杂一点的例子
 
-以斐波那契数列求值的示例，首先创建一个 fib.n 文件并写入以下内容
+首页展示的 fib 数列求值示例，首先创建一个 fib.n 文件并写入以下内容
 
 ```nature title='fib.n'
 fn fib(int n):int {

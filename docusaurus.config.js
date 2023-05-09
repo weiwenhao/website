@@ -101,8 +101,8 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Issue",
-                href: "https://github.com/weiwenhao/nature/issues",
+                label: "Discussions",
+                href: "https://github.com/nature-lang/nature/discussions",
               },
               //   {
               //     label: "Twitter",
