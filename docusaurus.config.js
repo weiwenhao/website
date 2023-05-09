@@ -12,7 +12,7 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://www.nature-lang.org",
+  url: "https://nature-lang.org",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -106,7 +106,7 @@ const config = {
               },
               //   {
               //     label: "Twitter",
-              //     href: "https://www.nature-lang.org/",
+              //     href: "https://nature-lang.org/",
               //   },
             ],
           },
