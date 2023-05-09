@@ -1,5 +1,5 @@
 ---
-title: 认识 Nature
+title: 认识 nature
 sidebar_position: 10
 ---
 

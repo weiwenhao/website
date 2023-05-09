@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageCode from '@site/src/components/HomepageCode';
 
 import styles from './index.module.css';
 
@@ -17,14 +18,14 @@ function HomepageHeader() {
                         <h1 className="hero__title" style={{ fontSize: "4rem" }}>Nature</h1>
                         <p className="hero__subtitle" style={{ fontSize: "2.5rem" }}>{siteConfig.tagline}</p>
                         <Link
-                            style={{ marginRight: '40px', marginTop: '40px', backgroundColor: '#F9322C', color: "white" }}
-                            className="button button--lg banner-button"
-                            to="/docs/getting-started/installation">
+                            style={{ backgroundColor: '#F9322C', color: "white" }}
+                            className="button button--lg banner-button margin-right--lg margin-top--lg"
+                            to="/docs/getting-started/meet-nature">
                             GET STARTED
                         </Link>
                         <Link
                             style={{ marginRight: '40px', marginTop: '40px', backgroundColor: '#5BC2E7', color: "white" }}
-                            className="button button--lg banner-button"
+                            className="button button--lg banner-button margin-right--lg margin-top--lg"
                             to="https://github.com/nature-lang/nature/releases">
                             DOWNLOAD
                         </Link>
@@ -57,6 +58,7 @@ export default function Home(): JSX.Element {
             description="Description will go into a meta tag in <head />">
             <HomepageHeader />
             <main>
+                <HomepageCode />
                 <HomepageFeatures />
             </main>
         </Layout>

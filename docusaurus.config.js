@@ -63,12 +63,12 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: "img/nature.png",
+      image: "img/logo.png",
       navbar: {
-        title: "Nature",
+        // title: "nature",
         logo: {
           alt: "Nature Logo",
-          src: "img/logo.png",
+          src: "img/logo_title.png",
         },
         items: [
           {
@@ -104,10 +104,10 @@ const config = {
                 label: "Issue",
                 href: "https://github.com/weiwenhao/nature/issues",
               },
-            //   {
-            //     label: "Twitter",
-            //     href: "https://www.nature-lang.org/",
-            //   },
+              //   {
+              //     label: "Twitter",
+              //     href: "https://www.nature-lang.org/",
+              //   },
             ],
           },
           {

@@ -3,6 +3,8 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
+/* @import url('https://fonts.googleapis.com/css?family=Fira Mono'); */
+
 
 .banner-button:hover {
     filter: grayscale(20%);
@@ -11,24 +13,38 @@
     cursor: pointer;
 }
 
+/* .navbar__title { */
+/* color: #f81610; */
+/* font-size: 1.5rem; */
+/* font-weight: bold; */
+/* font-family: scandia-web; */
+/* } */
+
+/* [data-theme='dark'] .navbar__title { */
+/* color: #5bc2e7; */
+/* } */
+
+.feature-svg {
+    height: 25px;
+    width: 25px;
+    margin-top: 2px;
+    float: left;
+    fill: #ff2d20;
+}
+
+
 /* You can override the default Infima variables here. */
 :root {
-    /* --ifm-color-primary: #5bc2e7;
-    --ifm-color-primary-dark: #3fb8e3;
-    --ifm-color-primary-darker: #31b2e1;
-    --ifm-color-primary-darkest: #1d98c5;
-    --ifm-color-primary-light: #77cceb;
-    --ifm-color-primary-lighter: #85d2ed;
-    --ifm-color-primary-lightest: #afe1f3; */
-    --ifm-color-primary: #f9322c;
-    --ifm-color-primary-dark: #f81610;
-    --ifm-color-primary-darker: #f20e07;
-    --ifm-color-primary-darkest: #c70b06;
-    --ifm-color-primary-light: #fa4e48;
-    --ifm-color-primary-lighter: #fa5c57;
-    --ifm-color-primary-lightest: #fb8581;
-    --ifm-code-font-size: 95%;
+    --ifm-color-primary: #ff2d20;
+    --ifm-color-primary-dark: #ff1203;
+    --ifm-color-primary-darker: #f40e00;
+    --ifm-color-primary-darkest: #c90c00;
+    --ifm-color-primary-light: #ff483d;
+    --ifm-color-primary-lighter: #ff564b;
+    --ifm-color-primary-lightest: #ff7e76;
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+    --ifm-code-font-size: 95%;
+    --ifm-font-family-monospace: Monaco, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
