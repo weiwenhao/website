@@ -12,7 +12,7 @@ export default function HomepageFeatures(): JSX.Element {
                 {/* <h1 className="hero__title text--center">Features</h1> */}
                 <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Features</h1>
                 <div className="row">
-                    <div className='col col--4'>
+                    <div className='col col--4 margin-top--md'>
                         <div className="card shadow--tl">
                             <div className="card__header">
                                 {/* <Feature1Svg className="margin-right--md feature-svg" role="img" /> */}
@@ -30,7 +30,7 @@ export default function HomepageFeatures(): JSX.Element {
                     </div>
 
                     <div className='col col--4'>
-                        <div className="card shadow--tl">
+                        <div className="card shadow--tl margin-top--md">
                             <div className="card__header">
                                 {/* <Feature2Svg className={clsx("margin-right--md", "feature-svg")} role="img" /> */}
                                 <h2>⭕️ Concise</h2>
@@ -47,7 +47,7 @@ export default function HomepageFeatures(): JSX.Element {
                     </div>
 
                     <div className='col col--4'>
-                        <div className="card shadow--tl">
+                        <div className="card shadow--tl margin-top--md">
                             <div className="card__header">
                                 {/* <Feature3Svg className="margin-right--md feature-svg" role="img" /> */}
                                 <h2>🍻 Open</h2>
