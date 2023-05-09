@@ -25,18 +25,16 @@
 
 
 .logoShip {
-    animation: shake 3s ease infinite;
+    animation: shake 5s ease infinite;
 }
 
 @keyframes shake {
     0% {
         transform: translate(0, 0);
     }
-
     50% {
-        transform: translate(-5px, -5px);
+        transform: translate(10px, 8px);
     }
-
     100% {
         transform: translate(0, 0);
     }

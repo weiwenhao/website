@@ -22,7 +22,25 @@ nature version x.x.x - release build xxxx-xx-xx
 
 ## docker 方式
 
-`docker pull naturelang/nature:latest` 镜像已经安装好了 nature 环境，可以进到 docker 内部直接使用 nature 命令
+`docker pull naturelang/nature:latest`  镜像已经安装好了 nature 环境。在宿主机创建 nature 源码目录并进入该目录下执行
+
+```shell
+# 进入到容器内部，此时可以直接执行各种命令
+docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest sh
+
+# 从宿主机直接查看版本
+docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest nature --version
+
+# 从宿主机直接编译
+docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest nature build main.n
+
+# 从宿主机直接执行
+docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest ./main
+```
+
+:::tip
+镜像基于 alpine 构建，通过 apk add 可以安装其他软件，如 apk add vim
+:::
 
 ## 交叉编译
 

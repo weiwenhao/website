@@ -11,6 +11,6 @@ nature 支持交叉编译，可以编译到 linux/darwin & amd64/riscv64/wasm，
 
 ## 能做什么？
 
-编程语言能做什么取决于使用者，你可以用 nature 做任何你想做的事情。当你用 nature 解决 xxx 问题时，那 nature 就可以定义为解决 xxx 问题的语言。当你用 nature 开发了 xxx 软件时，那么 nature 就可以定义为适合 xxx 生态的语言。
+编程语言能做什么取决于使用者，你可以用 nature 做任何你想做的事情。当你用 nature 解决 xxx 问题时，那 nature 就可以定义为解决 xxx 问题的语言。当你用 nature 开发了 xxx 应用时，那么 nature 就可以定义为适合 xxx 生态的语言。
 
 假如你是一名学生，或者希望能够在空闲时学习一门新的静态编译强类型的编程语言，那么 nature 将非常适合你，nature 语法简洁，能够快速入门，并且随着学习的深入，能够渐进式的学习到编程中的各种概念，最关键的是你将和 nature 一起成长。
