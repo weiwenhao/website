@@ -39,6 +39,7 @@ sidebar_position: 20
 
 ```shell
 cmake -B build-runtime -S runtime -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd64-toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+
 cmake --build build-runtime --target runtime
 ```
 
