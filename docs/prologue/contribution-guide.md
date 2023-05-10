@@ -50,7 +50,8 @@ linux-amd64-toolchain.cmake 使用了 musl-gcc 进行静态编译，推荐静态
 :::info
 
 ```shell
-cmake -B build-release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd64-toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+# mkdir -p release && mkdir -p build-release
+cmake -B build-release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd64-toolchain.cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_BUILD_TYPE=Release -DCPACK_OUTPUT_FILE_PREFIX=$(pwd)/release
 
 # build
 cmake --build build-release
@@ -75,7 +76,7 @@ cmake --build build-release --target package
 4. [crafting interpreters](https://craftinginterpreters.com/) 非常推荐
 5. 自己动手构造编译系统 —— 编译、汇编、与连接，主要看了汇编部分
 6. Linear Scan Register Allocation for the Java HotSpotTM Client Compiler，线性扫描寄存器分配基于该论文编写
-7. Linear Scan Register Allocation on SSA Form，ssa 形式线性扫描寄存器分配 
+7. Linear Scan Register Allocation on SSA Form，ssa 形式线性扫描寄存器分配
 8. [Writing a Memory Allocator](http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/) 内存分配与垃圾回收课程
 9. golang/tcmalloc，内存分配和垃圾回收实现上参考，不过我源码阅读能力有限，所以看的都是文章解析。
 10. [bspaans/jit-compiler](https://github.com/bspaans/jit-compiler) 汇编器部分参考实现，具体指令编码参考 intel 手册第二卷
