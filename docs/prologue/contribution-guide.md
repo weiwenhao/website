@@ -92,4 +92,4 @@ cmake --build build-release --target package
 
 ## 参与编码
 
-请等待编码风格确定后再开始提交源码贡献，如果你有想法或者建议可以通过 github issue 提交或者发送到我的邮箱 MTEwMTE0MDg1N0BxcS5jb20= (临时邮箱 base64 编码)
+请等待编码风格确定后再开始提交源码贡献，如果你有想法或者建议可以通过 github issue 提交或者发送到我的邮箱 1101140857@qq.com (临时邮箱)
