@@ -84,7 +84,7 @@ cmake --build build-release --target package
 11. 程序员的自我修养——链接装载与库，学习连接器与 ELF 文件构成
 12. [Tiny C Compiler](https://bellard.org/tcc/) 连接器部分参考实现
 
-> 协程与范型功能开发中，有优秀的相关资料欢迎推荐。
+> 协程与泛型功能开发中，有优秀的相关资料欢迎推荐。
 
 ## 编码规范
 
