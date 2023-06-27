@@ -36,19 +36,17 @@ bool 类型的值是**小写**的 true 和 false。
 
 复杂类型可以理解为由简单类型组合并内置在 nature 中的结构，其不需要手动定义，比如 string 类型，其就是由多个 u8 类型组成。
 
-:::note
-目前还没有想好怎么支持/需不需要支持指针类型，所以复合类型目前阶段数据都存储在堆(heap) 中，复合类型在栈(stack) 中存储的是一个指针，指向对应的 heap 的起始地址。如下图示例
+复合类型目前阶段数据都存储在堆(heap) 中，复合类型在栈(stack) 中存储的是一个指针，指向对应的 heap 的起始地址。如下图示例
 
-![string 类型内存结构](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230505183805.png)
-:::
+![](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230627185345.png)
 
 由于复合类型的主体都存储在了堆中，堆外存储的是指针。所以其在各种赋值操作，函数参数传递等操作时都是**引用传递**，也就是传递了指针，不会修改或复制堆上的数据
 
 | 类型名称 | 关键字  | 示例                                          | 说明                                                       |
 | -------- | ------- | --------------------------------------------- | ---------------------------------------------------------- |
-| string   | string  | `string str = "hello world"`                  |                                                            |
+| string   | string  | `string str = 'hello world'`                  |                                                            |
 | list     | `[T]`   | `[int] list = [1, 2, 3, 4]`                   |                                                            |
-| map      | `{T:T}` | `{int:string} map = {1: "a", 2: "b"}`         | key 类型仅支持 integer/float/string                        |
+| map      | `{T:T}` | `{int:string} map = {1: 'a', 2: 'b'}`         | key 类型仅支持 integer/float/string                        |
 | set      | `{T}`   | `{int} set = {1, 2, 3, 4}`                    |                                                            |
 | tuple    | `(T)`   | `(int, bool) t = (1, true)`                   |                                                            |
 | struct   | struct  | -                                             | 一般不会直接使用 struct 类型，后续自定义类型时再做详细介绍 |
@@ -83,47 +81,61 @@ int foo = 1
 int bar = 2
 any car = foo // v 这里发生累隐式类型转换，将 int 类型的 foo 转换成了 any 类型
 int baz = car // x any 时复合类型，不能赋值给 int 类型的 baz 变量，这里需要借助类型断言来进行赋值
+int baz = car as int // v as 此时表示 assert 类型断言，其与类型转换共用关键字 as
+
+bool isint = car is int // v 使用 is 关键字可以对 any/联合类型当前的实际存储类型进行判断
 ```
 
-> 类型断言(Type Assertion)开发中，欢迎提供语法意见。
+
+### 联合类型
+
+```
+int|null foo = null
+foo = 1
+```
+
+联合类型本质就是 any，只是具有更小的选择范围。再范围包含的情况下，可以允许大范围的联合类型赋值给小范围的联合类型，如
+
+```
+int|float foo = null
+int|float|null bar = foo // v bar 的类型范围大于 foo
+
+int|null baz = bar // x bar 的类型范围大于 baz, 所以不允许赋值
+
+any car = baz // v any 包含所有类型，所以可以接受任意值
+
+```
 
 ### null
 
-目前语法上还没有支持，但是后续会有一个 null 类型，所以 null 作为保留关键字
+null 的类型定义和值都是关键字 null
 
-### pointer
+## 类型别名
 
-目前语法上还没有支持，但是关键字 ptr 需要保留给 builtin 使用
+```nature
+type myint = int
+```
+
+使用关键字 type 可以自定义类型，一般与 struct 组合使用。类型别名同样也支持参数，如
+
+```nature
+type nullable<t0> = t0|null
+```
+
+后续在泛型中会再次见到类型参数的使用。
+
 
 ## 类型转换
 
-显示类型转换(Type Casting) 语法开发中，欢迎提供语法意见。
+nature 暂时不支持隐式类型转换。请使用 `expr as type` 的方式进行显示的类型转换。如 `bool a = 12 as bool` 
 
-### 隐式类型转换
-
-:::tip
-由于没有想好显示类型转换的语法，所以当前版本中开放了隐式类型转换。当然，这不代表后续会删除隐式类型转换，而是会根据后续的反馈进行合适的调整
-:::
-
-转换规则如下
-
-- 除了 any 自己外的任意类型都可以转换为 any 类型
-- 所有的类型都可以转换为 bool 类型，**转换规则为 0/0.0/null 转换为 false，其他类型转换为 true**。 ❗️ 特别注意比如 `string str` 在没有定义右值时 str == null，所以转换为 bool 类型时将转换为 false。`string str = ""` 定义了右值，即使字符串为空，转换为 bool 类型也是 true。所有的复合类型都遵循这样的规则，所以空 list/空 set 等都会转换为 true
-- number 类型之间的可以随意转换，但这是非常危险的隐式转换类型转换，即使相同空间大小的类型转换也会有下面的陷阱，比如
-
-```nature
-int a = -1
-uint b = a
-println(b)
-```
-
-我们可能会认为 b 的值会变成 1， 实际上 b 的值是 18446744073709551615
+目前隐式类型转换的目标仅支持简单类型，如 bool/number。所有的类型都可以转换为 bool 类型。 number 仅支持原始类型同样为 number 时才能够转换。
 
 ## 字面量类型
 
 ```nature
 var foo = 1 // 字面量 1 默认为 int 类型
-u8 bar = 1 // 由于字面量 1 默认为 int 类型，这里发生了隐式类型转换
+u8 bar = 1 // 由于字面量 1 在赋值时判断到 bar 为 u8 类型，且字面量范围符合 u8 范围，所以此时 1 默认为 u8 类型，并不需要进行类型转换。
 
 var car = 1.1 // 字面量浮点型默认为 float 类型
 
@@ -134,10 +146,10 @@ var baq = false // bool 类型
 
 > 💡 2 进制字面量与 16 进制字面量暂不支持，语法开发中。
 
-### 字符串
+### 字符串字面量
 
-字符串字面量使用双引号 `""` 包裹，目前也仅支持这一种字符串字面量的声明方式
+字符串字面量使用单引号 `''` 包裹，目前也仅支持这一种字符串字面量的声明方式
 
 ```nature
-var str = "hello world"
+var str = 'hello world'
 ```

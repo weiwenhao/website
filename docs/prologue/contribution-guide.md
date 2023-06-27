@@ -3,6 +3,8 @@ title: 贡献指南
 sidebar_position: 20
 ---
 
+有多种方式参与 nature 的贡献，包括但不限于提交 BUG、分享想法、社区讨论、编码参与、文档改进、规范制定、资料贡献、捐赠等。
+
 ## 错误与建议
 
 如果你希望提交错误报告，你的问题应包含标题和清晰的问题描述。你还应尽可能提供相关信息和演示问题的代码示例。错误报告的目的是使自己和其他人能够轻松地重现错误并开发修复程序。
@@ -10,6 +12,16 @@ sidebar_position: 20
 提交建议时尽量阐述清楚自己的想法，最好带上有说服力的资料，让你建议能够得到更好的采纳。无论是语法，编译器设计，编码规范，学习资料等等都希望大家能够提供建议。
 
 你可以通过 issue 来提交你的错误报告或者建议 [nature-lang/nature](https://github.com/nature-lang/nature/issues)
+
+## 社区交流
+
+想法和问题推荐使用 github issue 进行讨论让更多人能够关注并参与。
+
+discard: [https://discord.gg/xYYkVaKZ](https://discord.gg/xYYkVaKZ)
+
+微信群: 添加微信号 `nature-lang` 备注 “申请加群”
+
+github 讨论社区: [https://github.com/nature-lang/nature/discussions](https://github.com/nature-lang/nature/discussions)
 
 ## 源码编译
 
@@ -19,18 +31,17 @@ sidebar_position: 20
 ├── CMakeLists.txt
 ├── LICENSE
 ├── README.md
-├── VERSION // 版本号，遵守语义化版本规范
-├── examples // 包含了我对语法设计的一些思考，即将删除废弃
-├── cmake // cmake 构建相关文件
-├── cmd // cmd 如 nature build 入口文件
-├── config // 编译时配置
-├── lib // 编译 nature 源文件以及打包 nature 安装包时引用库文件
-├── main.c // 入口
-├── runtime // runtime 源码代码
-├── src // 编译器源码
-├── std // nature 标准库
-├── tests // 测试文件
-└── utils // 工具函数
+├── VERSION # 版本号，遵守语义化版本规范
+├── cmake # cmake 构建相关文件
+├── cmd # cmd 如 nature build 入口文件
+├── config # 编译时配置
+├── lib # 编译 nature 源文件以及打包 nature 安装包时引用库文件
+├── main.c # 入口
+├── runtime # runtime 源码代码
+├── src # 编译器源码
+├── std # 标准库
+├── tests # 测试文件
+└── utils # 工具函数
 ```
 
 编译 runtime
@@ -88,8 +99,8 @@ cmake --build build-release --target package
 
 ## 编码规范
 
-👷 施工中
+nature 源代码基于 ANSI C11 和 musl libc 进行开发。
 
-## 参与编码
+1. 源码上追求简单可读，不使用复杂的第三方库
+2. 文件名/目录名/关键字采用小写 + 下划线分词，唯一的例外是宏定义使用大写 + 下划线分词。
 
-请等待编码风格确定后再开始提交源码贡献，如果你有想法或者建议可以通过 github issue 提交或者发送到我的邮箱 1101140857@qq.com (临时邮箱)

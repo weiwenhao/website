@@ -22,34 +22,32 @@ if (true) {
 ```nature
 int foo = 1 // v
 float bar = 2.2 // v
-string car = "hello world" // v
+string car = 'hello world' // v 字符串使用单引号包裹
 
 foo = 2 // v 变量允许重新定值
-foo = "hello world" // x foo 已经定义为 int 类型变量，不允许使用字符串赋值
+foo = 'hello world' // x foo 已经定义为 int 类型变量，不允许使用字符串赋值
+
+i8 f2 = 12 // v 字面量能够根据类型进行自动转换
+i16 f3 // x 变量声明必须赋值
 ```
 
 > 👉 [更多类型](type.md)
 
-```nature
-int foo // v 仅声明，不赋值，此时 bar 有默认值 0
-float bar // v bar 有默认值 0.0
-bool car // v car 有默认值 false
-```
-
-string 类型以及后面的 list/map/set 等复合类型如果采用仅声明方式时需要注意其默认值
+复合类型 string/list/map/set 同样需要再声明时赋默认值
 
 ```nature
-string foo // v ❗️foo 此时的默认值为 null, 而不是空字符串 “”
-string bar = "" // v 请使用这种方式声明一个空的字符串
-
-[int] baz // v baz 此时的默认值为 null, 如果需要声明一个空 list
+string bar = '' // v 请使用这种方式声明一个空的字符串
 [int] baz = [] // v 声明空 list
+
+bar = null // x 不允许将 null 赋值给各种类型
 ```
 
-仅声明变量时需要为变量声明确定的类型
+如何赋值为 null?
 
-```nature
-var foo // x foo 此时的类型是不确定的
 ```
+string|null bar = null // v 使用联合类型声明，让 bar 的值允许为 null
+bar = '' // v 后续章节中会深入学习联合类型
+```
+
 
 > 💡 上面代码段中多次出现的 `//` 双斜杠是 nature 中单行注释的方式，目前也仅支持这一种注释方式。

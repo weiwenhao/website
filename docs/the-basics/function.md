@@ -78,12 +78,12 @@ println(result(1, 2, 3, 4, 5))
 ```nature
 fn buy(int amount):(string, int) {
 	amount -= 10
-	return ("apple", amount)
+	return ('apple', amount)
 }
 
 var (balance, product) = buy(100)
 
-println(balance, " ", product)
+println(balance, ' ', product)
 ```
 
 示例中函数返回值通过 `(string, int)` 声明了一个 tuple 类型。 `return ("apple", amount)` 则是创建了一个 tuple 实例返回，这并不违反单返回值的情况。
