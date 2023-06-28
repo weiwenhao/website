@@ -23,7 +23,7 @@ int id = 1
 // 全局函数
 fn register(string username, string password) {
    if (userof[username]) {
-      throw "The user has already registered"
+      throw 'The user has already registered'
    }
 
    var u = user {
@@ -39,7 +39,7 @@ fn register(string username, string password) {
 
 fn find(string username):user {
    if (!userof[username]) {
-      throw "user notfound"
+      throw 'user notfound'
    }
 
    return userof[username]
@@ -55,21 +55,21 @@ module 中声明变量时不支持类型推导
 这种组织代码的方式很像 struct，但是多了自定义 type，且 module 不需要实例化，只需要 import 就可以直接是使用，所以其中定义的变量信息是全局共享的，我们也可以称为全局变量，类似于 class 中的 static 属性。接下来看看如何使用 user 模块吧
 
 ```nature title='main.n'
-import "user.n"   // 基于当前 main.n 文件的相对路径引入
+import 'user.n'   // 基于当前 main.n 文件的相对路径引入
 
-user.register("xiaowei", "hahaha123")
+user.register('xiaowei', 'hahaha123')
 
-user.register("xiaoyou", "nanana456")
+user.register('xiaoyou', 'nanana456')
 
-var err = catch user.register("xiaoyou", "nanana789")
-if (err) {
+var err = try user.register('xiaoyou', 'nanana789')
+if err.has {
    println(err.msg)
 }
 
-var foo = user.find("xiaoyou")
-println(foo.username, "-", foo.password)
+var foo = user.find('xiaoyou')
+println(foo.username, '-', foo.password)
 
-println("current user count=", user.list.length())
+println('current user count=', user.list.length())
 ```
 
 将 user.n 和 main.n 放在同一目录下，对 main.n 进行编译执行后可以得到以下输出

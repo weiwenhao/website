@@ -70,11 +70,11 @@ fn timing(fn() callback) {
 }
 
 timing(fn() {
-	println("hello world")
+	println('hello world')
 })
 
 timing(fn () {
-	println("haha nature")
+	println('haha nature')
 })
 ```
 

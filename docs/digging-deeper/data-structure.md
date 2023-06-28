@@ -18,7 +18,7 @@ list[0] = 4 // 赋值
 list.push(5)
 
 // 获取 list 长度
-var len = list.length() // 返回值为 int 类型
+var len = list.len() // 返回值为 int 类型
 
 // k 是 list index, v 是 list value
 for (k,v in list) {
@@ -26,25 +26,21 @@ for (k,v in list) {
 }
 ```
 
-目前仅开放了对 list 的 push 和 length 函数，重点关注一下自动推导
+目前仅开放了对 list 的 push 和 len 函数，重点关注一下自动推导
 
 如 `var list = [1, 2, 3]` 在自动类型推导时，**按照 list 首个元素的类型确定 `[T]` 中 T 的元素的类型**，list 中所有元素的类型都必须遵循 T 对应的类型，或者能够隐式转换到该类型，本例中首个元素是字面量 int，所以推导出的 list 完整类型为 `[int]` 。
 
 声明相关的注意事项
 
 ```nature
-[int] list // v 仅声明但是不做初始化，此时 list == null
-
-var list  // x 无法确定类型
-
 var list = [] // x 无法确定类型
-[int] list = [] // v 初始化一个空 list 类型
+[int] list = [] // v 初始化一个空的 int 类型的 list
 
-var list = [1, 1.2] // v 第二个元素会隐式转换成 int 类型
+var list = [1, 1.2] // x 类型不一致
 
-[int] list = [1.1, 1.2] // v 同上，虽然语法上支持，但是这非常的难以理解！
+[int] list = [1.1, 1.2] // x 同上，类型不一致
 
-fn test([int] map) {} // 在函数中的声明
+fn test([int] list) {} // 在函数中的声明
 ```
 
 ## map
@@ -53,26 +49,26 @@ map 是一种 hash 表结构，具有 O(1) 时间复杂度的查找效率。 支
 
 ```nature
 // 声明并赋值，推导类型为 {int:string}
-var map = {1: "hello", 2: "world", 3: "hello", 4: "haha"}
+var map = {1: 'hello', 2: 'world', 3: 'hello', 4: 'haha'}
 
 // 声明一个空 map
 {int:string} m1 = {}
 
-var foo = map[1] // 元素访问
-map[1] = "hello" // 修改或者添加新的元素
+var foo = map[1] // map 元素访问
+map[1] = 'hello' // 修改或者添加新的元素
 
-map.delete(1) // 使用 key 删除 map 中的元素
-var len = map.length() // 获取 map 中元素的数量, 返回值为 int 类型
+map.del(1) // 使用 key 删除 map 中的元素
+var len = map.len() // 获取 map 中元素的数量, 返回值为 int 类型
 
 // 迭代 k = map key, v = map value
-for (k,v in map) {
+for k,v in map {
     //...
 }
 
 fn test({int:int} map) {} // 在函数中的声明
 ```
 
-目前 map key 仅支持 number 和 string 简单类型，后续会基于反射开放更多类型。
+目前 map key 仅支持 number 和 string 两种类型，后续会基于反射开放更多类型。
 
 ## set
 
@@ -82,15 +78,15 @@ set 和 map 结构类似也是一个 hash 表结构，和 map 不同的是其仅
 var s = {1, 2, 3} // v 声明一个 set 类型
 
 s.add(4) // v 添加元素
-var exists = s.contains(1)  // v 检测元素是在 set 中，返回 bool 类型
-s.delete(4) // v 从 set 中删除元素
+var exists = s.has(1)  // v 检测元素是在 set 中，返回 bool 类型
+s.del(4) // v 从 set 中删除元素
 
 s[0] = 1 // x 没有赋值语法
 var f = s[0] // x 没有访问语法
 
 fn test({int} s) {} // v 在函数中声明
 
-if ({1, 2, 3}.contains(2)) { // v 直接在 if 语句中使用
+if ({1, 2, 3}.has(2)) { // v 直接在 if 语句中使用
     // ..
 }
 ```
