@@ -89,13 +89,14 @@ type errort = struct {
 ```
 
 
-不仅是再函数调用中，try 后面可以接更多更长的表达式。本质上和传统语言的 try catch 没有什么区别，只是稍微简化了一下语法糖。
+不仅是在函数调用中，try 后面可以接更多更长的表达式。本质上和传统语言的 try catch 没有什么区别，只是稍微简化了一下语法糖。
 
 ```nature
+var err = try foo[1] // v index out of range
 var err = try foo().bar().car() // v 链式调用
 var err = try foo as int // v union assert 断言异常时
-var err = try foo.bar[1] // v 访问不存在的元素时
+var err = try foo.bar[1] // v 链式调用
 ```
 
 
-👏 相信你已经掌握了 throw 和 catch 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。语法简单不代表错误处理是一件简单的事情，它涉及到如何在程序中设计、捕获、记录和处理错误，是编写健壮、可靠和高质量软件的关键。
+👍 相信你已经掌握了 throw 和 catch 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。语法简单不代表错误处理是一件简单的事情，它涉及到如何在程序中设计、捕获、记录和处理错误，是编写健壮、可靠和高质量软件的关键。

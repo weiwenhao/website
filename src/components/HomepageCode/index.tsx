@@ -28,7 +28,7 @@ println(result)`}
                     </div>
 
                     <div className='col col--6'>
-                        <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Coding Example</h1>
+                        <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Build Example</h1>
                         <p>A fib evaluation function was defined using recursion. The result of the function call was assigned to a variable named "result" and printed.</p>
                         <div style={{ marginTop: "2.3rem" }}>
                             <p> <Link href='/docs/getting-started/installation'> Install </Link> nature and execute the compile command</p>
