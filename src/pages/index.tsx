@@ -4,7 +4,8 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import HomepageCode from '@site/src/components/HomepageCode';
+import HomepageBuildExample from '@site/src/components/HomepageBuildExample';
+import HomepageCodeExample from '@site/src/components/HomepageCodeExample';
 
 import styles from './index.module.css';
 
@@ -58,8 +59,9 @@ export default function Home(): JSX.Element {
             description="Description will go into a meta tag in <head />">
             <HomepageHeader />
             <main>
-                <HomepageCode />
+                <HomepageBuildExample />
                 <HomepageFeatures />
+                <HomepageCodeExample />
             </main>
         </Layout>
     );

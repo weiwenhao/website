@@ -1,10 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
-import styles from './styles.module.css';
 
 export default function HomepageFeatures(): JSX.Element {
     return (
-        <section className={styles.features}>
+        <section className='homepage-title' style={{backgroundColor: '#f6f8fa'}}>
             <div className="container">
                 {/* <h1 className="hero__title text--center">Features</h1> */}
                 <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Features</h1>
@@ -13,7 +12,7 @@ export default function HomepageFeatures(): JSX.Element {
                         <div className="card shadow--tl">
                             <div className="card__header">
                                 {/* <Feature1Svg className="margin-right--md feature-svg" role="img" /> */}
-                                <h2>💪 Reliable</h2>
+                                <h2> ⚙️ Reliable</h2>
                             </div>
                             <div className="card__body">
                                 <p>
@@ -30,11 +29,11 @@ export default function HomepageFeatures(): JSX.Element {
                         <div className="card shadow--tl margin-top--md">
                             <div className="card__header">
                                 {/* <Feature2Svg className={clsx("margin-right--md", "feature-svg")} role="img" /> */}
-                                <h2>⭕️ Concise</h2>
+                                <h2> 🌟 Concise</h2>
                             </div>
                             <div className="card__body">
                                 <p>
-                                    A concise syntax and smooth learning curve minimize your learning cost and allow you to write concise and elegant code.
+                                 A concise syntax and smooth learning curve minimize your learning cost and allow you to write concise and elegant code.
                                     <br />
                                     <br />
                                     <br />
@@ -47,7 +46,7 @@ export default function HomepageFeatures(): JSX.Element {
                         <div className="card shadow--tl margin-top--md">
                             <div className="card__header">
                                 {/* <Feature3Svg className="margin-right--md feature-svg" role="img" /> */}
-                                <h2>🍻 Open</h2>
+                                <h2> 🐳 Open</h2>
                             </div>
                             <div className="card__body">
                                 <p>

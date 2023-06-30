@@ -9,8 +9,8 @@
     position: relative;
     overflow: hidden;
     background-color: #1b263c;
-    background-image: url(
-'https://cdn.discordapp.com/attachments/1091184328643461130/1123942190540922980/werh870_The_dark_universe_contains_several_starsBlack_backgroun_ab991eeb-79c4-4166-886f-92939c7dffa0.png');
+    background-size: cover;
+    background-image: url('/img/galaxy.png');
 }
 
 @media screen and (max-width: 996px) {

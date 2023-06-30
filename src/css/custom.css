@@ -5,6 +5,12 @@
  */
 /* @import url('https://fonts.googleapis.com/css?family=Fira Mono'); */
 
+.homepage-title {
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    width: 100%;
+}
 
 .banner-button:hover {
     filter: grayscale(20%);
