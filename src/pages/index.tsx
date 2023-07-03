@@ -6,6 +6,8 @@ import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageBuildExample from '@site/src/components/HomepageBuildExample';
 import HomepageCodeExample from '@site/src/components/HomepageCodeExample';
+import { Analytics } from '@vercel/analytics/react';
+
 
 import styles from './index.module.css';
 
@@ -63,6 +65,7 @@ export default function Home(): JSX.Element {
                 <HomepageFeatures />
                 <HomepageCodeExample />
             </main>
+            <Analytics />
         </Layout>
     );
 }
