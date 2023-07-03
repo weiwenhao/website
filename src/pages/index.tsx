@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import HomepageApplies from '@site/src/components/HomepageApplies';
 import HomepageBuildExample from '@site/src/components/HomepageBuildExample';
 import HomepageCodeExample from '@site/src/components/HomepageCodeExample';
 import { Analytics } from '@vercel/analytics/react';
@@ -62,6 +63,7 @@ export default function Home(): JSX.Element {
             <HomepageHeader />
             <main>
                 <HomepageBuildExample />
+                <HomepageApplies />
                 <HomepageFeatures />
                 <HomepageCodeExample />
             </main>

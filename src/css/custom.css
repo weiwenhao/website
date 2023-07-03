@@ -12,6 +12,14 @@
     width: 100%;
 }
 
+.homepage-backgroudgrey {
+    background-color: #f6f8fa;
+}
+
+[data-theme='dark'] .homepage-backgroudgrey {
+    background-color: #282a36;
+}
+
 .banner-button:hover {
     filter: grayscale(20%);
     /* background-color: #ddd; */
@@ -29,14 +37,6 @@
 /* [data-theme='dark'] .navbar__title { */
 /* color: #5bc2e7; */
 /* } */
-
-.feature-svg {
-    height: 25px;
-    width: 25px;
-    margin-top: 2px;
-    float: left;
-    fill: #ff2d20;
-}
 
 
 /* You can override the default Infima variables here. */

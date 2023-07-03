@@ -3,13 +3,13 @@ import clsx from 'clsx';
 
 export default function HomepageFeatures(): JSX.Element {
     return (
-        <section className='homepage-title' style={{backgroundColor: '#f6f8fa'}}>
+        <section className='homepage-backgroudgrey homepage-title'>
             <div className="container">
                 {/* <h1 className="hero__title text--center">Features</h1> */}
                 <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Features</h1>
                 <div className="row">
                     <div className='col col--4 margin-top--md'>
-                        <div className="card shadow--tl">
+                        <div className="card">
                             <div className="card__header">
                                 {/* <Feature1Svg className="margin-right--md feature-svg" role="img" /> */}
                                 <h2> ⚙️ Reliable</h2>
@@ -26,7 +26,7 @@ export default function HomepageFeatures(): JSX.Element {
                     </div>
 
                     <div className='col col--4'>
-                        <div className="card shadow--tl margin-top--md">
+                        <div className="card margin-top--md">
                             <div className="card__header">
                                 {/* <Feature2Svg className={clsx("margin-right--md", "feature-svg")} role="img" /> */}
                                 <h2> 🌟 Concise</h2>
@@ -43,7 +43,7 @@ export default function HomepageFeatures(): JSX.Element {
                     </div>
 
                     <div className='col col--4'>
-                        <div className="card shadow--tl margin-top--md">
+                        <div className="card margin-top--md">
                             <div className="card__header">
                                 {/* <Feature3Svg className="margin-right--md feature-svg" role="img" /> */}
                                 <h2> 🐳 Open</h2>
