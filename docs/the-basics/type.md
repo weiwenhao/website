@@ -129,7 +129,7 @@ type nullable<t0> = t0|null
 
 nature 暂时不支持隐式类型转换。请使用 `expr as type` 的方式进行显示的类型转换。如 `bool a = 12 as bool` 
 
-目前隐式类型转换的目标仅支持简单类型，如 bool/number。所有的类型都可以转换为 bool 类型。 number 仅支持原始类型同样为 number 时才能够转换。
+目前类型转换的目标仅支持简单类型，如 bool/number。所有的类型都可以转换为 bool 类型。 number 仅支持原始类型同样为 number 时才能够转换。
 
 ## 字面量类型
 
