@@ -1,36 +1,37 @@
 ---
-title: 闭包
+title: Closure
 sidebar_position: 30
 ---
 
-**闭包**（closure）是一个函数以及其捆绑的周边环境(局部变量)的的组合。换而言之，闭包让开发者可以从内部函数访问外部函数的作用域，而不用担心外部作用域中的变量随着 stack 退出丢失的问题。
+A **closure** is a combination of a function and the environment (local variables) it is bound to. In other words, a closure allows developers to access the scope of an outer function from within an inner function, without worrying about the issue of variables in the outer scope being lost as the stack exits.
 
-在 nature 中，函数引用了定义时外部的环境时，函数会自动转换为闭包，当然这在语法上是无感知的，你可以像普通的函数一样使用闭包。所以你只需要知道
+In Nature, when a function references the environment it was defined in, the function automatically becomes a closure. This is transparent in syntax, and you can use closures just like regular functions. So, the key point to remember is:
 
-:::info
-**在 nature 中，函数可以作为另外一个函数的参数，返回值，也可以作为值赋值给变量，这也称为高阶函数**。
+:::info 
+**In Nature, functions can be used as arguments, return values, and assigned to variables, making them higher-order functions.**
 :::
 
-接下来是与编译原理有关的，关于什么是闭包的深入了解。先来看一种引用了外部环境但**不会被编译成闭包**的情况，以模块文件 test.n 为例子
+Now, let's dive deeper into closures and explore a scenario where a function references the outer environment but **does not get compiled into a closure**. Consider the module file `test.n` as an example:
 
 ```nature title='test.n'
-int count = 0 // 这是全局变量
+int count = 0 // This is a global variable
 
-fn test() { // 这是全局函数
-	count += 1 // 对全局 count 的引用
+fn test() { // This is a global function
+	count += 1 // Reference to the global count
 }
+
 ```
 
-test 函数引用了外部的环境 count，那 test 此时可以会被编译为闭包吗? No，count 作为全局变量，无论什么情况下都不会被销毁。
+Does the `test` function, which references the outer environment variable `count`, get compiled into a closure? No. Since `count` is a global variable, it will never be destroyed regardless of the situation.
 
-所以此时可以判定 test 函数没有使用任何的外部环境，并不会编译成一个闭包。并且我们可以进一步推断，所有的全局函数(在 module 中定义的函数) 处在最顶层的作用域中，其不可能再引用作用域外的局部变量，所以**全局函数永远不会被编译成闭包**。
+Thus, we can determine that the `test` function does not use any external environment and therefore will not be compiled into a closure. Furthermore, we can infer that all global functions (functions defined in modules) exist in the top-level scope and cannot reference variables outside their scope. Therefore, **global functions will never be compiled into closures**.
 
-现在看一个典型的引用了外部环境的例子，将函数作为一个另外一个函数的返回值，并引用了局部变量 cash。
+Now let's look at a typical example that references the outer environment. We'll define a function that returns another function and references the local variable `cash`.
 
 ```nature title='main.n'
-fn make_atm():fn(int):int {
+fn make_atm(): fn(int): int {
 	var cash = 1000
-	return fn(int amount):int { // 匿名函数
+	return fn(int amount): int { // Anonymous function
 		cash -= amount
 		return cash
 	}
@@ -42,9 +43,10 @@ println(atm_foo(200))
 
 var atm_bar = make_atm()
 println(atm_bar(100))
+
 ```
 
-编译输出看看是否和我们的预期一致呢
+Let's compile and observe the output:
 
 ```shell
 > nature build main.n && ./main
@@ -53,19 +55,19 @@ println(atm_bar(100))
 900
 ```
 
-示例中匿名函数在定义中引用了其定义域外部环境中的局部变量 cash，所以 nature 在编译该函数时，会将其转换成闭包，也就是类似 `clsoure(fn_code, env[cash])` 的结构。
+In the example, the anonymous function references the local variable `cash` from its defining scope. When compiling the function, Nature converts it into a closure, which is similar to the structure `closure(fn_code, env[cash])`.
 
-为什么要这么做呢？ cash 作为局部变量，其生命周期仅在 make_atm 中，make_atm() 调用栈退出时，其中的局部变量就会被销毁。我们先假设匿名函数为 f，假设在编译时不进行外部环境引用的封闭处理，那么在调用 f 时，也就是示例中的 `atm_foo(100)` 时将无法找到已经被销毁的局部变量 cash，造成访问异常。
+Why do we do this? Since `cash` is a local variable with a lifespan limited to `make_atm`, the local variables are destroyed when the call stack of `make_atm()` exits. Assuming the anonymous function is represented as `f`, if we don't capture the outer environment during compilation, when calling `f` (e.g., `atm_foo(100)` in the example), the reference to the already destroyed local variable `cash` would cause an access exception.
 
-而通过闭包转换，将 f 引用的外部环境收集起来，避免在调用 f 时其引用的外部环境缺失造成引用异常，这就是闭包做的主要事情。同时上面的示例中也演示了函数作为返回值时的示例。
+By using closures, we collect the referenced outer environment when compiling the function. This prevents a reference exception caused by missing outer environment references when calling `f`. That's the main purpose of closures. The example above also demonstrates a function being returned as a value.
 
-nature 中函数同样可以作为参数传递，我们可以基于此实现依赖注入。
+In Nature, functions can also be passed as parameters, allowing us to achieve dependency injection.
 
 ```nature
 fn timing(fn() callback) {
 	for (int i = 0; i < 10; i += 1) {
 		callback()
-		sleep(1) // 内置函数，阻塞当前进程 1 秒
+		sleep(1) // Built-in function, blocks the current process for 1 second
 	}
 }
 
@@ -78,20 +80,20 @@ timing(fn () {
 })
 ```
 
-编译并输出
+Compile and output:
 
 ```nature
 > ./main
 hello world
 hello world
-// ...输出省略
+// ...output omitted
 haha nature
 haha nature
-// ...输出省略
+// ...output omitted
 ```
 
-这就是闭包在函数参数中应用。通过闭包或者说高阶函数，我们能够编写更加简洁优雅的代码。
+This demonstrates the use of closures or higher-order functions as function parameters. Through closures or higher-order functions, we can write more concise and elegant code.
 
 ---
 
-我们的 nature 教程到这里就告一段落了 👋
+This concludes our Nature tutorial. 👋

@@ -1,66 +1,66 @@
 ---
-title: 类型
+title: Types
 sidebar_position: 30
 ---
 
-在 nature 中每一个变量都有一个数据类型，不同的类型在内存中占用的大小是不相同的。类型分为简单类型与复合类型。
+In Nature, every variable has a data type, and different types occupy different amounts of memory. Types can be categorized into simple types and composite types.
 
-## 简单类型
+## Simple Types
 
-| 关键字 | 存储大小 byte | 说明                                                                       |
-| ------ | ------------- | -------------------------------------------------------------------------- |
-| int    | -             | 有符号整型，与运行平台的 cpu 位宽一致,比如 64 位下 int 占用 8byte = 64bit  |
-| i8     | 1             | 有符号整型                                                                 |
-| i16    | 2             | 有符号整型                                                                 |
-| i32    | 4             | 有符号整型                                                                 |
-| i64    | 8             | 有符号整型                                                                 |
-| uint   | -             | 无符号整型，与目标平台 cpu 位宽 一致                                       |
-| u8     | 1             | 无符号整型                                                                 |
-| u16    | 2             | 无符号整型                                                                 |
-| u32    | 4             | 无符号整型                                                                 |
-| u64    | 8             | 无符号整型                                                                 |
-| float  | -             | 浮点数，与执行平台的 cpu 位宽一致,比如 64 位 cpu 下占用 8byte, 与 f64 一致 |
-| f32    | 4             | 单精度浮点数                                                               |
-| f64    | 8             | 双精度浮点数                                                               |
-| bool   | 1             | 布尔类型，值有 true 和 false                                               |
+|Keyword|Storage Size (bytes)|Description|
+|---|---|---|
+|int|-|Signed integer type, size is consistent with the CPU bit width of the target platform. For example, on a 64-bit system, `int` occupies 8 bytes = 64 bits.|
+|i8|1|Signed integer type|
+|i16|2|Signed integer type|
+|i32|4|Signed integer type|
+|i64|8|Signed integer type|
+|uint|-|Unsigned integer type, size is consistent with the CPU bit width of the target platform.|
+|u8|1|Unsigned integer type|
+|u16|2|Unsigned integer type|
+|u32|4|Unsigned integer type|
+|u64|8|Unsigned integer type|
+|float|-|Floating-point type, size is consistent with the CPU bit width of the target platform. For example, on a 64-bit system, `float` occupies 8 bytes, equivalent to `f64`.|
+|f32|4|Single-precision floating-point type|
+|f64|8|Double-precision floating-point type|
+|bool|1|Boolean type, with values `true` and `false`|
 
-bool 类型的值是**小写**的 true 和 false。
+The values of the `bool` type are **lowercase** `true` and `false`.
 
 :::caution
-在 64 位系统下，c 语言的 float = f32, 而 nature 中 float = f64
+In a 64-bit system, C language uses `float` for `f32`, while in Nature, `float` corresponds to `f64`.
 :::
 
-由于简单类型在堆外存储，所以其在各种赋值操作，函数参数传递等操作时都是**值传递**。
+Since simple types are stored outside the heap, all operations involving assignment and function parameter passing are done by **value**.
 
-## 复合类型
+## Composite Types
 
-复杂类型可以理解为由简单类型组合并内置在 nature 中的结构，其不需要手动定义，比如 string 类型，其就是由多个 u8 类型组成。
+Composite types are structures built into Nature, combining simple types. They do not need to be defined manually. For example, the `string` type consists of multiple `u8` types.
 
-复合类型目前阶段数据都存储在堆(heap) 中，复合类型在栈(stack) 中存储的是一个指针，指向对应的 heap 的起始地址。如下图示例
+Currently, composite types are stored in the heap, and the stack stores a pointer to the corresponding heap's starting address. The diagram below illustrates this:
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230627185345.png)
 
-由于复合类型的主体都存储在了堆中，堆外存储的是指针。所以其在各种赋值操作，函数参数传递等操作时都是**引用传递**，也就是传递了指针，不会修改或复制堆上的数据
+Since the main body of composite types is stored in the heap, the stack stores a pointer instead. Therefore, all operations involving assignment and function parameter passing are done by **reference**, passing the pointer without modifying or copying the data in the heap.
 
-| 类型名称 | 关键字  | 示例                                          | 说明                                                       |
-| -------- | ------- | --------------------------------------------- | ---------------------------------------------------------- |
-| string   | string  | `string str = 'hello world'`                  |                                                            |
-| list     | `[T]`   | `[int] list = [1, 2, 3, 4]`                   |                                                            |
-| map      | `{T:T}` | `{int:string} map = {1: 'a', 2: 'b'}`         | key 类型仅支持 integer/float/string                        |
-| set      | `{T}`   | `{int} set = {1, 2, 3, 4}`                    |                                                            |
-| tuple    | `(T)`   | `(int, bool) t = (1, true)`                   |                                                            |
-| struct   | struct  | -                                             | 一般不会直接使用 struct 类型，后续自定义类型时再做详细介绍 |
-| fn       | fn(T):T | `fn(int,int):int f = fn(int a, int b):int {}` |                                                            |
+|Type Name|Keyword|Example|Description|
+|---|---|---|---|
+|string|string|`string str = 'hello world'`||
+|list|`[T]`|`[int] list = [1, 2, 3, 4]`||
+|map|`{T:T}`|`{int:string} map = {1: 'a', 2: 'b'}`|Key type only supports `integer`/`float`/`string`|
+|set|`{T}`|`{int} set = {1, 2, 3, 4}`||
+|tuple|`(T)`|`(int, bool) t = (1, true)`||
+|struct|struct|-|It is generally not used directly; it will be explained in detail when custom types are introduced later.|
+|fn|fn(T):T|`fn(int,int):int f = fn(int a, int b) {}`||
 
 :::info
-这里主要演示类型的定义方式，具体使用将会在后续章节说明。另外如果是变量声明的话推荐用 var 关键字进行类型推导，上面是演示示例所以直接使用了类型声明。
+Here, we mainly demonstrate the way to define types. The specific usage will be explained in subsequent sections. If it is variable declaration, it is recommended to use the `var` keyword for type inference. The examples above use explicit type declarations for demonstration purposes. 
 :::
 
-## 特殊类型
+## Special Types
 
 ### self
 
-在结构体中直接声明函数时，用来引导结构体自身，示例
+When declaring a function directly in a struct, `self` is used to refer to the struct itself. Example:
 
 ```nature
 type square = struct {
@@ -74,16 +74,16 @@ type square = struct {
 
 ### any
 
-语法示例
+Syntax example:
 
 ```nature
 int foo = 1
 int bar = 2
-any car = foo // v 这里发生累隐式类型转换，将 int 类型的 foo 转换成了 any 类型
-int baz = car // x any 时复合类型，不能赋值给 int 类型的 baz 变量，这里需要借助类型断言来进行赋值
-int baz = car as int // v as 此时表示 assert 类型断言，其与类型转换共用关键字 as
+any car = foo // Implicit type conversion occurs here, converting the int type `foo` to any type
+int baz = car // Implicit conversion is not allowed for compound types like any; you need to use type assertions to perform assignments
+int baz = car as int // `as` is used here as an assert type assertion, it is shared with type conversion using the keyword `as`
 
-bool isint = car is int // v 使用 is 关键字可以对 any/联合类型当前的实际存储类型进行判断
+bool isint = car is int // The `is` keyword can be used to determine the actual storage type of `any`/union type
 ```
 
 
@@ -94,61 +94,59 @@ int|null foo = null
 foo = 1
 ```
 
-联合类型本质就是 any，只是具有更小的选择范围。再范围包含的情况下，可以允许大范围的联合类型赋值给小范围的联合类型，如
+Union types are essentially `any`, but with a smaller selection range. If the range is included, it is allowed to assign a union type with a larger range to a union type with a smaller range. For example:
 
 ```
 int|float foo = null
-int|float|null bar = foo // v bar 的类型范围大于 foo
+int|float|null bar = foo // `bar` has a type range larger than `foo`
 
-int|null baz = bar // x bar 的类型范围大于 baz, 所以不允许赋值
+int|null baz = bar // Assigning `bar` to `baz` is not allowed because `bar` has a larger type range than `baz`; you need to use `any` to accept any value
 
-any car = baz // v any 包含所有类型，所以可以接受任意值
-
+any car = baz // `any` can accept any type, so it can accept any value
 ```
 
 ### null
 
-null 的类型定义和值都是关键字 null
+The type definition and value of `null` are both the keyword `null`.
 
-## 类型别名
+## Type Aliases
 
 ```nature
 type myint = int
 ```
 
-使用关键字 type 可以自定义类型，一般与 struct 组合使用。类型别名同样也支持参数，如
+The `type` keyword can be used to define custom types, usually used in combination with `struct`. Type aliases also support parameters, such as:
 
 ```nature
 type nullable<t0> = t0|null
 ```
 
-后续在泛型中会再次见到类型参数的使用。
+Type parameters will be seen again in generics.
 
 
-## 类型转换
+## ## Type Casting
 
-nature 暂时不支持隐式类型转换。请使用 `expr as type` 的方式进行显示的类型转换。如 `bool a = 12 as bool` 
+Nature currently does not support implicit type conversion. Please use the `expr as type` syntax for explicit type conversion. For example, `bool a = 12 as bool`.
 
-目前类型转换的目标仅支持简单类型，如 bool/number。所有的类型都可以转换为 bool 类型。 number 仅支持原始类型同样为 number 时才能够转换。
+Currently, the target of type conversion only supports simple types, such as `bool` and `number`. All types can be converted to `bool`, and `number` conversion is only supported when the original type is also a `number` primitive type.
 
-## 字面量类型
+## Literal Types
 
 ```nature
-var foo = 1 // 字面量 1 默认为 int 类型
-u8 bar = 1 // 由于字面量 1 在赋值时判断到 bar 为 u8 类型，且字面量范围符合 u8 范围，所以此时 1 默认为 u8 类型，并不需要进行类型转换。
+var foo = 1 // The literal `1` defaults to the int type
+u8 bar = 1 // Since the literal `1` is assigned to `bar` and the type of `bar` is determined to be `u8`, and the range of the literal matches the range of `u8`, the `1` is automatically treated as the `u8` type without the need for explicit type conversion.
 
-var car = 1.1 // 字面量浮点型默认为 float 类型
+var car = 1.1 // The floating-point literal defaults to the float type
 
-var baz = true  // bool 类型
-var baq = false // bool 类型
-
+var baz = true  // bool type
+var baq = false // bool type
 ```
 
-> 💡 2 进制字面量与 16 进制字面量暂不支持，语法开发中。
+> 💡 Binary literals and hexadecimal literals are not supported at the moment. The syntax is still under development.
 
-### 字符串字面量
+### String Literals
 
-字符串字面量使用单引号 `''` 包裹，目前也仅支持这一种字符串字面量的声明方式
+String literals are enclosed in single quotes `''`. Currently, only this form of string literal declaration is supported.
 
 ```nature
 var str = 'hello world'

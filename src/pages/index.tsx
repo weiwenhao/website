@@ -35,7 +35,7 @@ function HomepageHeader() {
                     </div>
                     <div className="col col--4">
                         <img
-                            className={styles.logoShip} src="/img/nature.png" alt="nature logo"
+                            className={styles.logoShip} src={require('@site/static/img/nature.png').default} alt="nature logo"
                             style={{ width: '85%', height: 'auto' }}
                         />
                     </div>

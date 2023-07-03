@@ -1,35 +1,36 @@
 ---
-title: 认识 nature
+title: Meet Nature
 sidebar_position: 10
 ---
 
-nature 是一种编程语言，语法上追求简洁优雅，关注使用者的编写与阅读体验。
+Nature is a programming language that aims for simplicity and elegance in its syntax, focusing on a pleasant coding and reading experience for its users.
 
-在编程语言层面，nature 具有以下特点:
+At the language level, Nature has the following features:
 
-- 类型系统，null 安全，泛型，联合类型
-- 静态交叉编译，能够不借助任何第三方组件从 nature 源码编译成目标机器可执行文件
-- 渐进式 GC，支持自动回收与手动回收
-- 内置 list/map/set/tuple 数据结构
-- 包管理与模块管理
-- 函数标签/闭包/错误处理/协程
-- 集成SSA/线性扫描寄存器分配/反射机制/汇编器与连接器
+- Type system with null safety, generics, and union types
+- Static cross-compilation, allowing Nature source code to be compiled into executable files for the target machine without relying on any third-party components
+- Progressive garbage collection, supporting both automatic and manual memory management
+- Built-in data structures such as lists, maps, sets, and tuples
+- Package and module management
+- Function labels, closures, error handling, and coroutines
+- Integration with SSA (Static Single Assignment) form, linear scan register allocation, reflection mechanism, assembler, and linker
 
-随着标准库以逐步完善，nature 可以应用于游戏引擎与游戏制作、科学与 AI 计算、操作系统与物联网、WEB 开发。其中游戏引擎将作为 nature 1.0+ 的主要任务。
+As the standard library gradually improves, Nature can be applied in various domains such as game engine and game development, scientific and AI computing, operating systems, and IoT, with game engines being the primary focus for Nature 1.0+.
 
-nature 适合于开源创作者/独立创作者以及学习和研究使用，我们不仅希望你能够在语言中得到便利，同样也希望你使用 nature 创作快乐且有趣的事情。
+Nature is suitable for open-source creators, independent developers, as well as for learning and research purposes. We hope that Nature not only provides convenience in the language itself but also enables you to create enjoyable and interesting projects using Nature.
 
 
 ## 🫧 FAQ
 
-1.为什么变量和函数参数的类型是前置的，而函数的返回值类型是后置的？
+1.Why are the types of variables and function parameters placed before their names, while the return type of functions is placed after?
 
-关于类型的位置的说明 [https://github.com/nature-lang/nature/issues/7](https://github.com/nature-lang/nature/issues/7)
+Explanation about the position of types: [https://github.com/nature-lang/nature/issues/7](https://github.com/nature-lang/nature/issues/7)
 
-2.logo 的含义？
+2.What is the meaning of the logo?
 
-logo 是一艘星际飞船，意为《三体》中的自然选择号。
+The logo represents a starship, named "Natural Selection," from the novel "The Three-Body Problem."
 
-3.为什么语言关键字中包含 emoji？
+3.Why do the language keywords include emojis?
 
-是的，因为 mojo.🔥 已经这么做了。emoji 关键字会作为 nature 的一种特性延续下去，在后续的版本中新增的语法糖也会尽量采用 emoji 作为关键字。希望能够 emoji 在编码的时候能够带来轻松的感觉。
+Yes, because mojo.🔥 did it first. Emojis as keywords will continue to be a feature of Nature, and future versions of the language will also try to use emojis as syntactic sugar whenever possible. The goal is to bring a light-hearted feeling to coding with emojis.
+

@@ -1,67 +1,67 @@
 ---
-title: 联合类型
+title: Union Types
 sidebar_position: 25
 ---
 
 ## nullable
 
-先来看看一个价值[十亿美元的错误](https://hinchman-amanda.medium.com/null-pointer-references-the-billion-dollar-mistake-1e616534d485) ，null 指针引用。由于 nature 中暂时不支持指针，所以用 golang 作为示例。
+Let's start by looking at [a billion-dollar mistake](https://hinchman-amanda.medium.com/null-pointer-references-the-billion-dollar-mistake-1e616534d485): null pointer references. Since Nature doesn't support pointers, we'll use Golang as an example.
 
 ```go
-var foo *int // 可以将值 decode 到指针类型，因为指针类型可以表达出 nil 的含义  
-foo = nil  
-println(foo)  
-  
-var a := []int{1, 2, 3}  
-a = nil  
+var foo *int // Values can be decoded into pointer types, as pointer types can express the meaning of nil
+foo = nil
+println(foo)
+
+var a := []int{1, 2, 3}
+a = nil
 println(a)
 
 bar := a[0]
 ```
 
 
-在 golang 中 复合类型存在默认值 nil 同样也可以将 nil 赋值给一个复合类型，所以最后一行 `bar := a[0]` 会产生一个运行时 panic，在编译时并不能很容易的检测出这种错误。
+In Golang, composite types have a default value of nil, and nil can be assigned to a composite type. Therefore, the last line, `bar := a[0]`, will cause a runtime panic. This error is not easily detectable during compilation.
 
-**所以在 golang 中一个复合类型的值是不是 null 只有我们的用户自己知道**，当开发者明确知道一个复合类型不为 null 时，则可以放心的编写代码，而不需要额外的断言处理。
+**In Golang, whether a composite type's value is null is known only to the developer**. When a developer is certain that a composite type is not null, they can write code confidently without additional assertion handling.
 
-在实际编码中，我们总是会和弱类型的语言如 mysql/json 打交道，比如使用 mysql 存储网络 nat 类型数据时，如果 nat 还没有探测出来，我们应该如何定义 nat 的默认值呢？
+In actual coding, we often deal with weakly typed languages such as MySQL/JSON. For example, when storing network NAT (Network Address Translation) data in MySQL, how should we define the default value for NAT if it has not been detected yet?
 
->  nat 此处表示网络类型数据，有 0 ～ 4 共5种类型，因为工作中经常接触，所以使用 nat 来举例子。
+> Here, NAT refers to network type data, which has 5 types ranging from 0 to 4. Since we often encounter it in work, let's use NAT as an example.
 
-- 0 🤔 nat = 0 是 nat 允许的值，所以我们不能让默认值为 0
-- -1 🤔 nat 总是一个大于等于 0 的值，我们不能为了存储一个数据而将代码中所有的 u8 类型改成 i8 类型
-- null 😄 Yes， null 非常好的表达了值还不存在的情况。
+- 0 🤔 NAT = 0 is an allowed value, so we cannot set the default value to 0.
+- -1 🤔 NAT is always a value greater than or equal to 0. We cannot change all u8 types to i8 types just to store one data.
+- null 😄 Yes, null effectively expresses the case where the value doesn't exist yet.
 
-那在 golang 中应该怎么存储允许为 null 的类型呢
+So, how should we store a nullable type in Golang?
 
 ```go
-var nat *int8 // 可以将值 decode 到指针类型，因为指针类型可以表达出 nil 的含义
+var nat *int8 // Values can be decoded into pointer types, as pointer types can express the meaning of nil
 
 // logic...
 if nat == nil {
-	// nil handle
+    // handle nil
 }
 
 // if foo == nil
 // panic: runtime error: invalid memory address or nil pointer dereference
-foo := *nat + 1 
+foo := *nat + 1
 ```
 
-当一个值允许为 null 时，golang 中通常使用指针存储这个数据，因为指针包含了 nil 的含义。当你确定一个 `*nat` 类型的数据一定不为 null 时，你可以放心的使用 `*nat` 来读取具体的值，而不需要担心空指针引用的问题。所以 golang 其实给了开发者最大的自由，让开发者能够编写出足够简洁的代码。
+When a value is allowed to be null, Golang typically uses pointers to store that data because pointers encapsulate the meaning of nil. When you are certain that a `*nat` type data is not null, you can confidently use `*nat` to access its specific value without worrying about null pointer references. Therefore, Golang provides developers with maximum freedom to write concise code.
 
-可以看到 golang 中其实没有明确的 nil 类型来对应与 mysql 中的 null。而是通常使用指针来模拟 nullable 的情况。并且即使是经验丰富的程序员也可能会引起 `invalid memory address or nil pointer dereference` 错误。 
+As we can see, Golang doesn't have a specific null type corresponding to null in MySQL. Instead, pointers are often used to simulate nullable situations. Even experienced programmers can inadvertently cause an "invalid memory address or nil pointer dereference" error.
 
-所以越来越多的强类型语言将 null 值作为一个特殊的值进行处理，即不允许将 null 赋值给除了 null 以为的其他类型。这样虽然增加了代码编写的复杂度，但是可以很大程度上避免基于 null 引用而产生的运行时错误，并且提高语言的表达性。
+As a result, more and more strongly typed languages treat null as a special value and do not allow null to be assigned to types other than null. This increases the complexity of code writing but significantly reduces runtime errors caused by null references and improves the expressiveness of the language.
 
 ## union type
 
-nature 目前不支持指针，所以不会选择和 golang 一样的方式表示 null，而是需要明确的声明允许为 null 时才能将 null 值赋值给一个变量。使用的方式v是 union type
+Nature currently doesn't support pointers like Golang does to represent null, so null values need to be explicitly declared to be assigned to a variable. The way to achieve this is through union types.
 
 :::info
-Union types（联合类型）是一种类型系统中的概念，它允许一个值具有多个可能的类型。在许多编程语言中，包括 TypeScript 和 Python 的类型提示中，都支持联合类型。所以 union types 中虽然有多个类型，但是只有一个值。与之相对的是 Product type
+Union types are a concept in type systems that allow a value to have multiple possible types. Many programming languages, including TypeScript and Python's type hints, support union types. In union types, although there are multiple types, there is only one value. It is the opposite of Product type.
 :::
 
-来看看基础使用示例
+Let's take a look at basic usage examples.
 
 ```nature
 i8|null nat
@@ -69,49 +69,49 @@ i8|null nat
 // logic...
 
 if nat is null {
-	// .. handle null
+    // handle null
 }
 
-// 在明确知道不 nat 不为 null 的情况下可以使用类型断言语法 as 将 nat 的类型断言为 i8
-// 但需要注意的是，如果 nat 此时不是 int 类型，则会在运行时产生一个 panic
-// 当然，可以使用 try 进行运行时的错误拦截
+// If it is known that nat is not null, you can use the type assertion syntax "as" to assert the type of nat as i8
+// However, it should be noted that if nat is not an int type at this point, it will cause a panic at runtime
+// Of course, you can use "try" to intercept runtime errors
 foo := (nat as i8) + 1
 
-// 如果后续会频繁的使用，也可以这样赋值给一个变量进行使用
-// 但是这里是不允许使用同名的 nat，所以你需要绞尽脑汁想一个新的名字
+// If you will frequently use it later, you can assign it to a variable for ease of use
+// But you cannot use the same name "nat" here, so you need to come up with a new name
 var n = nat as i8
 ```
 
-在上一个版本中已经存在的 any 类型其实就是一种 union 了所有类型的 union type。union type 同样可以用于 type alias 中
+In the previous version, there already exists the any type, which is actually a union of all types. Union types can also be used in type aliases.
 
 ```nature
 type numbers = int|float|uint
 ```
 
-nature 复合类型不允许赋值为 null
+In Nature, composite types cannot be assigned null values.
 
 ```nature
-[i8] list = null // x， null 不能赋值给 [i8] 类型
-[i8] list // x， 这相当于 [i8] list = null, 所以变量的声明必须伴随着赋值
+[i8] list = null // x, null cannot be assigned to the [i8] type
+[i8] list // x, this is equivalent to [i8] list = null, so variable declaration must be accompanied by assignment
 
-[i8]|null list // x,即使允许为 null 也应该明确进行赋值
+[i8]|null list // x, even if null is allowed, it should be explicitly assigned
 [i8]|null list = null // v
 
 
-string str // x，同上，这是不被允许的
-string str = '' // v 这也是被允许的
-string|null str = null // v 这是允许的
+string str // x, same as above, this is not allowed
+string str = '' // v, this is allowed
+string|null str = null // v, this is allowed
 
-var s = str as string // v，当你明确 str 不包含 null 时，可以使用 as 语法进行断言
+var s = str as string // v, when you are certain that str does not contain null, you can use the "as" syntax for assertion
 
-var (s, err) = try str as string // v, 如果你不确定，可以使用 try 进行运行时错误拦截
+var (s, err) = try str as string // v, if you are not sure, you can use "try" to intercept runtime errors
 ```
 
-> ❗️as 此处用于类型断言，as 关键字同时也用于强制类型转换语法
+> ❗️ "as" here is used for type assertion. The "as" keyword is also used for forced type conversion syntax.
 
-## as/is/let 语法
+## as/is/let Syntax
 
-ts 属于运行时的动态语言，其包含一个求值环境模型来追踪变量当前的实际类型，所以类似这样的语法是可以做到的
+TypeScript is a dynamically-typed language at runtime and includes an evaluation environment model to track the current actual type of variables. Therefore, similar syntax as the one shown below is possible in TypeScript:
 ```ts
 let foo: number|string = "hello"
 
@@ -122,7 +122,7 @@ foo = 24
 console.log(foo.length) // Property 'length' does not exist on type 'number'.
 ```
 
-但是在编译形语言中，基本无法在编译时确定某一个阶段变量的类型是什么，除非 foo 是一个不可变量。
+However, in compiled languages, it is almost impossible to determine the type of a variable at a certain stage during compilation, unless `foo` is an immutable variable.
 
 ```nature
 int|string foo = 'hello'
@@ -136,46 +136,46 @@ if (...) {
 // Is foo an int or a string?
 ```
 
-所以我们需要使用类型断言来辅助判断 union types 中的具体值与具体类型
+Therefore, we need to use type assertions to assist in determining the specific value and type in union types.
 
 ```nature
 fn foo(int|string foo) {
-	// 使用 is 关键字来判断 union types 中当前保存的类型
-	if foo is int  {
-		// 使用 as 关键字 将 foo 断言为 int 类型并将结果赋值给 f1
-		// 需要注意断言后 foo 变量依旧为 union type
-		int f1 = foo as int 
-		return
-	}
+    // Use the "is" keyword to determine the currently stored type in union types
+    if foo is int {
+        // Use the "as" keyword to assert foo as an int type and assign the result to f1
+        // It should be noted that after the assertion, the variable foo still has a union type
+        int f1 = foo as int
+        return
+    }
 
-	// 声明对 int 类型进行判断并返回了，此时 foo 的类型总是 string，如果后续需要频繁使用到 foo 中的值，通常会将 foo 断言后重新赋值给一个 string 类型的变量
-	var f2 = foo as string
+    // After declaring and returning for the int type above, foo is always a string type. If you will frequently use the value in foo, it is usually asserted and assigned to a new string variable.
+    var f2 = foo as string
 
-	// 上面的赋值需要从新思考一个新的变量名称来接收局部变量 foo 的断言值，思考变量名称并不是一个容易的事情，所以通过语法糖 let 我们可以在 "当前局部作用域内临时让 foo 断言为 int 类型"
-	let foo as string 
+    // Here, we need to think of a new variable name to receive the asserted value of the local variable foo. Thinking of a variable name is not an easy task, so through the "let" syntax sugar, we can "temporarily let foo be asserted as an int type within the current local scope"
+    let foo as string
 
-	string bar = foo + "bar" // v, foo 此时明确为 string 类型
+    string bar = foo + "bar" // v, foo is now explicitly of string type
 
-	// x, 此时 foo 具有明确的 string 类型，所以不可以再将 int 类型赋值给 foo 变量。
-	foo = 23 
+    // x, foo now has a specific string type, so an int type cannot be assigned to foo variable.
+    foo = 23
 }
 ```
 
-上面一共引用了三个用于 union type 辅助使用的语法糖 as/is/let。前两个语法再其他语言中很常见，所以不会深入介绍。 现在再来说说 let 语法的使用。
+The above code introduces three syntactic sugars used to assist in using union types: as/is/let. The first two syntaxes are common in other languages, so they won't be discussed in depth. Now let's talk about the usage of the let syntax.
 
-语法 `let foo as string` 让 foo 在当前作用域中具备明确的 string 类型。其本质上就是 `var foo = foo as string`  但是实际编码中你不能使用 var 赋值，这会抛出变量的重复定义的错误。 值得注意的是
+The syntax `let foo as string` allows foo to have an explicit string type in the current scope. Essentially, it is equivalent to `var foo = foo as string`. However, in actual coding, you cannot use var for assignment, as it will throw an error of variable redefinition. It is worth noting that
 
 ```nature
 type foot = struct {
-	int|null bar
+    int|null bar
 }
 
 var foo = foot {
-	bar = 12
+    bar = 12
 }
 
-// 不能通过这种语法来让 foo.bar 作为 int 类型，因为
-// var foo.bar = foo.bar as int 是一种不合法的语法声明方式
+// It is not possible to declare foo.bar as an int type using this syntax because
+// var foo.bar = foo.bar as int is an illegal syntax declaration
 let foo.bar as int // x
 var bar = foo.bar as int // v
 ```

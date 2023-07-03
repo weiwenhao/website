@@ -69,7 +69,7 @@ if err.has {
 var foo = user.find('xiaoyou')
 println(foo.username, '-', foo.password)
 
-println('current user count=', user.list.length())
+println('current user count=', user.list.len())
 ```
 
 将 user.n 和 main.n 放在同一目录下，对 main.n 进行编译执行后可以得到以下输出

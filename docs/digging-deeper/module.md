@@ -1,26 +1,26 @@
 ---
-title: 模块
+title: Modules
 sidebar_position: 40
 ---
 
-在实际的软件开发中，把代码按照功能模块组织到不同的文件中可以方便代码管理和维护，这就是模块化开发的基础思想。虽然 nature 的包管理功能目前还在设计中，模块化功能相对较为简单，但它也可以帮助我们更好地组织代码。
+In practical software development, organizing code into different files based on functionality allows for easier code management and maintenance. This is the basic idea behind modular development. Although Nature's package management functionality is still in the design phase and the modular functionality is relatively simple, it can still help us organize code effectively.
 
-来看一个简单的示例，以用户模块为例
+Let's take a look at a simple example using the user module.
 
 ```nature title='user.n'
-// 全局类型
+// Global type
 type user = struct {
    int id
    string username
    string password
 }
 
-// 全局变量(暂时不支持类型自动推导)
+// Global variables (type inference not supported for now)
 int id = 1
 [user] list = []
 {string:user} userof = {}
 
-// 全局函数
+// Global functions
 fn register(string username, string password) {
    if (userof[username]) {
       throw 'The user has already registered'
@@ -39,23 +39,23 @@ fn register(string username, string password) {
 
 fn find(string username):user {
    if (!userof[username]) {
-      throw 'user notfound'
+      throw 'User not found'
    }
 
    return userof[username]
 }
 ```
 
-在 module 中我们可以声明类型/变量/函数，但是不能使用如控制流，变量赋值，tuple 解构赋值都语法。
+In a module, we can declare types, variables, and functions. However, control flow statements, variable assignments, and tuple destructuring assignments are not allowed in modules.
 
 :::caution
-module 中声明变量时不支持类型推导
+Type inference is not supported when declaring variables in modules.
 :::
 
-这种组织代码的方式很像 struct，但是多了自定义 type，且 module 不需要实例化，只需要 import 就可以直接是使用，所以其中定义的变量信息是全局共享的，我们也可以称为全局变量，类似于 class 中的 static 属性。接下来看看如何使用 user 模块吧
+This way of organizing code is similar to using a struct, but with the addition of custom types. Modules do not need to be instantiated; they can be directly used after importing. The variables defined in the module are globally shared, similar to static properties in classes. Now let's see how we can use the user module.
 
 ```nature title='main.n'
-import 'user.n'   // 基于当前 main.n 文件的相对路径引入
+import 'user.n'   // Import based on the relative path from the current main.n file
 
 user.register('xiaowei', 'hahaha123')
 
@@ -69,10 +69,10 @@ if err.has {
 var foo = user.find('xiaoyou')
 println(foo.username, '-', foo.password)
 
-println('current user count=', user.list.length())
+println('current user count=', user.list.len())
 ```
 
-将 user.n 和 main.n 放在同一目录下，对 main.n 进行编译执行后可以得到以下输出
+Place `user.n` and `main.n` in the same directory. After compiling and executing `main.n`, we get the following output:
 
 ```shell
 > ./main
@@ -81,14 +81,14 @@ xiaoyou-nanana456
 current user count=2
 ```
 
-`import` 关键字以**相对于当前 nature 源文件**路径的方式引入 module，import 之后默认以文件名作为 module 的使用标识，也可以通过 as 关键字指定使用标识，如 `import "user.n" as user_model` 。
+The `import` keyword is used to import a module using a path relative to the current Nature source file. After importing, the file name is used as the identifier for the module by default. Alternatively, you can specify an identifier using the `as` keyword, such as `import "user.n" as user_model`.
 
 :::caution
-由于包管理还在构思中，所以 module 目前是基于路径的引入，仅开放了最小的能力的模块路径 import，也就是基于当前文件的相对路径引入。不支持通过绝对路径或 `./` 、`../` 的模式引入 module
+Since package management is still under consideration, module imports are currently based on paths and only support relative paths from the current file. Absolute paths or patterns like `./` and `../` are not supported for module imports.
 :::
 
-使用 `module_ident.property` 语法可以访问 module 中定义的变量/函数/类型，示例中的 `user.register` 访问了 user 模块中的 register 函数。
+The syntax `module_ident.property` is used to access variables, functions, and types defined in a module. In the example, `user.register` accesses the `register` function in the user module.
 
-> 💡 nature 在基础语法中没有访问控制的概念，在 module 中定义的变量/函数/类型都是全局开放的。
+> 💡 Nature does not have the concept of access control in its basic syntax. Variables, functions, and types defined in modules are globally accessible.
 
-当执行 `nature build main.n` 时，main.n 被视作一个入口文件，其中可以编写控制流表达式等各种语法，且 main.n 无法被其他文件 import，这是因为 nature 会将 main.n 中定义的的语句都包裹在 `fn main() {}` 中。让我们有种在写脚本一样的错觉。
+When running `nature build main.n`, `main.n` is treated as an entry file. Inside this file, you can write control flow expressions and other syntax elements. However, `main.n` cannot be imported by other files. This is because Nature wraps all statements defined in `main.n` inside `fn main() {}`, giving us a scripting-like experience.

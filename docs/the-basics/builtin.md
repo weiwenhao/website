@@ -1,13 +1,13 @@
 ---
-title: 内置函数
+title: Built-in Functions
 sidebar_position: 70
 ---
 
-内置函数不需要通过 import 引入就可以直接调用，也可以称为全局函数。
+Built-in functions can be called directly without the need for import and can also be referred to as global functions.
 
 ## print/println
 
-定义
+Definition
 
 ```nature
 fn print(...[any] args) {}
@@ -15,32 +15,31 @@ fn print(...[any] args) {}
 fn println(...[any] args) {}
 ```
 
-仅支持 bool/string/number 类型数据进行打印。println 相比于 print 多了一个 `\n`
-示例 `println("hello", true, "world")`
+Printing is only supported for bool/string/number data types.  `println` function appends a newline character. Example: `println("hello", true, "world")`
 
 ## set
 
-定义
+Definition
 
 ```
 fn set(...[T] keys):{T} {}
 ```
 
-初始化一个 set 结构数据，示例 `var s = set()` 或者 `var s = set(1, 2, 3)`
+Initialize a set data structure. Examples: `var s = set()` or `var s = set(1, 2, 3)`
 
 ## sleep
 
-定义
+Definition
 
 ```
 fn sleep(int second)
 ```
 
-可以让程序暂停一段时间后继续执行后续逻辑
+Pause the program for a specified number of seconds before executing the next logic.
 
 ## errort
 
-定义
+Definition
 
 ```
 type errort = struct {
@@ -49,8 +48,8 @@ type errort = struct {
 }
 ```
 
-后续的错误处理中会进一步了解该结构体
+Further understanding of this structure will be gained in subsequent error handling.
 
 ---
 
-🎉 来到这里说明你已经学习完毕了 nature 的基础语法概念，你已经能够使用 nature 进行软件开发。如果你想要更进一步，请继续走下去。
+🎉 Congratulations on completing the basic syntax concepts of Nature! You are now able to develop software using Nature. If you wish to further advance, please continue your journey.

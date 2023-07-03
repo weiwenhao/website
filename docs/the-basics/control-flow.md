@@ -1,13 +1,14 @@
 ---
-title: 控制流
+title: Control Flow
 sidebar_position: 20
 ---
 
-## if 表达式
+## if Expression
 
-示例
+Example:
+
 ```nature
-int foo = 23
+var foo = 23
 
 if foo > 100 {
     print('foo > 100')
@@ -20,15 +21,15 @@ if foo > 100 {
 }
 ```
 
-else if 中间需要用空格隔开。`if expr`  expr 部分必须为 bool 类型的表达式，不支持隐式类型转换。if 后面的表达式不需要使用括号包裹。
+There should be a space between `else` and `if`. The expression in `if expr` must be a boolean expression and does not support implicit type conversion. The expression following `if` does not need to be enclosed in parentheses.
 
-`if foo as bool {}`  可以通过 as 进行显示类型转换将值转换为 bool，false/0/null 会转换为 false，其余表达式总是转换为 true。
+`if foo as bool {}` can be used to explicitly convert a value to a boolean. `false/0/null` will be converted to `false`, while all other expressions will be converted to `true`.
 
-> print/println 是内置函数，支持对 string/bool/number 类型数据进行打印，多个参数使用逗号分隔，无格式化功能，主要用来调试。
+> `print` and `println` are built-in functions used to print string/boolean/number data. Multiple arguments are separated by commas, and there is no formatting capability. They are mainly used for debugging purposes.
 
-## for 表达式
+## for Expression
 
-### 经典循环
+### Classic Loop
 
 ```nature
 var sum = 0
@@ -38,18 +39,19 @@ for int i = 1; i <= 100; i += 1 {
 println('1 +..+100 = ', sum)
 ```
 
-编译并输出后可以得到以下结果
+After compiling and running, you will get the following result:
 
 ```shell
 > nature build main.n && ./main
 1 +..+100 = 5050
 ```
 
-> ❗️nature 中没有 ++ 语法，请使用 i += 1 代替 i++ 。for 后面的表达式不需要括号包裹。
+> ❗️There is no `++` syntax in nature. Please use `i += 1` instead of `i++`. The expression following `for` does not need to be enclosed in parentheses.
 
-### 条件循环
+### Conditional Loop
 
-依旧使用 1+..100 做一个类比
+Using the analogy of summing numbers from 1 to 100:
+
 ```nature
 var sum = 0
 var i = 0
@@ -61,13 +63,14 @@ for i <= 100 {
 println('1 +..+100 = ', sum)
 ```
 
-编译正确的话，会得到和经典循环一样的输出结果。 此时 for 后面需要接 bool 类型的表达式才能进行条件循环。
+If compiled correctly, it will produce the same output as the classic loop. In this case, the expression following `for` must be a boolean expression in order to perform a conditional loop.
 
-> 💡  其实就是 c 语言中的 while 表达式，nature 将其集成在了 for 关键字中
+> 💡 It is actually equivalent to the `while` expression in the C language. Nature integrates it into the `for` keyword.
 
 
-### 迭代循环
-先来看看相关语法
+### Iteration Loop
+
+Let's take a look at the related syntax:
 ```nature
 var list = [1, 1, 2, 3, 5, 8, 13, 21]
 
@@ -75,15 +78,15 @@ for k,v in list {
 	println(k, ' ', v)
 }
 
-// 省略 value
+// Omitting the value
 for (k in list) {
 	println(k)
 }
 ```
 
-迭代用于对 list 和 map 结构的遍历，目前也只支持这两种结构。需要注意的是 k,v，这里其实是变量定义的语法糖。完整的概念上的语法应该是 `for var (k,v) in list` 这太复杂了，所以在做语法解析时省略掉了 `var ()`，`var (expr)`这种形式的声明在后面的 tuple 中会详细说明。
+Iteration is used for traversing list and map structures, and currently, only these two structures are supported. Note that `k,v` is actually a syntactic sugar for variable declaration. The complete syntax conceptually should be `for var (k,v) in list`, but that would be too complex, so `var ()` and `var (expr)` declarations are omitted during syntax parsing, which will be explained in detail in the tuples section later.
 
-并且 k 和 v 定义的作用域是在循环的内部。所以类似
+Furthermore, the scope of `k` and `v` is within the loop. So, for example:
 
 ```nature
 var k = 1 
@@ -92,11 +95,11 @@ for k,v in list {
 } 
 ```
 
-这里的 k 和 v 是新的变量定义，但是作用域是在循环内部中，不会与 var k = 1 冲突。
+The `k` and `v` here are new variable declarations, but their scope is limited to the loop and will not conflict with `var k = 1`.
 
-### 循环中断与跳过
+### Loop Termination and Skipping
 
-关键字 break 用于退出当前循环，continue 则跳过本次循环逻辑立刻进入到循环判断逻辑。使用示例
+The `break` keyword is used to exit the current loop, while `continue` skips the current iteration and immediately proceeds to the loop condition check. Here are some examples:
 
 ```nature
 var list = [1, 1, 2, 3, 5, 8, 13, 21]
@@ -121,7 +124,7 @@ for int i = 0; i < 100; i += 1 {
 println(sum2)
 ```
 
-编译输出结果
+After compiling, the output will be:
 
 ```shell
 > nature build main.n && ./main

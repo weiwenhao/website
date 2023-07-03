@@ -1,26 +1,25 @@
 ---
-title: 错误处理
+title: Error handling
 sidebar_position: 20
 ---
 
-在编程语言中，错误处理是一个广泛且复杂的概念，需要考虑处理和无法处理的错误、预期和非预期的错误等等。
+In programming languages, error handling is a broad and complex concept that involves dealing with both handled and unhandled errors, expected and unexpected errors, and more.
 
-但是我们应该时时刻刻的在每一次 call 时关心错误么？其实并不需要，**我们应该只关心我们能够处理的错误**，对于不能处理或者预料之外的错误，我们没有必要去拦截或者处理它，应该将它继续向上传递，直到遇到一个能够处理这种错误的 caller。
+But do we need to constantly be concerned about errors with every function call? Actually, we don't. **We should only focus on the errors that we can handle**. For errors that cannot be handled or unexpected errors, there is no need to intercept or handle them. Instead, we should propagate them further up the call chain until we encounter a caller that can handle such errors.
 
 ```nature
-fn call():int {
+fn call(): int {
 	// logic...call->call1->call2->call3...
 	return 1
 }
 
-// call 的调用链可能非常的深，并存在了一个异常，比如有一个虫子钻进了内存中导致的内存访问异常
-// 但是我只是一个小小的 caller，我能做的就是读取 call 中的数据，我无法处理类似虫子钻进了内存中导致的错误，所以只有当 call 能够返回时我才继续向下执行，否则我将不做任何的处理。
-// 错误将沿着调用链向上级传递，直到遇到了一个能够处理这个错误的 caller
+// The call chain of 'call' may be deep, and there might be an exception, such as a memory access exception caused by a bug that burrowed into memory.
+// But I'm just a small caller, and all I can do is read the data from 'call'. I cannot handle errors like a bug burrowing into memory. So I only proceed with execution when 'call' can return; otherwise, I won't do anything.
+// Errors will be propagated up the call chain until they encounter a caller that can handle the error.
 var foo = call()
 ```
 
-
-在 nature 语言中，我们采用 throw 和 try 关键字以及 tuple 语法来处理错误。使用 throw 关键字可以抛出错误，使得函数立即退出，并将错误信息传递到调用链上游。
+In the nature language, we use the 'throw' and 'try' keywords, along with tuple syntax, to handle errors. The 'throw' keyword can be used to throw an error, causing the function to exit immediately and passing the error information up the calling chain.
 
 ```nature
 fn rem(int dividend, int divisor):int {
@@ -31,13 +30,10 @@ fn rem(int dividend, int divisor):int {
 	return dividend % divisor
 }
 
-// v 由于第二个参数为 0，会导致除数为 0，从而抛出异常。因为我们没有捕获该异常，它会继续向上传递，直到遇到 catch 块或程序退出。
-// 因此，后面的语句 println('hello world') 不会被执行。
-var result = rem(10, 0)
-println('hello world')
+// Here, 'result' will throw an exception since the second parameter is 0, resulting in a division by zero error. Since we haven't caught this exception, it will continue to propagate until it encounters a catch block or the program exits. // Therefore, the subsequent statement, println('hello world'), will not be executed. var result = rem(10, 0) println('hello world')
 ```
 
-通过输出我们发现，error 一直像上传递直到 runtime，runtime 拦截了这个错误并 dump 出来。`println('hello world')` 也和预期一样没有执行。
+By observing the output, we can see that the error keeps propagating until it reaches the runtime, which intercepts the error and dumps it. The execution of `println('hello world')` is also skipped as expected.
 
 ```shell
 > ./main
@@ -45,31 +41,31 @@ runtime catch error: divisor cannot zero
 ```
 
 :::tip
-调用栈追踪已经优雅错误提示预计在 v0.4.0-beta 中完善并发布。
+Call stack tracing and improved error messages are expected to be implemented and released in v0.4.0-beta.
 :::
 
-我们再来看看使用 try 关键字主动拦截错误的情况
+Now let's take a look at a scenario where we actively intercept errors using the 'try' keyword.
 
 ```nature
-fn rem(int dividend, int divisor):int {
+fn rem(dividend: int, divisor: int): int {
 	if (divisor == 0) {
-		throw 'divisor cannot zero'
+		throw 'divisor cannot be zero'
 	}
 
 	return dividend % divisor
 }
 
-// v 对可能出现的错误使用 try 关键字进行拦截，nature 中默认不包含 null 值
-// 当不存在错误时 err 是空的 errort 结构体,err.has 包含默认值 false
+// Here, we use the 'try' keyword to intercept possible errors. By default, nature does not include the null value.
+// When there is no error, 'err' will be empty, and the 'err.has' field will have the default value of false.
 var (result, err) = try rem(10, 0)
 if err.has {
-	// error handle， errort 结构中包含 msg 字段存储了错误的信息
+	// Error handling; the 'errort' structure contains the 'msg' field that stores the error message.
 	println(err.msg)
 } else {
 	println(result)
 }
 
-// v 不存在异常的情况下使用 try 拦截
+// Here, we use 'try' to intercept when there is no exception.
 (result, err) = try rem(10, 3)
 if err.has {
 	println(err.msg)
@@ -78,7 +74,7 @@ if err.has {
 }
 ```
 
-输出看看
+Let's see the output:
 
 ```shell
 > ./main
@@ -86,15 +82,15 @@ divisor cannot zero
 1
 ```
 
-try 关键字只能用于函数调用的前面，其读取本次函数调用是否 throw 了 error。
+The 'try' keyword can only be used before a function call, and it checks whether an error is thrown during the function call.
 
-**当原函数包含返回值时，try 将创建一个拥有两个元素的 tuple，第一个元素是函数原来的返回值，第二个元素则是 errort 类型的错误数据。 当原函数没有返回值时，catch 直接返回一个 errort 类型的数据。**
+**When the original function has a return value, 'try' creates a tuple with two elements: the original function's return value as the first element and the error data of type 'errort' as the second element. When the original function has no return value, 'try' directly returns an error data of type 'errort'.**
 
-:::info
-当函数没有返回值时，可以这么理解，由于 nature 不支持单元素的 tuple，所以 `var (err) = try void_fn()`  降级为 `var err = try void_fn()`
+:::info 
+When a function has no return value, you can think of it as nature not supporting single-element tuples, so `var (err) = try void_fn()` is downgraded to `var err = try void_fn()`. 
 :::
 
-这是 errort 类型的定义
+This is the definition of the 'errort' type:
 
 ```nature
 type errort = struct {
@@ -104,14 +100,14 @@ type errort = struct {
 ```
 
 
-不仅是在函数调用中，try 后面可以接更多更长的表达式。本质上和传统语言的 try catch 没有什么区别，只是稍微简化了一下语法糖。
+The 'try' keyword can be used not only in function calls but also with longer and more complex expressions. Essentially, it is not much different from the traditional try-catch in other languages; it just simplifies the syntax a bit.
 
 ```nature
-var err = try foo[1] // v index out of range
-var err = try foo().bar().car() // v 链式调用
-var err = try foo as int // v union assert 断言异常时
-var err = try foo.bar[1] // v 链式调用
+var err = try foo[1] // Index out of range
+var err = try foo().bar().car() // Chained calls
+var err = try foo as int // Union assert exception
+var err = try foo.bar[1] // Chained calls
 ```
 
 
-🎉 相信你已经掌握了 throw 和 try 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。语法简单不代表错误处理是一件简单的事情，它涉及到如何在程序中设计、捕获、记录和处理错误，是编写健壮、可靠和高质量软件的关键。
+🎉 Congratulations! You have now learned the usage of the 'throw' and 'try' syntax keywords. These are all the syntax concepts for error handling in nature. While the syntax is simple, error handling itself is not a simple task. It involves designing, capturing, logging, and handling errors in your program, which are crucial for writing robust, reliable, and high-quality software.

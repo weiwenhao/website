@@ -1,44 +1,45 @@
 ---
 slug: nature-started
-title: 启航吧！nature
-authors: weiwenhao
+title: Let's set sail with Nature!
+authors: WEIWENHAO
 ---
 
-当我阅读 sicp 时，我跟着书中的内容完成了一个编译到 vm 且带有 gc 的 lisp 方言，我第一次感受到了计算机中的魔法 🪄。
+When I was reading SICP, I followed the book to create a Lisp dialect that compiles to a virtual machine with garbage collection. It was my first experience of the magic 🪄 within computers.
 
-sicp 只是启蒙书籍，读完后我有一种意犹未尽的感觉。所以我开始进一步学习编译原理，希望能够学习编程语言从编译到运行的完整过程。但是编译原理涉及的面非常的广而深，我不能深入每一个细节。所以我选了几个我还没接触编译原理时就已经耳熟能祥的概念进行学习与实践，如闭包转换，SSA，寄存器分配，垃圾回收(尤其是三色标记垃圾回收，我现在主要在写 golang 所以经常能听到到这个概念)，模式匹配(范型/宏)等等。
+SICP was just the beginning, and after finishing it, I felt a sense of unfinished exploration. So, I decided to dive deeper into the study of compiler design, hoping to learn about the complete process of programming languages, from compilation to execution. However, compiler design covers a vast and intricate field, and I couldn't delve into every detail. Therefore, I chose a few concepts that I was already familiar with before studying compiler design, such as closure conversion, SSA (Static Single Assignment), register allocation, garbage collection (especially tri-color marking garbage collection, which I often hear about as I mainly work with Golang), pattern matching (generics/macros), and more.
 
-但是工作比较繁忙，所以只能磨磨唧唧的用业余时间学一点，写一点。想着以后 35 退休了能有个业余爱好。这个爱好还是能带来很多快乐的，比如在链接器完成时，之前写的所有模块能够串联起来，并成功输出 hello world 时 🎉
+Due to my busy work schedule, I could only learn and work on these topics in my spare time. I envisioned it as a hobby for my retirement at the age of 35. This hobby brings me a lot of joy, especially when all the modules I previously wrote can be linked together and successfully output "hello world" 🎉.🎉
 
 :::info
-在汇编与链接器完成之前的很长一段时间，只能输出调试信息，不能得到比较好的编码反馈。
+For a long period of time before assembly and linking were completed, I could only output debugging information and couldn't receive satisfying coding feedback.
 :::
 
-原本按照这个拖沓的学习与开发过程，离我把 nature 发布出来(甚至能否发布)还需要很长一段时间。但是最近经历了两件事情
+Originally, with this slow learning and development process, it would take a long time for me to release Nature (if it can even be released). However, two recent events have influenced my decision:
 
-1. **关于怎么做好一个产品的思考**
 
-过去一年多，我在为公司开发一款新的产品。我做了很多，没有产品我就产品，前端离职了我就是前端，运维离职了我就是运维，当然还有我本职的后端开发工作。我觉得我付出了很多，我应该把这个产品做好了吧？但是随着新产品接入的设备与客户增多，我听到了很多的抱怨：“这界面怎么这么简陋？这细节不行呀？这一开始不规划好现在又改来改去？”等等等等
+1. **Reflections on How to Create a Good Product**
 
-一开始我还在给自己找借口，毕竟资源有限，能做出来就不错了，以后再完善细节！️但是当我真正的去认真思考这个问题时，我才第一次意识到，我我性格内向且自负，总是觉得自己一个人就能把一切都做好，我从不愿意也不好意思寻求他人的帮助。
+Over the past year, I have been developing a new product for my company. I did everything—I became the product manager when there was no product manager, the front-end developer when the previous one resigned, and even the DevOps engineer when the operations team was short-staffed. Of course, I still had my primary role as a backend developer. I thought I had put in a lot of effort, and surely I could make this product great, right? But as the new product gained more devices and customers, I started hearing complaints: "Why is the interface so rudimentary? The details are lacking! Why didn't we plan everything properly from the beginning instead of making constant changes?" and so on.
 
-但实际上，假如我能协调到团队中其他人 10% 的力量，那么我可能就会多 1% 的机会做好一个产品。但是如果我不做，那就是自己放弃了这 1% 的机会 ❗️
+Initially, I made excuses for myself, thinking that with limited resources, just being able to create the product was already good enough, and I could improve the details later!️ However, when I seriously reflected on this issue, I realized for the first time that my introverted and self-centered personality made me believe that I could handle everything on my own. I never wanted or felt comfortable seeking help from others.
 
-2. **关于 chatgpt**
+In reality, if I could harness just 10% of the power of my team members and coordinate effectively, I might have a 1% greater chance of creating a successful product. But if I don't do it, I'm giving up that 1% chance ❗️
 
-❌ 虚假的编译器
+2. **Thoughts on ChatGPT**
+
+❌ Fake compiler
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230508110746.png)
 
-✅ 真正的编译器
+✅ Real compiler
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230508110602.png)
 
-如果原来我想着以后退休了能有个业余爱好，那 chatgpt(AI 大模型) 的出现让我觉得这个爱好已经被剥夺了。并且让我觉得我所学所做的这一切都毫无意义 ❓️❗
+question the purpose and meaning of everything I had learned and done ❓️❗
 
-> 不过现在也想明白了一点，就像围棋早就被 AlphaGo 统治了，大家该下围棋还是下围棋。我现在能做的就是完成 nature
+> However, I have come to realize that, just as Go was dominated by AlphaGo in the game of Go, everyone should still continue playing Go. What I can do now is to complete Nature.
 
 ---
 
-这让我决定收尾并发布 nature 的首个版本，所以即使一开始规划的功能还没有全部实现，很多必须的功能也还在开发中，但是我已经没有时间了。无论如何
+This led me to decide to wrap up and release the initial version of Nature, even though not all planned features have been implemented yet, and many essential functionalities are still under development. But I no longer have the time. Regardless
 
-**启航吧！nature**
+**Let's set sail with Nature!**
