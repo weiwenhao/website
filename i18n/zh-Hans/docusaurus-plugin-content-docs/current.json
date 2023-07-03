@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.序言": {
+    "message": "序言",
+    "description": "The label for category 序言 in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.入门指南": {
+    "message": "入门指南",
+    "description": "The label for category 入门指南 in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.基础概念": {
+    "message": "基础概念",
+    "description": "The label for category 基础概念 in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.继续深入": {
+    "message": "继续深入",
+    "description": "The label for category 继续深入 in sidebar docsSidebar"
+  }
+}

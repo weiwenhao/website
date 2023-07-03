@@ -30,7 +30,15 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "zh-Hans"],
+    localeConfigs: {
+      en: {
+        label: "English",
+      },
+      "zh-Hans": {
+        label: "简体中文",
+      },
+    },
   },
 
   presets: [
@@ -71,6 +79,10 @@ const config = {
         },
         items: [
           {
+            type: "localeDropdown",
+            position: "right",
+          },
+          {
             type: "docSidebar",
             sidebarId: "docsSidebar",
             position: "left",
@@ -106,7 +118,7 @@ const config = {
               {
                 label: "Discard",
                 href: "https://discord.gg/xYYkVaKZ",
-              }
+              },
             ],
           },
           {
