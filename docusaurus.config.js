@@ -117,7 +117,7 @@ const config = {
               },
               {
                 label: "Discard",
-                href: "https://discord.gg/xYYkVaKZ",
+                href: "https://discord.gg/s5x542RF",
               },
             ],
           },

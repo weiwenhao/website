@@ -18,7 +18,7 @@ You can submit bug reports or suggestions through the issue tracker: [nature-lan
 
 For ideas and questions, we recommend using GitHub issues to facilitate broader attention and participation.
 
-discard: [https://discord.gg/xYYkVaKZ](https://discord.gg/xYYkVaKZ)
+discard: [https://discord.gg/s5x542RF](https://discord.gg/s5x542RF)
 
 wechat: 添加微信号 `nature-lang` 备注 “申请加群”
 

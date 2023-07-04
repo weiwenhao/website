@@ -17,7 +17,7 @@ sidebar_position: 20
 
 想法和问题推荐使用 github issue 进行讨论让更多人能够关注并参与。
 
-discard: [https://discord.gg/xYYkVaKZ](https://discord.gg/xYYkVaKZ)
+discard: [https://discord.gg/s5x542RF](https://discord.gg/s5x542RF)
 
 微信群: 添加微信号 `nature-lang` 备注 “申请加群”
 
