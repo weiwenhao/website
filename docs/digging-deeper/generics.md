@@ -209,7 +209,7 @@ fn area(box<numbert, numbert2> b): numbert {
 
 Using the "mod" module:
 
-``` title=main.n
+```nature title=main.n
 import 'mod.n'
 
 // int 
