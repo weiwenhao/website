@@ -26,8 +26,6 @@ for (k,v in list) {
 }
 ```
 
-目前仅开放了对 list 的 push 和 len 函数，重点关注一下自动推导
-
 如 `var list = [1, 2, 3]` 在自动类型推导时，**按照 list 首个元素的类型确定 `[T]` 中 T 的元素的类型**，list 中所有元素的类型都必须遵循 T 对应的类型，或者能够隐式转换到该类型，本例中首个元素是字面量 int，所以推导出的 list 完整类型为 `[int]` 。
 
 声明相关的注意事项
@@ -41,6 +39,20 @@ var list = [1, 1.2] // x 类型不一致
 [int] list = [1.1, 1.2] // x 同上，类型不一致
 
 fn test([int] list) {} // 在函数中的声明
+```
+
+借助强制类型转换语法，在还没有宏时可以实现一些较为 hack 操作。
+
+```nature
+var list = [] as [u8] // v 声明一个空的元素类型为 u8 的 list
+
+// v 声明一个 length 和 capacity 都为 5 的固定长度的 list。由于此时 list.length = 5
+// 此时执行 list.push 时会增加 list 的 length，并将元素设置在第六个位置
+var list = [] as [u8,5] 
+
+// 这是新增的内置函数，可以将 list 转换为 c 语言形式的数组，等价于 c 中的 uint8_t list[5]， 通常用于与 c 交互。
+// 另外这是一个不安全的操作，如果修改 p 指针对应的数据端，会直接影响到 list 中的数据。
+cptr p = list.raw()
 ```
 
 ## map

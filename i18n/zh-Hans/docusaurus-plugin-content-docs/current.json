@@ -18,5 +18,9 @@
   "sidebar.docsSidebar.category.Digging Deeper": {
     "message": "继续深入",
     "description": "The label for category 继续深入 in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Standard library": {
+    "message": "标准库",
+    "description": "The label for category 标准库 in sidebar docsSidebar"
   }
 }

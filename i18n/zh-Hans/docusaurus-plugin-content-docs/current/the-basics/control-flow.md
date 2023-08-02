@@ -71,13 +71,21 @@ println('1 +..+100 = ', sum)
 ```nature
 var list = [1, 1, 2, 3, 5, 8, 13, 21]
 
-for k,v in list {
-	println(k, ' ', v)
+// 对 list 结构迭代时，生成的是 v
+for v in list {
+	println(v)
 }
 
-// 省略 value
-for (k in list) {
-	println(k)
+var map = {1:10, 2:20, 3:30, 4:40}
+
+// 对 map 结构迭代时生成的是 k
+for k in map {
+    println(k)
+}
+
+// 如果同时需要 k 和 v 只需要生成两个值即可
+for k,v in iter {
+	println(k, v)
 }
 ```
 
