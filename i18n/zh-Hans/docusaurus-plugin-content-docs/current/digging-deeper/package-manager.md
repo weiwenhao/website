@@ -72,37 +72,35 @@ rand.seed.dump()
 
 对于语法 import rand， nature 会进行三个维度去查找 package，首先判断是否为当前 package name，通过 package.toml 的 name 字段判断，然后是判断是否为 package.toml 中定义的 dependencies key。 最后再判断是否为 std 标准库中的 package。
 
-默认情况下使用 import 的最后一级的名称作为名称， 比如示例中 seed.dump() ，可以通过 as 自定义名称，`import rand.utils.seed as custom` 。再详细说明一下 import package 寻找 module 的方式。
+默认情况下使用 import 的最后一级做为 use 名称， 比如示例中 seed.dump()，可以通过 as 自定义名称，`import rand.utils.seed as custom` 。
 
-当直接 import rand 时，rang 就是 package 的名称，通过上面的三个维度确定 package 根目录后，开始进行具体 module 文件的查找，而 import rand 则为 import rand.main 的缩写。
+再详细说明一下 import package 寻找 module 的方式。当直接 import rand 时，rang 就是 package 的名称，通过上面的三个维度确定 package 根目录后，开始进行具体 module 文件的查找，而 import rand 实际上是 import rand.main 的缩写。
 
 假设 rand 的根目录是 `/root/.nature/package/sources/rand`
 
-`import rand` 查找 `/root/.nature/package/sources/rand/main.n` module
+`import rand` 查找 `/root/.nature/package/sources/rand/main.n` module, 可以通过 package.toml 配置
 
 `import rand.other` 查找 `/root/.nature/package/sources/rand/other.n` module
 
 `import rand.utils.seed` 查找 `/root/.nature/package/sources/rand/utils/seed.n` module
 
-在模块一章中，我们说过 import 'file.n' 的方式是无法 import 上一级目录中的文件的，有了包管理后，我们可以将当前项目视为一个 package (必须定义 package.toml)， 比如我们的项目名称是 test, 那么通过 `import test.dir1.dir2.module1` 的方式，我们就可以到达当前项目中的任意文件。 
+在模块一章中，我们说过 `import 'file.n'` 的方式是无法 import 上一级目录中的文件的，有了包管理后，我们可以将当前项目视为一个 package (必须定义 package.toml)， 比如我们的项目名称是 test, 那么通过 `import test.dir1.dir2.module` 的方式，我们就可以到达当前项目中的任意文件。
 
-那如果当前项目的 package name 和  dep package name 名称冲突或者我依赖同一个 package 的不同版本时怎么办? 此时可以通过调整 dep package key 来自定义 import 的名称
+那如果当前项目的 package name 和 dep package name 名称冲突或者依赖同一个 package 的不同版本时怎么办? 此时可以通过调整 dep package key 来自定义 import 的名称
 
 ```toml
 rand = { type = "git", version = "v1.0", url = "jihulab.com/nature-lang/rand" }
 rand2 = { type = "git", version = "v2.0", url = "jihulab.com/nature-lang/rand" }
 ```
 
-使用上 `import rand2` 即可。
-
+使用上 `import rand2` 和 `import rand` 进行区分即可。
 
 ## cross build
 
-一个常见的场景是，比如 syscall.n 这个 module 在 linux 和 darwin 系统下存在不同的系统调用，需要不同的实现，此时可以通过文件名称进行区分，区分粒度主要是 os + arch 两个维度。import 查找文件时会按照优先级进行查找。比如当前编译的 os = linux，arch = amd64，查找顺序是 syscall.linux_amd64.n -> syscall.linux.n -> syscall.n。
+交叉编译的一个常见的场景是，比如 syscall.n 这个 module 在 linux 和 darwin 系统下存在不同的系统调用，需要不同的实现，此时可以通过文件名称进行区分，区分粒度主要是 os + arch 两个维度。import 查找文件时会按照优先级进行查找。比如当前编译的 os = linux，arch = amd64，查找顺序是 syscall.linux_amd64.n -> syscall.linux.n -> syscall.n。
 
-`import 'syscall.n'` 的方式无法使用该模式，仅仅 import package.module 时才能够使用 cross build。
+`import 'syscall.n'` 的方式无法使用该交叉编译模式，仅仅 import package.module 时才能够使用 cross build。
 
 目前支持的 os: linux
 
 目前支持的 arch: amd64
-

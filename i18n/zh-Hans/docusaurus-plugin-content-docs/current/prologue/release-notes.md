@@ -48,7 +48,7 @@ nature 版本号遵循[语义化版本](https://semver.org/)，️其中 0.1 ~ 1
 
 调整
 
-1. for iterator list 单个值时为 从 k 跳转为 v, 如 `for v in list`
+1. for iterator list 单个值时为 从 k 改为 v, 如 `for v in list`
 2. try 产生的错误对应的接收变量不进行重复检测
 3. 支持 return void_expr() 类型的函数返回值
 4. 修复汇编器 jmp rel8 跳转异常

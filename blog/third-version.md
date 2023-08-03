@@ -10,7 +10,7 @@ The passing of Mr. [陈皓 (Chen Hao)](https://coolshell.cn/haoel) has inspired 
 
 The result of my contemplation is that I don't have the ability to change the tide of the times, and my abilities and personality might not be enough to obtain a ticket that aligns with the current trend. Life is short, so I want to do things that bring me happiness as much as possible. However, this doesn't mean I will fall into nihilism or hedonism. I believe more in the ideology of Master Wang Yangming's "知行合一" (Unity of Knowledge and Action). Writing code makes me happy, and playing games also brings me joy, so I will combine these two sources of happiness. Therefore, the standard library and practical projects of nature 0~1+ will mainly be oriented towards game engines and game development. I already have an interesting idea brewing in my mind, and I will announce it at the appropriate time.
 
-I guess there's nothing else to share for now, so I'll share the TODO LIST of the nature project from the past three versions to fill in the space.
+Finally, let's share the TODO LIST of the nature project in the past three versions.
 
 ## TODO LIST
 

@@ -12,7 +12,7 @@ The following code is compiled and executed on a Linux device. If you don't have
 First, create a Nature source code file with a .n extension. You can choose any name for the file. Let's call it `main.n`. Create the file and add the following content:
 
 ```nature title="main.n"
-print("hello world")
+print('hello world')
 ```
 
 Compile the code:

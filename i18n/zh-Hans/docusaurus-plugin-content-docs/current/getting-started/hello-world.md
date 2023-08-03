@@ -12,7 +12,7 @@ sidebar_position: 30
 首先编写一个 nature 源码文件，总是以 .n 结尾，名称随意。这里我们就叫 main.n， 创建文件并写入以下内容
 
 ```nature title="main.n"
-print("hello world")
+print('hello world')
 ```
 
 编译
