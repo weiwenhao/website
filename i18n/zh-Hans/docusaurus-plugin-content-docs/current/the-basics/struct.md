@@ -66,3 +66,5 @@ f.bar = fn(self s):in {} // x 只能在 fn 类型的默认值中使用 self 声�
 ```
 
 相较于 fn，使用 struct 我们能够更近一步的组织我们的代码，struct 也是 nature 中最接近面向对象编程的语法概念之一，之二是 module。
+
+struct 还有更加深入的细节将会在后续的深入章节进行学习。

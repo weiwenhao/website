@@ -37,35 +37,34 @@ hello world
 以首页展示的 fib 数列求值示例，首先创建一个 fib.n 文件并写入以下内容
 
 ```nature title='fib.n'
+import fmt
+
 fn fib(int n):int {
-    if (n <= 1) {
+    if n <= 1 {
         return n
     }
-
     return fib(n - 1) + fib(n - 2)
 }
 
-var result = fib(10)
-println(result)
+var result = fib(30)
+fmt.printf('fib result is %d', result)
 ```
 
 编译并执行
 
 ```shell
 > nature build fib.n && ./main
-55
+fib result is 832040
 ```
 
-在上面的示例中，我们**通过 `fn` 关键字声明了一个函数**，函数名称为 fib，该函数的主要功能是计算斐波那契数列第 n 位的值。
+在上面的示例中，首先通过 import 将 fmt package 引入了进来，这是一个对字符串格式化并输出的库。 接着我们**通过 `fn` 关键字声明了一个函数**，函数名称为 fib，该函数的主要功能是计算斐波那契数列第 n 位的值。
 
 由于是强类型语言，所以需要声明参数的类型以及返回值的类型。函数内部的 `if` 关键字是控制流语句，其判断条件表达式是否为 true， 并通过 `return` 关键字返回参数变量 n 的值。`fib(n - 1)` 是对 fib 函数的调用，这是一种比较复杂的在函数内部自己调用自己的方式，称为递归调用。
 
-在函数的外部再次通过 `fib(10)` 调用该函数，通并将其结果赋值给 result 变量，如果你写过 c 语言，那么此时 result 同样需要声明类型，但是在 nature 中可以通过 **var 关键字进行自动类型推导**。
+在函数的外部再次通过 `fib(30)` 调用该函数，通并将其结果赋值给 result 变量，如果你写过 c 语言，那么此时 result 同样需要声明类型，但是在 nature 中可以通过 **var 关键字进行自动类型推导**。
 
-最后和输出 hello world 一样，通过 println 函数可以输出 result 的结果并自动换行。
-
-> 💡 println 是内置函数，将在后续章节进行说明
+最后通过 fmt 关键字我们可以调用其中的 printf 方法对字符串进行格式化并输出，%d 标识将 result 格式化成 int 类型。
 
 ## 总结
 
-通过上面的两个示例，已经展现了 nature 的大部分语法了，到这里其实你已经入门 nature 了，后续章节主要是介绍一些语法的细节。
+👍 通过上面的两个示例，已经展现了 nature 的大部分语法了，到这里其实你已经入门 nature 了，后续章节主要是介绍一些语法的细节。

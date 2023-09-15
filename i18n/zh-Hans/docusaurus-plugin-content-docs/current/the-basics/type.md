@@ -36,21 +36,20 @@ bool 类型的值是**小写**的 true 和 false。
 
 复杂类型可以理解为由简单类型组合并内置在 nature 中的结构，其不需要手动定义，比如 string 类型，其就是由多个 u8 类型组成。
 
-复合类型目前阶段数据都存储在堆(heap) 中，复合类型在栈(stack) 中存储的是一个指针，指向对应的 heap 的起始地址。如下图示例
-
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230627185345.png)
 
-由于复合类型的主体都存储在了堆中，堆外存储的是指针。所以其在各种赋值操作，函数参数传递等操作时都是**引用传递**，也就是传递了指针，不会修改或复制堆上的数据
+大部分复合类型的主体都存储在了堆中，堆外存储的是指针。存储在 heap 中类型在各种赋值操作，函数参数传递等操作时都是**引用传递**，也就是传递了指针，不会修改或复制堆上的数据
 
-| 类型名称 | 关键字  | 示例                                          | 说明                                                       |
-| -------- | ------- | --------------------------------------------- | ---------------------------------------------------------- |
-| string   | string  | `string str = 'hello world'`                  |                                                            |
-| list     | `[T]`   | `[int] list = [1, 2, 3, 4]`                   |                                                            |
-| map      | `{T:T}` | `{int:string} map = {1: 'a', 2: 'b'}`         | key 类型仅支持 integer/float/string                        |
-| set      | `{T}`   | `{int} set = {1, 2, 3, 4}`                    |                                                            |
-| tuple    | `(T)`   | `(int, bool) t = (1, true)`                   |                                                            |
-| struct   | struct  | -                                             | 一般不会直接使用 struct 类型，后续自定义类型时再做详细介绍 |
-| fn       | fn(T):T | `fn(int,int):int f = fn(int a, int b):int {}` |                                                            |
+| 类型名称 | 存储位置 | 关键字     | 示例                                          | 说明                                |
+| -------- | -------- | ---------- | --------------------------------------------- | ----------------------------------- |
+| string   | heap     | string     | `string str = 'hello world'`                  |                                     |
+| vec      | heap     | `[T]`      | `[int] list = [1, 2, 3, 4]`                   |                                     |
+| map      | heap     | `{T:T}`    | `{int:string} map = {1: 'a', 2: 'b'}`         | key 类型仅支持 integer/float/string |
+| set      | heap     | `{T}`      | `{int} set = {1, 2, 3, 4}`                    |                                     |
+| tup      | heap     | `(T)`      | `(int, bool) t = (1, true)`                   |                                     |
+| fn       | heap     | fn(T):T    | `fn(int,int):int f = fn(int a, int b):int {}` |                                     |
+| struct   | stack    | struct {}  |                                               |                                     |
+| arr      | stack    | arr<T,len> | `arr<u8,12> array = [1, 2, 3, 4]`             |                                     |
 
 :::info
 这里主要演示类型的定义方式，具体使用将会在后续章节说明。另外如果是变量声明的话推荐用 var 关键字进行类型推导，上面是演示示例所以直接使用了类型声明。
@@ -70,6 +69,18 @@ type square = struct {
         return s.length * s.width
     }
 }
+```
+
+此时 self 等同于 `ptr<square>`
+
+### ptr
+
+安全指针，nature 中目前不支持对变量的取指针操作，所以使用的场景有限，主要用于和 c 语言进行交互。使用示例
+
+```nature
+type person = struct {}
+ptr<person> = new person // v 通过 new 关键字进行实例化 person, 此时 person 将会在堆中进行初始化
+ptr<person> = null // x, 安全指针不允许赋值为 null
 ```
 
 ### any
@@ -111,11 +122,36 @@ null 的类型定义和值都是关键字 null
 
 ### cptr
 
-一种通用的指针类型，指针的本质就是 uint 类型。ctpr 和 c 语言的 `void*` 是类似的东西，所以常用于与 c 语言进行交互。 比如
+一种通用的指针类型，指针的本质就是 uint64 类型。ctpr 和 c 语言的 `void*` 是类似的东西，所以常用于与 c 语言进行交互。 比如
 
 ```nature
 string s = 'hello world'
-cptr p = s.raw() // 得到的就是一个 cptr, s.raw() 在后面会有介绍
+cptr p = s.ref() // 得到的就是一个 cptr
+
+cptr a = 0 as cptr // 任何类型都可以转换为 cptr 类型
+```
+
+### null 指针 `cptr<T>`
+
+`cptr<T>` 是 `ptr<T>` 的特殊形式，其支持赋值为 null, 其本质类似与 `ptr<T>|null` 但是在内存结构上与 union type 不同。其至占用 8byte 长度。
+
+```nature
+type person = struct {
+    string name
+}
+
+ptr<person> p = new person{}
+cptr<person> p2 = null // v
+cptr<person> p3 = p // v
+
+println(p2.name) // v
+println(p3.name) // x, cptr 需要经过 as 断言才能够使用
+
+let p3 as ptr<person> // v
+println(p3.name) // v
+
+let p3 as null // v, 但是会出现运行时错误
+
 ```
 
 ## 类型别名
@@ -124,7 +160,7 @@ cptr p = s.raw() // 得到的就是一个 cptr, s.raw() 在后面会有介绍
 type myint = int
 ```
 
-使用关键字 type 可以自定义类型，一般与 struct 组合使用。类型别名同样也支持参数，如
+使用关键字 type 可以定义类型别名，一般与 struct 组合使用。类型别名同样也支持参数，如
 
 ```nature
 type nullable<t0> = t0|null
@@ -135,8 +171,6 @@ type nullable<t0> = t0|null
 ## 类型转换
 
 nature 暂时不支持隐式类型转换。请使用 `expr as type` 的方式进行显示的类型转换。如 `bool a = 12 as bool`
-
-目前类型转换的目标仅支持简单类型，如 bool/number。所有的类型都可以转换为 bool 类型。 number 仅支持原始类型同样为 number 时才能够转换。
 
 ## 字面量类型
 
@@ -174,6 +208,7 @@ var str = 'hello world' // 此时 str 是 string 类型, 等同于 string str = 
 hello
 world#
 ```
+
 目前支持的转义字符有
 
 ```
@@ -209,24 +244,23 @@ println('a' > 'b') // false
 
 ### 字符串处理
 
-将字符串转换成 list 可以方便的对字符串进行遍历，换位替换等操作。string 只能通过类型强制转换成 `[u8]` 类型。 tip: list 此时和 string 共享堆内存区域！
+字符串和 vec 具有相同的数据解构，所以可以直接对 string 进行类似 vec 的操作，也可以通过 as 进行类型转换。
 
 ```nature
 string s = 'hello world'
+(s[1], s[2]) = (s[2], s[1]) // 字符串交换
 
-var l = s as [u8]
+println(s[0], s[1]) // 可以直接访问 string 中的 item
+var l = s as [u8] // 将 string 转换成 [u8] 类型
 l[0] = 110 // ascii 编码 n
-(l[1], l[2]) = (l[2], l[1]) // 字符串交换
-println(s) // nlelo world
-println(l as string) // nlelo world
 ```
 
-在与操作系统交互时，通常需要一个 c 类型的字符串，也就是 `\0` 结尾的字符串，且不包含 header 信息。可以通过对字符串调用 raw 得到 c 语言字符串。
+在与 c 语言交互时，通常需要一个 c 类型的字符串，也就是 `\0` 结尾的字符串，且不包含 header 信息。可以调用字符串属性方法 ref() 得到 c 语言字符串。其返回一个通用指针类型 cptr
 
 ```nature
 string s = 'hello world'
 
-cptr p = s.raw()
+cptr p = s.ref()
 ```
 
-s.raw() 得到的是对原有字符串数据的引用，所以修改 p 指针中的数据也会影响字符串 s 中的数据
+s.ref() 得到的是对原有字符串数据的引用，所以在 c 中修改 p 指针中的数据也会影响字符串 s 中的数据

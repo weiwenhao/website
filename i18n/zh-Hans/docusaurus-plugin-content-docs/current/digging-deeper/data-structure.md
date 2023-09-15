@@ -5,25 +5,34 @@ sidebar_position: 10
 
 nature 中内置了常用的 4 种数据结构 list/map/set/tuple 下面来一起学习一下吧
 
-## list
+## vec
 
-list 是一种能够动态扩容的数组结构，支持 for 迭代遍历，其元素在内存上连续存储。语法 api 如下
+vec 是一种能够动态扩容的数组结构，支持 for 迭代遍历，其元素在内存上连续存储。语法 api 如下
 
 ```nature
-var list = [1, 2, 3] // 声明并初始化
+var list = [1, 2, 3] // 声明并初始化, 类型自动推导为 int
 var foo = list[0] // 访问
 list[0] = 4 // 赋值
 
-// 从尾部 push 元素
+// 从尾部 push 元素，push index = list.len
 list.push(5)
 
 // 获取 list 长度
-var len = list.len() // 返回值为 int 类型
+var len = list.len // 返回值为 int 类型
+var cap = list.cap // 获取 list 容量
 
 // k 是 list index, v 是 list value
 for (k,v in list) {
     // ..
 }
+
+// 使用原始 vec 解构进行实例化声明
+vec<u8> list = vec<u8>{} // 等同于 [u8] list = [], [u8] 就是 vec<u8> 的别名
+
+// 一般情况下我们使用 [u8] 进行声明即可，如果需要主动声明 vec 的属性时才需要通过结构体进行声明
+var list = vec<u8>{len=20,cap=1024} // 声明 vec 的长度和容量
+
+var list = vec<u8>{len=expr} // 允许使用表达式进程属性赋值，和结构体的规则是一样的
 ```
 
 如 `var list = [1, 2, 3]` 在自动类型推导时，**按照 list 首个元素的类型确定 `[T]` 中 T 的元素的类型**，list 中所有元素的类型都必须遵循 T 对应的类型，或者能够隐式转换到该类型，本例中首个元素是字面量 int，所以推导出的 list 完整类型为 `[int]` 。
@@ -41,18 +50,44 @@ var list = [1, 1.2] // x 类型不一致
 fn test([int] list) {} // 在函数中的声明
 ```
 
-借助强制类型转换语法，在还没有宏时可以实现一些较为 hack 操作。
+vec 类型详情
+
+```
+type vec<t1> = struct {
+    u64 len
+    u64 cap
+    fn(t1) push
+    fn(int, int):[t1] slice // 在原始 ref 上进行 slice
+    fn([t1]):[t1] concat // 连接两个 vec，并返回一个新的 vec
+    fn():cptr ref // 返回 data 部分的 ref
+}
+```
+
+## arr
+
+arr 是定长数组，和 c 语言中的数据结构一致。一般情况下不使用 arr 而是使用 vec，目前 arr 主要用于和 c 语言进行交互
 
 ```nature
-var list = [] as [u8] // v 声明一个空的元素类型为 u8 的 list
+arr<u8,12> array = [1, 2, 3] // 声明一个长度为 12，元素为 u8 类型的数组
+array[0] = 12
+array[1] = 24
+var a = array[7]
+```
 
-// v 声明一个 length 和 capacity 都为 5 的固定长度的 list。由于此时 list.length = 5
-// 此时执行 list.push 时会增加 list 的 length，并将元素设置在第六个位置
-var list = [] as [u8,5] 
+arr 和 list 最大的区别是，arr 默认在栈上进行分配。而 list 在 stack 上仅仅保存了一个指针。以 struct 为例子
 
-// 这是新增的内置函数，可以将 list 转换为 c 语言形式的数组，等价于 c 中的 uint8_t list[5]， 通常用于与 c 交互。
-// 另外这是一个不安全的操作，如果修改 p 指针对应的数据端，会直接影响到 list 中的数据。
-cptr p = list.raw()
+```nature
+type t1 = struct {
+    arr<u8,12> array
+}
+
+var size = sizeof(t1) // 12 * 1 = 12byte
+
+type t2 = struct {
+    [u8] list
+}
+
+var size = sizeof(t2) // list is pointer size = 8byte
 ```
 
 ## map
@@ -70,7 +105,7 @@ var foo = map[1] // map 元素访问
 map[1] = 'hello' // 修改或者添加新的元素
 
 map.del(1) // 使用 key 删除 map 中的元素
-var len = map.len() // 获取 map 中元素的数量, 返回值为 int 类型
+var len = map.len // 获取 map 中元素的数量, 返回值为 int 类型
 
 // 迭代 k = map key, v = map value
 for k,v in map {
@@ -90,7 +125,7 @@ set 和 map 结构类似也是一个 hash 表结构，和 map 不同的是其仅
 var s = {1, 2, 3} // v 声明一个 set 类型
 
 s.add(4) // v 添加元素
-var exists = s.has(1)  // v 检测元素是在 set 中，返回 bool 类型
+var exists = s.contains(1)  // v 检测元素是在 set 中，返回 bool 类型
 s.del(4) // v 从 set 中删除元素
 
 s[0] = 1 // x 没有赋值语法
@@ -98,7 +133,7 @@ var f = s[0] // x 没有访问语法
 
 fn test({int} s) {} // v 在函数中声明
 
-if ({1, 2, 3}.has(2)) { // v 直接在 if 语句中使用
+if ({1, 2, 3}.contains(2)) { // v 直接在 if 语句中使用
     // ..
 }
 ```
@@ -106,15 +141,12 @@ if ({1, 2, 3}.has(2)) { // v 直接在 if 语句中使用
 声明相关的注意事项
 
 ```
-{int} s = {} // x 不能使用 {} 声明一个空 set, {} 留给了空 map
-{int} s = set() // v 可以通过内置函数 set 声明一个空 set，
+var s = {} as {u8} // 可以通过 as 对 set 进行类型约束
 ```
 
-> ❗set 为内置函数
+## tup
 
-## tuple
-
-tuple 使用 `()` 将一组不同类型的数据聚合在一个结构中，有一些类似 struct，但是相比于 struct 少了 key，所以声明上会更加的简洁， 语法 api 如下
+tup 使用 `()` 将一组不同类型的数据聚合在一个结构中，有一些类似 struct，但是相比于 struct 少了 key，所以声明上会更加的简洁， 并且 tup 是一个堆内存数据解构，在栈上只保存了一个指针。 语法 api 如下
 
 ```nature
 var tup = (1, 1.1, true) // v 声明并赋值，多个元素使用逗号分隔
@@ -128,7 +160,7 @@ var foo = tup[1 + 1] // x tuple 中的元素访问不允许出现表达式，只
 tup[0] = 2 // v 修改 tuple 中的值
 ```
 
-tuple 解构赋值语法，通过该语法可以模拟函数多返回值，或者快速的进行变量交换
+tup 解构赋值语法，通过该语法可以模拟函数多返回值，或者快速的进行变量交换
 
 ```nature
 var list = [1, 2, 3]

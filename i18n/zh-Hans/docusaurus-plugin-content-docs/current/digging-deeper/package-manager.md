@@ -80,9 +80,9 @@ rand.seed.dump()
 
 `import rand` 查找 `/root/.nature/package/sources/rand/main.n` module, 可以通过 package.toml 配置
 
-`import rand.other` 查找 `/root/.nature/package/sources/rand/other.n` module
+`import rand.other` 查找 `/root/.nature/package/sources/rand/other.n` module 如果找不到则会继续查找 `/root/.nature/package/sources/rand/other/main.n` module
 
-`import rand.utils.seed` 查找 `/root/.nature/package/sources/rand/utils/seed.n` module
+`import rand.utils.seed` 查找 `/root/.nature/package/sources/rand/utils/seed.n` module，如果找不到则会继续查找 `/root/.nature/package/sources/rand/utils/seed/main.n` module
 
 在模块一章中，我们说过 `import 'file.n'` 的方式是无法 import 上一级目录中的文件的，有了包管理后，我们可以将当前项目视为一个 package (必须定义 package.toml)， 比如我们的项目名称是 test, 那么通过 `import test.dir1.dir2.module` 的方式，我们就可以到达当前项目中的任意文件。
 

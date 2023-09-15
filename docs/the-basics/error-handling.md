@@ -1,7 +1,54 @@
 ---
 title: 错误处理
-sidebar_position: 20
+sidebar_position: 69
 ---
+
+## 编译时操作
+
+nature 是强类型语言包括语法解析，类型推断等步骤，所以所以的语法错误，类型等异常都能在编译阶段发现，比如一个典型的类型不匹配错误
+
+```nature title=main.n showLineNumbers
+fn test():int {
+    var a = 12
+    return a as f32
+}
+```
+
+编译
+
+```bash
+> nature build main.n
+xxx/main.n:3:12: type inconsistency, expect=int(i64), actual=f32
+```
+可以看到第三行的 return 返回的类型是 f32, 但是函数期望得到的返回类型是 int。其中 3 表示行号， 12 表示第几列
+
+## 运行时错误
+
+运行时错误则是一些无法在编译时进行识别的错误，最典型的例子就是对动态数组的越界访问
+
+```nature title=main.n showLineNumbers
+fn foo():int {
+    var list = [1, 2, 3] // 声明一个 vec 动态数组，其长度为 3
+    return list[4] // 进行越界访问
+}
+
+foo()
+```
+
+编译并运行
+
+```bash
+> ./main
+catch error: 'index out of vec [4] with length 3' at nature-test/main.n:3:17
+stack backtrace:
+0:	main.call_0
+		at nature-test/main.n:3:17
+1:	main
+		at nature-test/main.n:6:0
+```
+
+
+## 运行时错误处理
 
 在编程语言中，错误处理是一个广泛且复杂的概念，需要考虑处理和无法处理的错误、预期和非预期的错误等等。
 
@@ -19,7 +66,7 @@ fn call():int {
 var foo = call()
 ```
 
-在 nature 语言中，我们采用 throw 和 try 关键字以及 tuple 语法来处理错误。使用 throw 关键字可以抛出错误，使得函数立即退出，并将错误信息传递到调用链上游。
+在 nature 语言中，我们采用 throw 和 try 关键字以及 tup 类型来处理错误。使用 throw 关键字可以抛出错误，使得函数立即退出，并将错误信息传递到调用链上游。
 
 ```nature
 fn rem(int dividend, int divisor):int {

@@ -33,21 +33,28 @@ i16 f3 // x 变量声明必须赋值
 
 > 👉 [更多类型](type.md)
 
-复合类型 string/list/map/set 同样需要再声明时赋默认值
+复合类型 string/vec/map/set 同样需要再声明时赋默认值
 
 ```nature
 string bar = '' // v 请使用这种方式声明一个空的字符串
-[int] baz = [] // v 声明空 list
+[int] baz = [] // v 声明空 vec
+var baz = [] // x, 无法确定 vec 的具体
 
 bar = null // x 不允许将 null 赋值给各种类型
 ```
 
-如何赋值为 null?
+如何赋值为 null？
 
-```
+```nature
 string|null bar = null // v 使用联合类型声明，让 bar 的值允许为 null
 bar = '' // v 后续章节中会深入学习联合类型
 ```
 
 
-> 💡 上面代码段中多次出现的 `//` 双斜杠是 nature 中单行注释的方式，目前也仅支持这一种注释方式。
+💡 上面代码段中多次出现的 `//` 双斜杠是 nature 中单行注释的方式，nature 还支持通过  `/****/` 进行注释方式
+
+```nature
+/**
+这是注释区域
+**/
+```
