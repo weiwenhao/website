@@ -1,40 +1,40 @@
 ---
-title: Functions
+title: 函数
 sidebar_position: 40
 ---
 
-## Basic Usage
+## 基础使用
 
-**Functions** are used to encapsulate reusable functionality. Without functions, you would have to repeat a specific set of operations multiple times, whereas with functions, you only need to write the function name and some brief information.
+**函数**用来封装可复用的功能。如果没有函数，一段特定的操作过程用几次就要重复写几次，而使用函数则只需写下函数名和一些简短的信息。
 
-A function typically consists of a function name, input parameters, output parameters, and a function body. In a broad sense, it is a machine that accepts inputs, performs calculations, and returns computed results.
+函数通常由函数名称、输入参数、输出参数和函数体组成，广义上就是一台接受输入并经过计算后返回计算结果的机器。
 
-Here is the syntax for function declaration statements in nature, using a basic sum function as an example:
+下面是 nature 中的函数声明语句中定义的语法，以基础的求和函数为例
 
 ```nature
-// Definition
-fn sum(int a, int b): int {
-    return a + b
+// 定义
+fn sum(int a, int b):int {
+	return a + b
 }
 
-// Invocation
+// 调用
 var s = sum(1, 2)
 ```
 
-The function name is `sum`, which takes two `int` type formal parameters `a` and `b`, and returns an `int` type. Multiple formal parameters are separated by commas. The types of input parameters and return value parameters in function declarations cannot be omitted, and the type inference keyword `var` cannot be used.
+函数的名称是 sum，接受两个 int 类型的形式参数 a 和 b 并返回一个 int 类型，多个形式参数之间使用逗号分隔。 在函数声明中的输入参数和返回值参数的类型不可省略，也不可以使用类型推断关键字 var。
 
-In summary, the syntax is `fn ident(T ident [, T ident...])[: T]`, where the return value type declaration is on the right side of the parentheses, separated by a colon. Only single return values are supported, and only the type needs to be specified.
+总结一下语法 `fn ident(T ident [, T ident...])[:T]` 函数的返回值类型声明在括号右侧，使用冒号隔开。仅支持单返回值，仅需要填写类型不需要 ident 声明。
 
 :::info
-`return expr` exits the execution of the function and returns `expr` as the computed result.
+`return expr` 退出函数的执行，并将 expr 作为返回计算的结果。
 :::
 
-`sum(1, 2)` is the syntax for function invocation. `sum` is the function name, and `1` and `2` are the actual arguments. Multiple actual arguments are separated by commas.
+`sum(1, 2)` 是函数的调用语法，sum 为函数名称，1 和 2 称为实际参数，多个实际参数之间使用逗号分隔。
 
-Functions can also be assigned to variables as expressions, and they are called in the same way as directly defining functions.
+函数也可以作为表达式赋值给变量，调用方式与直接定义函数一样。
 
 ```nature
-var f = fn(int a, int b): int {
+var f = fn(int a, int b):int {
 	return a + b
 }
 
@@ -42,38 +42,47 @@ var f = fn(int a, int b): int {
 var s = f(1, 2)
 ```
 
-> 💡 **When functions are used as expressions, it is recommended to omit the original function name, which is known as anonymous function declaration**. This helps to avoid confusing names
+> 💡 **当函数作为表达式时，推荐省略函数的原本的名称，也就是所谓的匿名函数声明**。这样可以避免混乱的名称。
 
-## Variadic Parameters
+## 可变参数
 
-Example:
+示例
 
 ```nature
-fn sum(...[int] list): int {
-    var result = 0
-    for (k in list) {
-        result += list[k]
-    }
-    return result
+fn sum(...[int] list):int {
+	var result = 0
+	for (k in list) { // 迭代语法
+		result += list[k] // list 类型通过 list[index] 的方式访问其中的值
+	}
+	return result
 }
 
-println(sum(1, 2, 3, 4, 5))
+println(result(1, 2, 3, 4, 5))
 ```
 
-The output will be:
+输出如下
 
 ```shell
 > ./main
 15
 ```
 
-The `...` syntax (rest) allows collecting the arguments passed by the caller as a list in the last parameter of the function. The types of the arguments passed by the caller need to match or be implicitly convertible to the type `...[T]`.
+`...` 语法(rest) 只允许在函数的最后一个参数中以 vec 类型收集调用者传递的参数，调用者传递的参数的类型需要与 `...[T]` 中的 T 的类型匹配，或者能够隐式类型转换。
 
-> 💡 The `...` syntax also has an expression-based spreading feature, which will be gradually introduced in the future.
+在调用函数时，可以通过 ... 语法对 vec 进行解构，解构语法同样只能用在最后一个参数中，且必须有对应的可变参数接应。示例
 
-## Multiple Return Values?
+```nature
+fn sprintf(string fmt, ...[any] args):string {}
 
-It was mentioned earlier that functions only support a single return value, but it is possible to achieve an approximation of multiple return values using tuple destructuring assignment. Here's an example:
+fn printf(string fmt, ...[any] args) {
+    var str = sprintf(fmt, ...args)
+    print(str)
+}
+```
+
+## 多返回值？
+
+上面说函数只支持单个返回值，但是可以基于 tuple 解构赋值实现近似多返回值的效果，用法如下
 
 ```nature
 fn buy(int amount):(string, int) {
@@ -86,9 +95,8 @@ var (balance, product) = buy(100)
 println(balance, ' ', product)
 ```
 
-In the example, the return value of the function is declared as `(string, int)`, indicating a tuple type. The statement `return ("apple", amount)` creates an instance of a tuple and returns it, which does not violate the single return value scenario.
+示例中函数返回值通过 `(string, int)` 声明了一个 tuple 类型。 `return ("apple", amount)` 则是创建了一个 tuple 实例返回，这并不违反单返回值的情况。
 
-The line `var (balance, product)` is a new syntax called tuple destructuring assignment. It is designed to simulate functions with multiple return values. In destructuring assignment, automatic type inference with `var` must be used; explicit type specification is not allowed for aesthetic reasons and to avoid confusion.
+`var (balance, product)` 这就是一种新的语法形式，称为 tuple 解构赋值。这是为了能够模拟函数多返回值而开发的一种语法，在解构赋值中必须使用 var 进行自动多类型推导，而不能通过类型类型，因为这很容易造成误导，且无法不美观，所以语法上禁止了这种情况。
 
-More detailed usage of tuples will be explained in the upcoming section on data structures.
-
+后续的部分将会更加详细的说明 tuple 的使用方法。

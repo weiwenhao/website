@@ -15,27 +15,32 @@ export default function HomepageCode(): JSX.Element {
                             language="nature"
                             title="fib.n"
                             showLineNumbers>
-                            {`fn fib(int n):int {
+                            {`import fmt
+
+fn fib(int n):int {
     if n <= 1 {
         return n
     }
     return fib(n - 1) + fib(n - 2)
 }
 
-var result = fib(10)
-println(result)`}
+fmt.printf('fib result is %d', fib(30))`}
                         </CodeBlock>
                     </div>
 
                     <div className='col col--6'>
-                        <h1 className="hero__title" style={{ fontSize: "2.5rem" }}>Functions Defined</h1>
-                        <p>A fib evaluation function was defined using recursion. The result of the function call was assigned to a variable named "result" and printed.</p>
-                        <div style={{ marginTop: "2.3rem" }}>
+                        <h1 className="hero__title" style={{ fontSize: "2.3rem" }}>Functions Defined</h1>
+                        <p>A fib evaluation function was defined using recursion.
+                        </p>
+                        <p>
+                            The result of the function call was assigned to a variable named "result" and format the output using fmt.printf
+                        </p>
+                        <div style={{ marginTop: "0em" }}>
                             <p> <Link href='/docs/getting-started/installation'> Install </Link> nature and execute the compile command</p>
                             <CodeBlock
                                 language='shell'>
                                 {`> nature build -o fib fib.n && ./fib
-55`}
+fib result is 832040`}
                             </CodeBlock>
                         </div>
                     </div>

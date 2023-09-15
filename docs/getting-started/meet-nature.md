@@ -1,36 +1,43 @@
 ---
-title: Meet Nature
+title: 认识 nature
 sidebar_position: 10
 ---
 
-Nature is a programming language that aims for simplicity and elegance in its syntax, focusing on a pleasant coding and reading experience for its users.
+nature 是新一代系统级编程语言和编译器，语法上追求简洁优雅，关注使用者的编写与阅读体验。
+  
+在编程语言层面，nature 具有以下特点:  
+  
+- 类型系统，null 安全，泛型，联合类型
+- 自研编译器/汇编器/链接器，不依赖 llvm。能够编译至 amd64/riscv64/wasm 架构
+- 无入侵的方式与 C 语言等交互进行高效率与高性能开发
+- 渐进式 GC，支持自动与手动 GC
+- 内置 vec/map/set/tup 数据结构
+- 包管理与模块管理
+- 函数标签/闭包/错误提示/运行时堆栈追踪/协程
+- 集成SSA/线性扫描寄存器分配/反射机制/汇编器与连接器
+  
+随着标准库以逐步完善，nature 可以应用于游戏引擎与游戏制作、科学与 AI 计算、操作系统与物联网、WEB 开发。其中游戏引擎将作为 nature 0.7.0 ~ 1.0+ 的核心任务。  
+  
+nature 适合于开源创作者/独立创作者以及学习和研究使用，我们不仅希望你能够在语言中得到便利，同样也希望你使用 nature 创作快乐且有趣的事情。  
 
-At the language level, Nature has the following features:
 
-- Type system with null safety, generics, and union types
-- Static cross-compilation, allowing Nature source code to be compiled into executable files for the target machine without relying on any third-party components
-- Progressive garbage collection, supporting both automatic and manual memory management
-- Built-in data structures such as lists, maps, sets, and tuples
-- Package and module management
-- Function labels, closures, error handling, and coroutines
-- Integration with SSA (Static Single Assignment) form, linear scan register allocation, reflection mechanism, assembler, and linker
+## 📌 FAQ  
+  
+  
+1.natrue 采用类型前置还是后置？
 
-As the standard library gradually improves, Nature can be applied in various domains such as game engine and game development, scientific and AI computing, operating systems, and IoT, with game engines being the primary focus for Nature 1.0+.
+nature 统一采用类型前置，包括函数的返回值类型。一个原始设计示例 `fn sum(int a, int b):int c` 可以看到函数的返回值同样采用类型前置。
 
-Nature is suitable for open-source creators, independent developers, as well as for learning and research purposes. We hope that Nature not only provides convenience in the language itself but also enables you to create enjoyable and interesting projects using Nature.
+将 ident 全部省略可以得到函数的类型声明 `fn(int,int):int f = xxx` ，通常在函数的定义上返回值的 ident 也需要省略，可以得到正式的函数声明 `fn sum(int a, int b):int {}`
+  
+2.nature/logo 的含义？  
+  
+logo 是一艘星际飞船，意为《三体》中的自然选择号，nature 也来源于此。
+  
+3.为什么没有性能测试与比较？
+  
+nature 目前还在 beta 版本进行核心功能的开发，没有对编译器后端进行任何优化。所以做性能测试是不公平且没有意义的。
 
+4.nature 开发了多久？
 
-## 🫧 FAQ
-
-1.Why are the types of variables and function parameters placed before their names, while the return type of functions is placed after?
-
-Explanation about the position of types: [https://github.com/nature-lang/nature/issues/7](https://github.com/nature-lang/nature/issues/7)
-
-2.What is the meaning of the logo?
-
-The logo represents a starship, named "Natural Selection," from the novel "The Three-Body Problem."
-
-3.Why do the language keywords include emojis?
-
-Yes, because mojo.🔥 did it first. Emojis as keywords will continue to be a feature of Nature, and future versions of the language will also try to use emojis as syntactic sugar whenever possible. The goal is to bring a light-hearted feeling to coding with emojis.
-
+当前主仓库已经开发了近 3 年，实际投入的时间则接近 6 年左右。我想说的是 nature 项目并不会被随意的放弃，并且会富有生命力的持续开发并维护下去。

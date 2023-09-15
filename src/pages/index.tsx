@@ -8,9 +8,10 @@ import HomepageApplies from '@site/src/components/HomepageApplies';
 import HomepageBuildExample from '@site/src/components/HomepageBuildExample';
 import HomepageCodeExample from '@site/src/components/HomepageCodeExample';
 import { Analytics } from '@vercel/analytics/react';
-
+import Translate, { translate } from '@docusaurus/Translate';
 
 import styles from './index.module.css';
+
 
 function HomepageHeader() {
     const { siteConfig } = useDocusaurusContext();
@@ -20,24 +21,30 @@ function HomepageHeader() {
                 <div className="row">
                     <div className="col col--8">
                         <h1 className="hero__title" style={{ fontSize: "4rem" }}>Nature</h1>
-                        <p className="hero__subtitle" style={{ fontSize: "2.5rem" }}>{siteConfig.tagline}</p>
+                        <p className="hero__subtitle" style={{ fontSize: "2.5rem" }}>
+                            {translate({ id: "homepage.tagline", message: siteConfig.tagline })}
+                        </p>
                         <Link
                             style={{ backgroundColor: '#F9322C', color: "white" }}
                             className="button button--lg banner-button margin-right--lg margin-top--lg"
                             to="/docs/getting-started/meet-nature">
-                            GET STARTED
+                            <Translate id="homepage.get_started">
+                                GET STARTED
+                            </Translate>
                         </Link>
                         <Link
                             style={{ marginRight: '40px', marginTop: '40px', backgroundColor: '#5BC2E7', color: "white" }}
                             className="button button--lg banner-button margin-right--lg margin-top--lg"
                             to="https://github.com/nature-lang/nature/releases">
-                            DOWNLOAD
+                            <Translate id="homepage.download">
+                                DOWNLOAD
+                            </Translate>
                         </Link>
                     </div>
                     <div className="col col--4">
                         <img
                             className={styles.logoShip} src={require('@site/static/img/nature.png').default} alt="nature logo"
-                            style={{ width: '85%', height: 'auto' }}
+                            style={{ width: '70%', height: 'auto' }}
                         />
                     </div>
                 </div>

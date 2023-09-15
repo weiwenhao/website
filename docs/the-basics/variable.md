@@ -1,54 +1,60 @@
 ---
-title: Variables
+title: 变量
 sidebar_position: 10
 ---
 
 :::info
-The following examples are used to explain the concepts. In these examples, `v` indicates that the syntax is correct, and `x` indicates that the syntax is incorrect. However, please note that just because the syntax is correct does not mean it is recommended to write code that way.
+后续主要通过示例来进行讲解，其中 `v` 表示语法正确， `x` 表示语法不正确，但是请记住语法正确不代表推荐这么写。
 :::
 
 ```nature
-var foo = 1 // v Declare variable foo and assign a value to it; the type of foo is automatically inferred as int
+var foo = 1 // v 声明变量 foo 并赋值，foo 类型自动推导为 int
 
-var foo = 1 // x It is not allowed to declare the same variable in the same scope
+var foo = 1 // x 同一作用域下，不允许重复声明变量
 
 if (true) {
-	var foo = 2 // v It is allowed to declare the same variable in a different scope
+	var foo = 2 // v 不同作用域下允许重复声明
 }
 ```
 
-Explicit Type Declaration
+不使用类型推导
 
 ```nature
 int foo = 1 // v
 float bar = 2.2 // v
-string car = 'hello world' // v Strings are enclosed in single quotes
+string car = 'hello world' // v 字符串使用单引号包裹
 
-foo = 2 // v Variables can be reassigned
-foo = 'hello world' // x foo is already defined as an int variable, so assigning a string is not allowed
+foo = 2 // v 变量允许重新定值
+foo = 'hello world' // x foo 已经定义为 int 类型变量，不允许使用字符串赋值
 
-i8 f2 = 12 // v Literal values can be automatically converted based on the type
-i16 f3 // x Variable declaration must include an assignment
-
+i8 f2 = 12 // v 字面量能够根据类型进行自动转换
+i16 f3 // x 变量声明必须赋值
 ```
 
-> 👉 [More Types](type.md)
+> 👉 [更多类型](type.md)
 
-Composite types like string, list, map, and set also need to be assigned default values during declaration.
+复合类型 string/vec/map/set 同样需要再声明时赋默认值
 
 ```nature
-string bar = '' // v Please use this format to declare an empty string
-[int] baz = [] // v Declare an empty list
+string bar = '' // v 请使用这种方式声明一个空的字符串
+[int] baz = [] // v 声明空 vec
+var baz = [] // x, 无法确定 vec 的具体
 
-bar = null // x It is not allowed to assign null to various types
+bar = null // x 不允许将 null 赋值给各种类型
 ```
 
-How to assign a value of null?
+如何赋值为 null？
 
 ```nature
-string|null bar = null // v Use a union type declaration to allow bar to have a value of null
-bar = '' // v Union types will be covered in more detail in subsequent sections
+string|null bar = null // v 使用联合类型声明，让 bar 的值允许为 null
+bar = '' // v 后续章节中会深入学习联合类型
 ```
 
 
->  💡 The double forward slashes `//` in the code snippets above represent single-line comments in Nature. Currently, this is the only supported way of writing comments.
+💡 上面代码段中多次出现的 `//` 双斜杠是 nature 中单行注释的方式，nature 还支持通过  `/****/` 进行注释方式
+
+```nature
+/**
+这是注释区域
+**/
+```

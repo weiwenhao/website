@@ -3,9 +3,9 @@ title: Modules
 sidebar_position: 40
 ---
 
-In practical software development, organizing code into different files based on functionality allows for easier code management and maintenance. This is the basic idea behind modular development. Although Nature's package management functionality is still in the design phase and the modular functionality is relatively simple, it can still help us organize code effectively.
+In actual software development, organizing code into different files based on functional modules can facilitate code management and maintenance. This is the basic idea of modular development. Although Nature's package management feature is still under design, its modular functionality, albeit simple, can help us better organize code.
 
-Let's take a look at a simple example using the user module.
+Let's look at a simple example, taking the user module as an example.
 
 ```nature title='user.n'
 // Global type
@@ -15,7 +15,7 @@ type user = struct {
    string password
 }
 
-// Global variables (type inference not supported for now)
+// Global variables (type inference is not supported for now)
 int id = 1
 [user] list = []
 {string:user} userof = {}
@@ -39,23 +39,23 @@ fn register(string username, string password) {
 
 fn find(string username):user {
    if (!userof[username]) {
-      throw 'User not found'
+      throw 'user not found'
    }
 
    return userof[username]
 }
 ```
 
-In a module, we can declare types, variables, and functions. However, control flow statements, variable assignments, and tuple destructuring assignments are not allowed in modules.
+In a module, we can declare types/variables/functions, but we cannot use syntax like control flow, variable assignment, or tuple destructuring.
 
 :::caution
-Type inference is not supported when declaring variables in modules.
+Type inference is not supported when declaring variables in a module.
 :::
 
-This way of organizing code is similar to using a struct, but with the addition of custom types. Modules do not need to be instantiated; they can be directly used after importing. The variables defined in the module are globally shared, similar to static properties in classes. Now let's see how we can use the user module.
+This way of organizing code is similar to a struct, but it also allows custom types. Moreover, a module does not need to be instantiated; it only needs to be imported to be used directly. Therefore, the variable information defined in it is globally shared, which can also be called global variables, similar to static properties in a class. Let's see how to use the user module next.
 
 ```nature title='main.n'
-import 'user.n'   // Import based on the relative path from the current main.n file
+import 'user.n'   // Import based on the relative path of the current main.n file
 
 user.register('xiaowei', 'hahaha123')
 
@@ -72,7 +72,7 @@ println(foo.username, '-', foo.password)
 println('current user count=', user.list.len())
 ```
 
-Place `user.n` and `main.n` in the same directory. After compiling and executing `main.n`, we get the following output:
+Place `user.n` and `main.n` in the same directory. After compiling and executing `main.n`, you can get the following output:
 
 ```shell
 > ./main
@@ -81,14 +81,14 @@ xiaoyou-nanana456
 current user count=2
 ```
 
-The `import` keyword is used to import a module using a path relative to the current Nature source file. After importing, the file name is used as the identifier for the module by default. Alternatively, you can specify an identifier using the `as` keyword, such as `import "user.n" as user_model`.
+The `import` keyword imports a module **relative to the current Nature source file**. After importing, the filename is used by default as the module's usage identifier. You can also specify the usage identifier using the `as` keyword, such as `import "user.n" as user_model`.
 
 :::caution
-Since package management is still under consideration, module imports are currently based on paths and only support relative paths from the current file. Absolute paths or patterns like `./` and `../` are not supported for module imports.
+Since package management is still under consideration, module importation is currently based on paths. Only the minimal capability of module path import is opened, which is based on the relative path of the current file. Importing modules through absolute paths or `./`, `../` patterns is not supported.
 :::
 
-The syntax `module_ident.property` is used to access variables, functions, and types defined in a module. In the example, `user.register` accesses the `register` function in the user module.
+Using `module_ident.property` syntax, you can access variables/functions/types defined in the module. For example, `user.register` accesses the `register` function in the user module.
 
-> 💡 Nature does not have the concept of access control in its basic syntax. Variables, functions, and types defined in modules are globally accessible.
+> 💡 Nature does not have the concept of access control in its basic syntax. Variables/functions/types defined in a module are globally open.
 
-When running `nature build main.n`, `main.n` is treated as an entry file. Inside this file, you can write control flow expressions and other syntax elements. However, `main.n` cannot be imported by other files. This is because Nature wraps all statements defined in `main.n` inside `fn main() {}`, giving us a scripting-like experience.
+When executing `nature build main.n`, `main.n` is considered an entry file. It can contain control flow expressions and various other syntax, and `main.n` cannot be imported by other files. This is because Nature will wrap all the statements defined in `main.n` within `fn main() {}`, giving us the illusion of writing a script.

@@ -269,5 +269,14 @@
   "theme.tags.tagsPageTitle": {
     "message": "标签",
     "description": "The title of the tag list page"
+  },
+  "homepage.get_started": {
+    "message": "快速开始"
+  },
+  "homepage.download": {
+    "message": "下载"
+  },
+  "homepage.tagline": {
+    "message": "新一代系统级编程语言与编译器，愿你能够享受编程带来的乐趣"
   }
 }

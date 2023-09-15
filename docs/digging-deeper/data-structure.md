@@ -3,147 +3,181 @@ title: Data Structures
 sidebar_position: 10
 ---
 
-In nature, there are four built-in data structures: list, map, set, and tuple. Let's learn about them together.
+Nature includes four commonly used built-in data structures: list/map/set/tuple. Let's learn about them below.
 
-## list
+## vec
 
-A list is a dynamically resizable array structure that supports for-loop iteration. Its elements are stored continuously in memory. The syntax API is as follows:
+`vec` is a dynamically resizable array structure that supports `for` loop iteration. Its elements are stored contiguously in memory. The syntax API is as follows:
 
 ```nature
-var list = [1, 2, 3] // Declaration and initialization
-var foo = list[0] // Accessing an element
-list[0] = 4 // Assigning a value
+var list = [1, 2, 3] // Declaration and initialization, type automatically inferred as int
+var foo = list[0] // Access
+list[0] = 4 // Assignment
 
-// Pushing elements from the tail
+// Push an element from the end, push index = list.len
 list.push(5)
 
-// Getting the length of the list
-var len = list.len() // Returns an int value
+// Get the length of the list
+var len = list.len // Return value is of int type
+var cap = list.cap // Get the capacity of the list
 
-// k is the list index, v is the list value
+// k is list index, v is list value
 for (k, v in list) {
-    // ...
+    // ..
 }
+
+// Use the original vec structure for instantiation declaration
+vec<u8> list = vec<u8>{} // Equivalent to [u8] list = [], [u8] is an alias for vec<u8>
+
+// In general, we can declare using [u8], only when we need to explicitly declare vec attributes do we need to declare through the struct
+var list = vec<u8>{len=20, cap=1024} // Declare the length and capacity of vec
+
+var list = vec<u8>{len=expr} // Allows the use of expressions for attribute assignment, the rules are the same as for structs
 ```
 
-When using auto-type inference, the type of `[T]` is determined based on the type of the first element in the list. All elements in the list must adhere to the type `T` or be implicitly convertible to that type. In the example `var list = [1, 2, 3]`, since the first element is an integer, the inferred type of the list is `[int]`.
+When automatically inferring the type, as in `var list = [1, 2, 3]`, **the type of the first element in the list determines the type `T` in `[T]`**. All elements in the list must follow the type corresponding to T, or be implicitly convertible to that type. In this example, the first element is a literal int, so the inferred list complete type is `[int]`.
 
-Some important notes on declarations:
+Declaration-related considerations:
 
 ```nature
-var list = [] // x Type cannot be determined
+var list = [] // x Cannot determine type
 [int] list = [] // v Initialize an empty list of type int
 
 var list = [1, 1.2] // x Inconsistent types
 
 [int] list = [1.1, 1.2] // x Same as above, inconsistent types
 
-fn test([int] list) {} // Declaration in a function signature
+fn test([int] list) {} // Declaration in a function
 ```
 
-With the help of forced type conversion syntax, some hack-like operations can be achieved before macros are introduced.
+Details of vec type:
+
+```
+type vec<t1> = struct {
+    u64 len
+    u64 cap
+    fn(t1) push
+    fn(int, int):[t1] slice // Slice on the original ref
+    fn([t1]):[t1] concat // Concatenate two vecs and return a new vec
+    fn():cptr ref // Return the ref of the data part
+}
+```
+
+## arr
+
+`arr` is a fixed-length array, consistent with the data structure in C language. Generally, `arr` is not used, and `vec` is preferred. Currently, `arr` is mainly used for interaction with C language.
 
 ```nature
-var list = [] as [u8] // v Declare an empty list with elements of type u8
+arr<u8,12> array = [1, 2, 3] // Declare an array of length 12 and element type u8
+array[0] = 12
+array[1] = 24
+var a = array[7]
+```
 
-// v Declare a fixed-length list with length and capacity both equal to 5.
-// Since list.length = 5, executing list.push will increase the length of the list and set the element at the sixth position.
-var list = [] as [u8, 5]
+The biggest difference between `arr` and `list` is that `arr` is allocated on the stack by default, while `list` only saves a pointer on the stack. For example, using `struct`:
 
-// This is a new built-in function that converts the list to a C language array form, equivalent to uint8_t list[5] in C.
-// It is commonly used for interacting with C code.
-// Note that this operation is unsafe, and modifying the data pointed to by the `p` pointer will directly affect the data in the list.
-cptr p = list.raw()
+```nature
+type t1 = struct {
+    arr<u8,12> array
+}
+
+var size = sizeof(t1) // 12 * 1 = 12byte
+
+type t2 = struct {
+    [u8] list
+}
+
+var size = sizeof(t2) // list is pointer size = 8byte
 ```
 
 ## map
 
-A map is a hash table structure with an O(1) time complexity for lookup operations. It also supports for-loop iteration. The syntax API is as follows:
+`map` is a hash table structure with O(1) time complexity for lookups. It supports `for` loop iteration. The syntax API is as follows:
 
 ```nature
-// Declaration and assignment, with inferred type {int:string}
+// Declare and assign, inferred type is {int:string}
 var map = {1: 'hello', 2: 'world', 3: 'hello', 4: 'haha'}
 
-// Declaring an empty map
+// Declare an empty map
 {int:string} m1 = {}
 
-var foo = map[1] // Accessing an element in the map
-map[1] = 'hello' // Modifying or adding a new element
+var foo = map[1] // Access map element
+map[1] = 'hello' // Modify or add a new element
 
-map.del(1) // Deleting an element from the map using the key
-var len = map.len() // Getting the number of elements in the map, returns an int value
+map.del(1) // Delete an element from the map using a key
+var len = map.len // Get the number of elements in the map, return value is of int type
 
-// Iterating over k = map key, v = map value
+// Iteration k = map key, v = map value
 for k, v in map {
-    // ...
+    //...
 }
 
-fn test({int:int} map) {} // Declaration in a function signature
+fn test({int:int} map) {} // Declaration in a function
 ```
 
-Currently, map keys only support number and string types, and more types will be supported based on reflection in the future.
+Currently, `map` keys only support `number` and `string` types. More types will be opened based on reflection in the future.
 
 ## set
 
-A set is similar to a map in that it is a hash table structure. However, it only retains the keys of the map and does not have values. Currently, set elements also support only number and string types, and it does not support for-loop iteration. The syntax API is as follows:
+`set` is similar to `map` and is also a hash table structure. The difference is that it only retains the `key` part of the `map`. Currently, `set` elements only support `number` and `string` types and do not support iteration through `for`. The syntax API is as follows:
 
 ```nature
-var s = {1, 2, 3} // Declaration of a set
+var s = {1, 2, 3} // v Declare a set type
 
-s.add(4) // Adding an element
-var exists = s.has(1) // Checking if an element exists in the set, returns a bool value
-s.del(4) // Deleting an element from the set
+s.add(4) // v Add an element
+var exists = s.contains(1)  // v Check if an element is in the set, returns bool type
+s.del(4) // v Delete an element from the set
 
-s[0] = 1 // x There is no assignment syntax for sets
-var f = s[0] // x There is no access syntax for sets
+s[0] = 1 // x No assignment syntax
+var f = s[0] // x No access syntax
 
-fn test({int} s) {} // Declaration in a function signature
+fn test({int} s) {} //
 
-if ({1, 2, 3}.has(2)) { // Using the set directly in an if statement
-    // ...
+ v Declaration in a function
+
+if ({1, 2, 3}.contains(2)) { // v Use directly in an if statement
+    // ..
 }
 ```
 
-Some important notes on declarations:
+Declaration-related considerations:
 
-```nature
-{int} s = {} // x Cannot use {} to declare an empty set, {} is reserved for empty maps
-{int} s = set() // v Can use the built-in function set() to declare an empty set
+```
+var s = {} as {u8} // Can use as to constrain the set type
 ```
 
-> ❗set is a built-in function
+## tup
 
-## tuple
-
-A tuple aggregates a group of elements of different types using `()`. It is somewhat similar to a struct but without keys, making its declaration more concise. The syntax API is as follows:
+`tup` uses `()` to aggregate a group of different types of data into one structure. It is somewhat similar to `struct`, but compared to `struct`, it lacks a `key`, so the declaration will be more concise. Also, `tup` is a heap memory data structure, and only a pointer is saved on the stack. The syntax API is as follows:
 
 ```nature
-var tup = (1, 1.1, true) // Declaration and assignment, elements separated by commas
+var tup = (1, 1.1, true) // v Declare and assign, multiple elements separated by commas
 
-var tup = (1) // x A tuple must contain at least two elements
+var tup = (1) // x tuple must contain at least two elements
 
-var foo = tup[0] // Accessing the first element of the tuple using the literal 0, and so on
+var foo = tup[0] // v Literal 0 represents the first element in the tuple, and so on
 
-var foo = tup[1 + 1] // x Expressions are not allowed when accessing tuple elements, only int literals are allowed
+var foo = tup[1 + 1] // x Element access in tuple does not allow expressions, only int literals are allowed
 
-tup[0] = 2 // v Modifying the value in the tuple
+tup[0] = 2 // v Modify the value in the tuple
 ```
 
-Tuple destructuring assignment allows for simulating functions with multiple return values or quickly swapping variable values:
+Tuple destructuring assignment syntax, through which you can simulate multiple return values from functions, or quickly swap variables:
 
 ```nature
 var list = [1, 2, 3]
 
 // 1. Variable creation
-var (foo, bar, car) = (1, 2, true) // v Values can be automatically inferred and used to create multiple variables using var
-(custom_type, int, bool) (foo, bar, car) = (1, 2, true) // x Declaring types is not allowed, only var is allowed for auto-type inference
-var (foo, (bar, car)) = (1, (2, true)) // v Nested variable creation
+var (foo, bar, car) = (1, 2, true) // v Values can be automatically type-inferred to create multiple variables in sequence
+(custom_type, int, bool) (foo, bar, car) = (1, 2, true) // x Type declaration is not allowed, only automatic type inference through var is allowed
+var (foo, (bar, car)) = (1, (2, true)) // v Nested form of creating multiple variables
+var (list[0], list[1]) = (2, 4) // x When creating variables, the left side cannot use expressions
 
 // 2. Variable assignment
-(foo, bar) = (bar, foo) // v Modifying the values of variables foo and bar, allowing for quick variable swapping
-(foo, (bar, car)) = (2, (4, false)) // v Nested variable assignment
-(foo, bar, car) = (2, (4, false)) // x Types of left and right sides don't match
+(foo, bar) = (bar, foo) // v Modify the values of variables foo, bar, can quickly swap variable values
+(foo, (bar, car)) = (2, (4, false)) // v Nested form of modifying variable values
+(foo, bar, car) = (2, (4, false)) // x Left value and right value types do not match
 
-(list[0], list[2]) = (1, 2) // v In tuple assignment, left-hand side expressions ident/ident[T]/ident.T are allowed as left-hand side expressions
-(1 + 1, 2 + 2) = (1, 2) // x 1+1 is a right-hand side expression and is not allowed
+(list[0], list[2]) = (1, 2) // v tuple assignment operation allows the use of left-value expressions ident/ident[T]/ident.T are such left-value expressions
+(1 + 1, 2 + 2) = (1, 2) // x 1+1 is a right-value expression
 ```

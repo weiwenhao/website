@@ -3,54 +3,52 @@ title: Contribution Guide
 sidebar_position: 20
 ---
 
-There are multiple ways to contribute to Nature, including but not limited to submitting bugs, sharing ideas, participating in community discussions, coding, improving documentation, defining standards, contributing resources, and donations.
+There are multiple ways to contribute to nature, including but not limited to submitting BUGs, sharing ideas, community discussions, coding contributions, documentation improvements, standardization, resource contributions, and donations.
 
-## Reporting Bugs and Suggestions
+:::tip
+🎉 The community version of nature is about to be released. You're invited to help build the standard library. The relevant standard libraries will be merged into the main nature repository.
+:::
 
-If you wish to submit a bug report, your issue should include a title and a clear description of the problem. Please provide relevant information and demonstrate the issue with code examples whenever possible. The purpose of bug reports is to make it easy for yourself and others to reproduce the error and develop fixes.
+## Errors and Suggestions
 
-When submitting suggestions, try to articulate your ideas clearly and provide compelling evidence to support them, so that your suggestions have a better chance of being adopted. Whether it's about syntax, compiler design, coding conventions, learning materials, or any other aspect, we welcome your suggestions.
+If you wish to submit a bug report, your issue should include a title and a clear description of the problem. You should also provide as much relevant information as possible and a code example that demonstrates the issue. The purpose of a bug report is to make it easy for yourself and others to reproduce the error and develop a fix.
 
-You can submit bug reports or suggestions through the issue tracker: [nature-lang/nature](https://github.com/nature-lang/nature/issues).
+When submitting suggestions, try to clarify your ideas and preferably provide persuasive materials so that your suggestions can be better adopted. Suggestions for syntax, compiler design, coding standards, learning materials, etc., are all welcome.
 
+You can submit your bug reports or suggestions via issues at [nature-lang/nature](https://github.com/nature-lang/nature/issues).
 
-## Community
+For feature improvements and development contributions, please make sure to communicate through issues first. Once approved, a relevant tag will be added to the issue, and you can then proceed with code development without worrying about conflicts.
 
-For ideas and questions, we recommend using GitHub issues to facilitate broader attention and participation.
+## Community Interaction
 
-discard: [https://discord.gg/s5x542RF](https://discord.gg/s5x542RF)
+Ideas and issues are recommended to be discussed via GitHub issues to allow more people to focus and participate.
 
-wechat: 添加微信号 `nature-lang` 备注 “申请加群”
+GitHub Discussion Community: [https://github.com/nature-lang/nature/discussions](https://github.com/nature-lang/nature/discussions)
 
-github discussions: [https://github.com/nature-lang/nature/discussions](https://github.com/nature-lang/nature/discussions)
+## Source Code Compilation
 
-
-## Compiling the Source Code
-
-目录结构
+Directory Structure
 
 ```shell
 ├── CMakeLists.txt
 ├── LICENSE
 ├── README.md
-├── VERSION # Version number, following semantic versioning
-├── cmake # CMake-related files
-├── cmd # Entry files such as `nature build`
+├── VERSION # Version number, follows semantic versioning
+├── cmake # cmake build-related files
+├── cmd # cmd like nature build entry files
 ├── config # Compilation configuration
-├── lib # Libraries used when compiling Nature source files and packaging the installation package
+├── lib # Source files for compiling nature and libraries referenced when packaging nature
 ├── main.c # Entry point
-├── runtime # Runtime source code
+├── runtime # runtime source code
 ├── src # Compiler source code
 ├── std # Standard library
 ├── tests # Test files
 └── utils # Utility functions
-
 ```
 
+Compile runtime
 
-Compiling the runtime:
-
-> Currently, the runtime only targets linux-amd64. Therefore, it only needs to be compiled once, and the resulting `libruntime.a` file will be written to the `lib/linux-amd64` directory. When compiling Nature, this directory will be installed to the specified location.
+> Currently, the runtime only targets linux-amd64, so you only need to compile it once. After building, it will be written to the lib/linux-amd64/libruntime.a file. This directory will be installed to the specified location when compiling nature.
 
 ```shell
 cmake -B build-runtime -S runtime -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd64-toolchain.cmake -DCMAKE_BUILD_TYPE=Release
@@ -58,10 +56,11 @@ cmake -B build-runtime -S runtime -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd6
 cmake --build build-runtime --target runtime
 ```
 
-Compiling Nature:
+Compile nature
 
 :::info
-The `linux-amd64-toolchain.cmake` file uses musl-gcc for static compilation. Static compilation is recommended. If you want to compile for darwin/amd64, you can switch to the `darwin-amd64-toolchain.cmake` toolchain file.
+linux-amd64-toolchain.cmake uses musl-gcc for static compilation, and static compilation is recommended.
+If you want to compile for darwin/amd64, switch the toolchain to darwin-amd64-toolchain.cmake
 :::info
 
 ```shell
@@ -74,34 +73,34 @@ cmake --build build-release
 # test
 cmake --build build-release --target test
 
-# Install (default installation location: /usr/local/nature)
+# install (default installation to /usr/local/nature)
 cmake --build build-release --target install
 
-# 打包
+# package
 cmake --build build-release --target package
 ```
 
 ## Additional Resources
 
-Here are some resources that I found useful while studying compiler theory and working on Nature. I hope they can help you contribute. (Listed roughly in the order of my own learning process)
+These are some of the resources I used while learning compiler theory and writing nature, hoping they can help you contribute. (Roughly organized in the order of learning)
 
-1. SICP (Structure and Interpretation of Computer Programs) - available in Python and JS versions. I recommend watching the video lectures alongside the book.
-2. Compiler Design (2nd Edition) - read selected chapters. I recommend the English version, as the Chinese version can be difficult to understand.
-3. Modern Compiler Implementation in C - read selected chapters, focusing on the SSA (Static Single Assignment) part.
-4. [Crafting Interpreters](https://craftinginterpreters.com/) - highly recommended.
-5. Engineering a Compiler - mainly focused on assembly part.
-6. Linear Scan Register Allocation for the Java HotSpotTM Client Compiler - implemented based on the research paper.
-7. Linear Scan Register Allocation on SSA Form - linear scan register allocation on SSA form.
-8. [Writing a Memory Allocator](http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/) - memory allocation and garbage collection course.
-9. GoLang/tcmalloc - referenced for memory allocation and garbage collection, but my ability to read source code is limited, so I mainly relied on articles that explain the concepts.
-10. [bspaans/jit-compiler](https://github.com/bspaans/jit-compiler) - reference implementation for the assembler part, with instruction encoding referenced from the Intel Manual Volume 2.
-11. The Art of Linking - learning about linkers and the structure of ELF files.
-12. [Tiny C Compiler](https://bellard.org/tcc/) - reference implementation for the linker part.
+1. sicp (available in Python and JS versions), recommended to watch along with videos.
+2. Compiler Design (2nd Edition), selected chapters, recommended in English as the Chinese version is hard to understand.
+3. Modern Compiler Implementation in C, selected chapters, mainly the SSA part.
+4. [crafting interpreters](https://craftinginterpreters.com/) Highly recommended
+5. Writing a Compiler System from Scratch — Compilation, Assembly, and Linking, mainly read the assembly part.
+6. Linear Scan Register Allocation for the Java HotSpotTM Client Compiler, based on this paper.
+7. Linear Scan Register Allocation on SSA Form, SSA form linear scan register allocation.
+8. [Writing a Memory Allocator](http://dmitrysoshnikov.com/compilers/writing-a-memory-allocator/) Memory allocation and garbage collection course.
+9. golang/tcmalloc, referenced for memory allocation and garbage collection implementation, though my code reading skills are limited, so I read article analyses.
+10. [bspaans/jit-compiler](https://github.com/bspaans/jit-compiler) Referenced for the assembler part, specific instruction encoding referenced from Intel manual volume 2.
+11. Linkers and Loaders — Understanding Linkers and ELF File Structure.
+12. [Tiny C Compiler](https://bellard.org/tcc/) Referenced for the linker part.
 
+## Coding Standards
 
-## Coding Guidelines
+Nature's source code is developed based on ANSI C11 and musl libc.
 
-The Nature source code is developed using ANSI C11 and musl libc.
-
-1. Strive for simplicity and readability in the source code. Avoid using complex third-party libraries.
-2. Use lowercase with underscores for file names, directory names, and keywords. The only exception is macro definitions, which use uppercase with underscores.
+1. The source code aims for simplicity and readability, avoiding complex third-party libraries.
+2. Filenames/directory names/keywords use lowercase + underscore for word separation, the only exception being macro definitions, which use uppercase + underscore.
+3. Relevant feature improvements and bug fixes should provide ctest test cases, which are all placed in the `tests/blackbox` directory.

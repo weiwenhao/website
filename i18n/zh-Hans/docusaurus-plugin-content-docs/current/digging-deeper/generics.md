@@ -210,7 +210,7 @@ fn area(box<numbert, numbert2> b):numbert {
 
 使用 mod
 
-``` title=main.n
+```nature title=main.n
 import 'mod.n'
 
 // int 
@@ -263,7 +263,7 @@ nature 中的重载虽然一开始就在规划中，但是没想到这么快就�
 
 使用示例
 
-```mod.n title=mod.n
+```nature title=mod.n
 fn foo(i8 a) {
     println("this is foo(i8 a)")
 }

@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "Nature Programming Language",
   tagline:
-    "is a programming language, may you be able to experience the joy of programming.",
+    "is a programming language and compiler, may you be able to experience the joy of programming.",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
