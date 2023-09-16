@@ -1,11 +1,11 @@
 ---
-title: 错误处理
+title: Error Handling
 sidebar_position: 69
 ---
 
-## 编译时错误
+## Compile-time Errors
 
-nature 是强类型语言，语法错误和类型异常都能在编译阶段发现，并给出可读的编译时错误提示，比如一个典型的类型不匹配错误
+Nature is a strongly-typed language, where syntax errors and type inconsistencies can be detected at the compilation stage. It provides readable compile-time error messages. For example, here is a typical type mismatch error:
 
 ```nature title=main.n showLineNumbers
 fn test():int {
@@ -14,28 +14,29 @@ fn test():int {
 }
 ```
 
-编译
+Compilation:
 
 ```bash
 > nature build main.n
 xxx/main.n:3:12: type inconsistency, expect=int(i64), actual=f32
 ```
-可以看到错误的原因是第三行的 return 返回的类型是 f32, 但是函数期望得到的返回类型是 int。其中 3 表示行号， 12 表示第几列
 
-## 运行时错误
+As can be seen, the issue arises because the `return` type on line 3 is `f32`, but the function is expected to return an `int`. The `3` indicates the line number and `12` indicates the column number.
 
-运行时错误是一些无法在编译时进行识别的错误，最典型的例子就是对动态数组的越界访问
+## Runtime Errors
+
+Runtime errors are errors that cannot be detected during compilation. The most typical example is an out-of-bounds access of a dynamic array:
 
 ```nature title=main.n showLineNumbers
 fn foo():int {
-    var list = [1, 2, 3] // 声明一个 vec 动态数组，其长度为 3
-    return list[4] // 进行越界访问
+    var list = [1, 2, 3] // Declare a vec dynamic array with a length of 3
+    return list[4] // Out-of-bounds access
 }
 
 foo()
 ```
 
-编译并运行
+Compile and Run:
 
 ```bash
 > ./main
@@ -47,14 +48,13 @@ stack backtrace:
 		at nature-test/main.n:6:0
 ```
 
-第一行显示了运行时错误的原因以及具体位置，后续则显示了具体的错误调用栈方便进行错误排查。除了内置的运行时错误外，我们也可以通过 throw 关键字主动抛出运行时错误，下面将详细讲解运行时错误处理。
+The first line shows the cause of the runtime error and its specific location. Subsequent lines show the error call stack for easier debugging. Besides built-in runtime errors, we can also throw runtime errors manually using the `throw` keyword. Further details on handling runtime errors will be discussed below.
 
+## Runtime Error Handling
 
-## 运行时错误处理
+Runtime error handling is a complex concept, involving both handleable and unhandleable errors, as well as both expected and unexpected errors.
 
-运行时错误处理是一个复杂的概念，需要考虑处理和无法处理的错误、预期和非预期的错误等等。
-
-但是我们应该时时刻刻的在每一次 call 时关心错误么？其实并不需要，**我们应该只关心我们能够处理的错误**，对于不能处理或者预料之外的错误，我们没有必要去拦截或者处理它，应该将它继续向上传递，直到遇到一个能够处理这种错误的 caller。
+Should we be concerned about errors every time we make a call? Not necessarily. **We should only care about errors that we can handle.** For errors that are either unhandleable or unexpected, we shouldn't intercept or handle them. Instead, we should let them propagate up the call stack until they reach a caller that can handle them.
 
 ```nature
 fn call():int {
@@ -62,13 +62,12 @@ fn call():int {
 	return 1
 }
 
-// call 的调用链可能非常的深，并存在了一个异常，比如有一个虫子钻进了内存中导致的内存访问异常
-// 但是我只是一个小小的 caller，我能做的就是读取 call 中的数据，我无法处理类似虫子钻进了内存中导致的错误，所以只有当 call 能够返回时我才继续向下执行，否则我将不做任何的处理。
-// 错误将沿着调用链向上级传递，直到遇到了一个能够处理这个错误的 caller
+// The call chain for 'call' could be very deep, and there might be an exception, such as a bug causing memory access issues. However, as a mere caller, all I can do is read the data from 'call'. I cannot handle issues like bugs in the memory, so I will only proceed if 'call' returns successfully. Otherwise, I won't do anything.
+// The error will propagate up the call chain until it reaches a caller that can handle it.
 var foo = call()
 ```
 
-在 nature 语言中，我们采用 throw 和 try 关键字以及 tup 类型来处理错误。使用 throw 关键字可以抛出错误，使得函数立即退出，并将错误信息传递到调用链上游。
+In Nature, we use the `throw` and `try` keywords along with the `tup` type to handle errors. Using the `throw` keyword will cause the function to exit immediately and propagate the error up the call chain.
 
 ```nature
 fn rem(int dividend, int divisor):int {
@@ -79,13 +78,13 @@ fn rem(int dividend, int divisor):int {
 	return dividend % divisor
 }
 
-// v 由于第二个参数为 0，会导致除数为 0，从而抛出异常。因为我们没有捕获该异常，它会继续向上传递，直到遇到 catch 块或程序退出。
-// 因此，后面的语句 println('hello world') 不会被执行。
+// v Here, since the second argument is 0, it causes a division-by-zero error, throwing an exception. Because we do not catch this exception, it will continue to propagate up the call stack until it is caught or the program exits.
+// Therefore, the subsequent statement 'println('hello world')' will not be executed.
 var result = rem(10, 0)
 println('hello world')
 ```
 
-通过输出我们发现，error 一直像上传递直到 runtime，runtime 拦截了这个错误并 dump 出来。`println('hello world')` 也和预期一样没有执行。
+When we check the output, we find that the error propagates up to the runtime, which intercepts the error and dumps it out. The statement `println('hello world')` does not get executed as expected.
 
 ```shell
 > ./main
@@ -97,7 +96,7 @@ stack backtrace:
 		at nature-test/main.n:11:22
 ```
 
-我们再来看看使用 try 关键字主动拦截错误的情况
+Now, let's look at how we can proactively intercept errors using the `try` keyword.
 
 ```nature
 fn rem(int dividend, int divisor):int {
@@ -108,17 +107,17 @@ fn rem(int dividend, int divisor):int {
 	return dividend % divisor
 }
 
-// v 对可能出现的错误使用 try 关键字进行拦截，nature 中默认不包含 null 值
-// 当不存在错误时 err 是空的 errort 结构体,err.has 包含默认值 false
+// v Use the try keyword to catch any potential errors; Nature does not have null values by default.
+// When no error occurs, err is an empty errort structure, and err.has contains the default value of false.
 var (result, err) = try rem(10, 0)
 if err.has {
-	// error handle， errort 结构中包含 msg 字段存储了错误的信息
+	// error handling, the errort structure contains a msg field storing the error message.
 	println(err.msg)
 } else {
 	println(result)
 }
 
-// v 不存在异常的情况下使用 try 拦截
+// v Use try when no exception occurs.
 (result, err) = try rem(10, 3)
 if err.has {
 	println(err.msg)
@@ -127,7 +126,7 @@ if err.has {
 }
 ```
 
-输出看看
+Check the output:
 
 ```shell
 > ./main
@@ -135,15 +134,15 @@ divisor cannot zero
 1
 ```
 
-try 关键字只能用于函数调用的前面，其读取本次函数调用是否 throw 了 error。
+The `try` keyword can only be used before a function call, checking if the function throws an error.
 
-**当原函数包含返回值时，try 将创建一个拥有两个元素的 tuple，第一个元素是函数原来的返回值，第二个元素则是 errort 类型的错误数据。 当原函数没有返回值时，catch 直接返回一个 errort 类型的数据。**
+**When the original function has a return value, `try` will create a tuple containing two elements: the original return value and an `errort` type error data. When the original function has no return value, `catch` simply returns an `errort` type data.**
 
 :::info
-当函数没有返回值时，可以这么理解，由于 nature 不支持单元素的 tuple，所以 `var (err) = try void_fn()` 降级为 `var err = try void_fn()`
+When the function has no return value, you can understand it like this: Since Nature does not support single-element tuples, `var (err) = try void_fn()` is reduced to `var err = try void_fn()`.
 :::
 
-这是 errort 类型的定义
+This is the definition of the `errort` type:
 
 ```nature
 type tracet = struct {
@@ -160,15 +159,15 @@ type errort = struct {
 }
 ```
 
-不仅是在函数调用中，try 后面可以接更多更长的表达式。本质上和传统语言的 try catch 没有什么区别，只是稍微简化了一下语法糖。
+The `try` keyword is not limited to function calls; it can follow longer and more complex expressions. Essentially, it's similar to traditional languages' `try-catch` but with a slightly simplified syntax sugar.
 
 ```nature
 var (foo, err) = try foo[1] // v index out of range
-var err = try foo().bar().car() // v 链式调用
-var (bar, err) = try foo as int // v union assert 断言异常时
-var (car, err) = try foo.bar[1] // v 链式调用
+var err = try foo().bar().car() // v chain call
+var (bar, err) = try foo as int // v union assert assertion error
+var (car, err) = try foo.bar[1] // v chain call
 ```
 
-> 💡 观察上面的代码可以发现，err 是可以重复定义的， 规则是只要是 try 表达式的对应的错误信息接受变量就不会进行重复定义的检测。
+> 💡 Observe that err can be redefined; the rule is that as long as the variable receiving error information from the `try` expression is not checked for redefinition.
 
-🎉 相信你已经掌握了 throw 和 try 语法关键字的使用，这就是 nature 中错误处理的所有语法概念。语法简单不代表错误处理是一件简单的事情，它涉及到如何在程序中设计、捕获、记录和处理错误，是编写健壮、可靠和高质量软件的关键。
+🎉 Hopefully, you now have a good understanding of how to use the `throw` and `try` keywords in Nature. That covers all the syntax for error handling in Nature. While the syntax is simple, error handling is not. It involves designing, capturing, logging, and processing errors in your

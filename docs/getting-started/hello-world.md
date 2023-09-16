@@ -3,38 +3,38 @@ title: Hello World
 sidebar_position: 30
 ---
 
-## 第一个程序
+## The First Program
 
 :::tip
-以下代码编译与执行都在 linux 设备上完成，如果你没有 linux 设备，可以使用 docker 进行尝试。
+The code below was compiled and executed on a Linux device. If you don't have a Linux device, you can try using Docker.
 :::
 
-首先编写一个 nature 源码文件，总是以 .n 结尾，名称随意。这里我们就叫 main.n， 创建文件并写入以下内容
+First, create a nature source file, which always ends with the .n extension. You can name it anything, but here we'll call it `main.n`. Create the file and write the following content:
 
 ```nature title="main.n"
 print('hello world')
 ```
 
-编译
+Compile
 
 ```shell
 > nature build main.n
 ```
 
-现在能够在目录下看到一个可执行文件 main, main 是默认名称，可以使用 -o 参数调整输出的可执行文件的名称，如 `nature build -o hello main.n`
+Now, you should see an executable file named `main` in the directory. `main` is the default name, but you can use the `-o` parameter to change the output name of the executable, like so: `nature build -o hello main.n`.
 
-运行
+Run
 
 ```shell
 > ./main
 hello world
 ```
 
-🎉 这是属于你的里程碑
+🎉 This is a milestone for you.
 
-## 复杂一点
+## A Bit More Complex
 
-以首页展示的 fib 数列求值示例，首先创建一个 fib.n 文件并写入以下内容
+As demonstrated in the Fibonacci sequence example on the homepage, first create a file named `fib.n` and write the following content:
 
 ```nature title='fib.n'
 import fmt
@@ -50,21 +50,21 @@ var result = fib(30)
 fmt.printf('fib result is %d', result)
 ```
 
-编译并执行
+Compile and execute
 
 ```shell
 > nature build fib.n && ./main
 fib result is 832040
 ```
 
-在上面的示例中，首先通过 import 将 fmt package 引入了进来，这是一个对字符串格式化并输出的库。 接着我们**通过 `fn` 关键字声明了一个函数**，函数名称为 fib，该函数的主要功能是计算斐波那契数列第 n 位的值。
+In the example above, we first import the `fmt` package, which is a library for string formatting and output. Then we **declare a function using the `fn` keyword**. The function, named `fib`, primarily calculates the Fibonacci sequence value at position n.
 
-由于是强类型语言，所以需要声明参数的类型以及返回值的类型。函数内部的 `if` 关键字是控制流语句，其判断条件表达式是否为 true， 并通过 `return` 关键字返回参数变量 n 的值。`fib(n - 1)` 是对 fib 函数的调用，这是一种比较复杂的在函数内部自己调用自己的方式，称为递归调用。
+As this is a strongly typed language, parameter types and return types must be declared. The `if` keyword is a control flow statement that checks whether a given condition is true, and the `return` keyword returns the value of the variable n. `fib(n - 1)` calls the `fib` function, which is a recursive call.
 
-在函数的外部再次通过 `fib(30)` 调用该函数，通并将其结果赋值给 result 变量，如果你写过 c 语言，那么此时 result 同样需要声明类型，但是在 nature 中可以通过 **var 关键字进行自动类型推导**。
+Outside the function, we again call `fib(30)` and assign its result to the `result` variable. If you have experience with C, you'll know that the `result` variable also needs a type declaration, but in nature, **the `var` keyword allows for type inference**.
 
-最后通过 fmt 关键字我们可以调用其中的 printf 方法对字符串进行格式化并输出，%d 标识将 result 格式化成 int 类型。
+Finally, the `printf` method from the `fmt` package formats the string and outputs it, with `%d` indicating that `result` should be formatted as an int.
 
-## 总结
+## Conclusion
 
-👍 通过上面的两个示例，已经展现了 nature 的大部分语法了，到这里其实你已经入门 nature 了，后续章节主要是介绍一些语法的细节。
+👍 Through the above two examples, most of the syntax of nature has been demonstrated. By this point, you have basically gotten the hang of nature. Subsequent chapters will mainly introduce some syntactical details.

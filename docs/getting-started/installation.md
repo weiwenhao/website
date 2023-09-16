@@ -1,49 +1,49 @@
 ---
-title: 安装
+title: Installation
 sidebar_position: 20
 ---
 
-## 平台支持
+## Platform Support
 
-编译构建平台: linux/amd64、darwin/amd64
+Build Platforms: linux/amd64, darwin/amd64
 
-目标运行平台: linux/amd64
+Target Run Platforms: linux/amd64
 
-## 二进制方式安装
+## Binary Installation
 
-从 github releases 中下载与构建平台一致的的安装包并解压。推荐将解压后的 nature 文件夹移动到 /usr/local/ 下，并将 /usr/local/nature/bin 目录加入到系统环境变量即可。
+Download the installation package that matches your build platform from GitHub releases and unzip it. It is recommended to move the unzipped `nature` folder to `/usr/local/` and add the `/usr/local/nature/bin` directory to the system environment variables.
 
-检查是否安装成功，执行命令 `nature --version` 可以看到以下输出
+To check if the installation was successful, execute the `nature --version` command to see the following output:
 
 ```shell
 > nature --version
 nature version x.x.x - release build xxxx-xx-xx
 ```
 
-## docker 方式
+## Docker Method
 
-`docker pull naturelang/nature:latest`  镜像已经安装好了 nature 环境。在宿主机创建 nature 源码目录并进入该目录下执行
+The image `docker pull naturelang/nature:latest` already has the nature environment installed. Create a nature source code directory on the host machine and go into that directory to execute the following:
 
 ```shell
-# 进入到容器内部，此时可以直接执行各种命令
+# Enter the container; you can directly execute various commands now.
 docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest sh
 
-# 从宿主机直接查看版本
+# Check the version directly from the host machine
 docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest nature --version
 
-# 从宿主机直接编译
+# Compile directly from the host machine
 docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest nature build main.n
 
-# 从宿主机直接执行
+# Execute directly from the host machine
 docker run --rm -it -v $PWD:/app --name nature naturelang/nature:latest ./main
 ```
 
 :::tip
-镜像基于 alpine 构建，通过 apk add 可以安装其他软件，如 apk add vim
+The image is built on Alpine. You can install other software via `apk add`, such as `apk add vim`.
 :::
 
-## 交叉编译
+## Cross-Compilation
 
-执行编译命令 `nature build main.n` 时，默认的目标运行平台与当前的构建平台一致，可以通过环境变量 BUILD_OS 和 BUILD_ARCH 来指定编译的目标平台，示例
+When executing the compilation command `nature build main.n`, the default target run platform is the same as the current build platform. You can specify the target platform for compilation using the `BUILD_OS` and `BUILD_ARCH` environment variables, for example:
 
 `BUILD_OS=linux BUILD_ARCH=amd64 nature build main.n`

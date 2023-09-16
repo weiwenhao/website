@@ -1,13 +1,16 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import Translate from '@docusaurus/Translate'; // 导入 Translate 组件
 
-export default function HomepageFeatures(): JSX.Element {
+export default function HomepageCodeExample(): JSX.Element {
     return (
         <section className='homepage-title'>
             <div className="container ">
                 {/* <h1 className="hero__title text--center">Features</h1> */}
-                <h1 className="hero__title text--left" style={{ fontSize: "2.5rem" }}>Code Examples</h1>
+                <h1 className="hero__title text--left" style={{ fontSize: "2.5rem" }}>
+                    <Translate id="homepage.codeExamples.title">Code Examples</Translate>
+                </h1>
                 <div className="row">
                     <div className='col col--6 margin-top--md'>
                         <div className="card">

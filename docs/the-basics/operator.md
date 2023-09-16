@@ -1,56 +1,57 @@
 ---
-title: 运算符
+title: Operator
 sidebar_position: 50
 ---
 
-目前支持的运算符
+Currently Supported Operators
 
-| 优先级 | 关键字 | 使用示例       | 说明                   |
-| ------ | ------ | -------------- | ---------------------- |
-| 1      | ()     | (1 + 1)        | (expr)                 |
-| 2      | -      | -12            | -number_expr 负数      |
-| 2      | ！     | !true          | !bool_expr 逻辑非      |
-| 2      | ~      | ~12            | ~integer_expr 按位取反 |
-| 3      | /      | 1 / 2          | 除                     |
-| 3      | \*     | 1 \* 2         | 乘                     |
-| 3      | %      | 5 % 2          | 余数                   |
-| 4      | +      | 1 + 1          | 加                     |
-| 4      | -      | 1 - 1          | 减                     |
-| 5      | <<     | 100 << 2       | 按位左移               |
-| 5      | >>     | 100 >> 2       | 按位右移               |
-| 6      | >      | 1 > 2          | 大于                   |
-| 6      | >=     | 1 >= 2         | 大于等于               |
-| 6      | <      | 1 < 2          | 小于                   |
-| 6      | <=     | 1 <= 2         | 小于等于               |
-| 7      | ==     | 1 == 2         | 等于                   |
-| 7      | !=     | 1 != 2         | 不等于                 |
-| 8      | &      | 1 & 2          | 按位与                 |
-| 9      | ^      | 1 ^ 2          | 按位异或               |
-| 10     | \|     | 1 \| 2         | 按位或                 |
-| 11     | &&     | true && true   | 逻辑与                 |
-| 12     | \|\|   | true \|\| true | 逻辑或                 |
-| 13     | =      | a = 1          | 赋值运算符             |
-| 13     | %=     | a %= 1         | 相当于 a = a % 1       |
-| 13     | \*=    | a \*= 1        | a = a \* 1             |
-| 13     | /=     | a /= 1         | a = a / 1              |
-| 13     | +=     | a += 1         | a = a + 1              |
-| 13     | -=     | a -= 1         | a = a - 1              |
-| 13     | \|=    | a \|= 1        | a = a \| 1             |
-| 13     | &=     | a &= 1         | a = a & 1              |
-| 13     | ^=     | a ^= 1         | a = a ^ 1              |
-| 13     | <<=    | a <<= 1        | a = a << 1             |
-| 13     | >>=    | a >>= 1        | a = a >> 1             |
+| Priority | Keyword | Example Usage  | Description            |
+| -------- | ------- | -------------- | ---------------------- |
+| 1        | ()      | (1 + 1)        | (expr)                 |
+| 2        | -       | -12            | -number_expr (Negation)|
+| 2        | !       | !true          | !bool_expr (Logical NOT)|
+| 2        | ~       | ~12            | ~integer_expr (Bitwise NOT)|
+| 3        | /       | 1 / 2          | Division               |
+| 3        | *       | 1 * 2          | Multiplication         |
+| 3        | %       | 5 % 2          | Remainder              |
+| 4        | +       | 1 + 1          | Addition               |
+| 4        | -       | 1 - 1          | Subtraction            |
+| 5        | <<      | 100 << 2       | Bitwise Left Shift     |
+| 5        | >>      | 100 >> 2       | Bitwise Right Shift    |
+| 6        | >       | 1 > 2          | Greater Than           |
+| 6        | >=      | 1 >= 2         | Greater Than or Equal  |
+| 6        | <       | 1 < 2          | Less Than              |
+| 6        | <=      | 1 <= 2         | Less Than or Equal     |
+| 7        | ==      | 1 == 2         | Equal To               |
+| 7        | !=      | 1 != 2         | Not Equal To           |
+| 8        | &       | 1 & 2          | Bitwise AND            |
+| 9        | ^       | 1 ^ 2          | Bitwise XOR            |
+| 10       | \|      | 1 \| 2         | Bitwise OR             |
+| 11       | &&      | true && true   | Logical AND            |
+| 12       | \|\|    | true \|\| true | Logical OR             |
+| 13       | =       | a = 1          | Assignment             |
+| 13       | %=      | a %= 1         | Equivalent to a = a % 1|
+| 13       | *=      | a *= 1         | a = a * 1              |
+| 13       | /=      | a /= 1         | a = a / 1              |
+| 13       | +=      | a += 1         | a = a + 1              |
+| 13       | -=      | a -= 1         | a = a - 1              |
+| 13       | \|=     | a \|= 1        | a = a \| 1             |
+| 13       | &=      | a &= 1         | a = a & 1              |
+| 13       | ^=      | a ^= 1         | a = a ^ 1              |
+| 13       | <<=     | a <<= 1        | a = a << 1             |
+| 13       | >>=     | a >>= 1        | a = a >> 1             |
 
 :::tip
-由于 int 数据类型过多，为了能够统一表示，所以后续文档使用 integer 表示整形，float 表示浮点形，number 则包含着两种类型。
+Due to the numerous `int` data types, subsequent documentation will use "integer" to represent integers, "float" to represent floating-point numbers, and "number" to include both types.
 :::
 
-需要注意点细节有
+#### Points to Note
 
-- 运算符按优先级结合，相同优先级时则按照从左往右运算。
+- Operators are grouped by priority. When the priority is the same, they are evaluated from left to right.
 
-- 二元运算符(有两个操作数的运算符) 目前仅支持 number 类型，后续将会支持 string 类型的 + 和 == 运算。
+- Binary operators (operators with two operands) currently support binary operations of the number and string types, where string only supports '+' and comparison operator signs
 
-- 位运算仅支持 integer 类型。
+- Bitwise operations only support the "integer" type.
+
 
 

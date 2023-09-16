@@ -1,13 +1,13 @@
 ---
-title: builtin
+title: Builtin
 sidebar_position: 70
 ---
 
-内置函数不需要通过 import 引入就可以直接调用，也可以称为全局函数。这些函数一般声明 builtin_temp.n 文件中
+Built-in functions are globally accessible and do not need to be imported. They are generally declared in the `builtin_temp.n` file.
 
 ## print/println
 
-定义
+Definition:
 
 ```nature
 fn print(...[any] args) {}
@@ -15,9 +15,9 @@ fn print(...[any] args) {}
 fn println(...[any] args) {}
 ```
 
-仅支持 bool/string/number 类型数据进行打印。println 相比于 print 多了一个 `\n` 并且每个参数直接通过空格进行分隔
+Only bool/string/number types are supported for printing. Compared to `print`, `println` adds a newline character `\n` and separates each argument with a space.
 
-示例
+Example:
 
 ```nature
 println("hello", true, "world")
@@ -29,9 +29,9 @@ println("hello", true, "world")
 
 ## errort
 
-定义
+Definition:
 
-```
+```nature
 type tracet = struct {
     string path
     string ident
@@ -46,19 +46,18 @@ type errort = struct {
 }
 ```
 
-错误处理章节我们已经见过该解构了
+We have already encountered this structure in the error-handling section.
 
 ## sizeof
 
-```
+```nature
 int len = sizeof(int) // 8
 int len = sizeof(f32) // 4
 ```
 
-sizeof 并不是一个内置函数，因为其参数是一个类型。我们可以将 sizeof 理解成一个内置宏。其本质上等同于 `sizeof int`。
+`sizeof` is not a built-in function per se because its argument is a type. You can think of `sizeof` as a built-in macro. Essentially, it is equivalent to writing `sizeof int`.
 
-
-## 保留关键字
+## Reserved Keywords
 
 ```nature
 continue
@@ -113,4 +112,4 @@ sizeof
 
 ---
 
-🎉 来到这里说明你已经学习完毕了 nature 的基础语法概念，你已经能够使用 nature 进行软件开发。如果你想要更进一步，请继续走下去。
+🎉 Congratulations! If you've reached this point, you've mastered the basic syntax and concepts of the Nature language and are ready for software development using Nature. If you want to go further, please continue your journey.
