@@ -115,10 +115,10 @@ const config = {
                 label: "Discussions",
                 href: "https://github.com/nature-lang/nature/discussions",
               },
-              {
-                label: "Discard",
-                href: "https://discord.gg/s5x542RF",
-              },
+            //   {
+            //     label: "Discard",
+            //     href: "https://discord.gg/s5x542RF",
+            //   },
             ],
           },
           {
