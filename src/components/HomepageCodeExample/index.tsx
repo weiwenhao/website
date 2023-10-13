@@ -15,7 +15,7 @@ export default function HomepageCodeExample(): JSX.Element {
                     <div className='col col--6 margin-top--md'>
                         <div className="card">
                             <div className="card__image">
-                                <img src="https://raw.githubusercontent.com/weiwenhao/pictures/main/blogs20230630115906.png" alt="error handle" />
+                                <img src="https://raw.githubusercontent.com/weiwenhao/pictures/main/blogserror_handle_3.jpeg" alt="error handle" />
                             </div>
                             <div className="card__body">
                                 <h4 className='text--center'>Error handle</h4>
