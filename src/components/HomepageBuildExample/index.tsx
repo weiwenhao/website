@@ -37,7 +37,7 @@ fmt.printf('fib result is %d', fib(30))`}
                         </p>
                         <p>
                             <Translate id="homepageCode.resultAssignment">
-                                The result of the function call was assigned to a variable named "result" and format the output using fmt.printf
+                                Call the fib function and pass its result to fmt.Printf for output.
                             </Translate>
                         </p>
                         <div style={{ marginTop: "0em" }}>
@@ -51,12 +51,12 @@ fmt.printf('fib result is %d', fib(30))`}
                                             </Link>
                                         ),
                                     }}>
-                                    {'{Install} nature and execute the compile command'}
+                                    {'Install nature and execute the compile command'}
                                 </Translate>
                             </p>
                             <CodeBlock
                                 language='shell'>
-                                {`> nature build -o fib fib.n && ./fib
+                                {`> nature build fib.n && ./main
 fib result is 832040`}
                             </CodeBlock>
                         </div>
