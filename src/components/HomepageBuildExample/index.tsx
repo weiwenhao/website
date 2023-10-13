@@ -37,21 +37,21 @@ fmt.printf('fib result is %d', fib(30))`}
                         </p>
                         <p>
                             <Translate id="homepageCode.resultAssignment">
-                                Call the fib function and pass its result to fmt.Printf for output.
+                                Call the fib function and pass its result to fmt.printf for output.
                             </Translate>
                         </p>
-                        <div style={{ marginTop: "0em" }}>
+                        <div style={{ marginTop: "2.8em" }}>
                             <p>
                                 <Translate
                                     id="homepageCode.installExecute"
                                     values={{
                                         Install: (
                                             <Link href='/docs/getting-started/installation'>
-                                                <Translate id="homepageCode.installExecutePartLink">nature</Translate>
+                                                <Translate id="homepageCode.installExecutePartLink">Install</Translate>
                                             </Link>
                                         ),
                                     }}>
-                                    {'Install nature and execute the compile command'}
+                                    {'{Install} nature and execute the compile command'}
                                 </Translate>
                             </p>
                             <CodeBlock
