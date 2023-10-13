@@ -90,13 +90,13 @@ fn buy(int amount):(string, int) {
 	return ('apple', amount)
 }
 
-var (balance, product) = buy(100)
+var (product, balance) = buy(100)
 
 println(balance, ' ', product)
 ```
 
 示例中函数返回值通过 `(string, int)` 声明了一个 tuple 类型。 `return ("apple", amount)` 则是创建了一个 tuple 实例返回，这并不违反单返回值的情况。
 
-`var (balance, product)` 这就是一种新的语法形式，称为 tuple 解构赋值。这是为了能够模拟函数多返回值而开发的一种语法，在解构赋值中必须使用 var 进行自动多类型推导，而不能通过类型类型，因为这很容易造成误导，且无法不美观，所以语法上禁止了这种情况。
+`var (product, balance)` 这就是一种新的语法形式，称为 tuple 解构赋值。这是为了能够模拟函数多返回值而开发的一种语法，在解构赋值中必须使用 var 进行自动多类型推导，而不能通过类型类型，因为这很容易造成误导，且无法不美观，所以语法上禁止了这种情况。
 
 后续的部分将会更加详细的说明 tuple 的使用方法。

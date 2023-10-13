@@ -89,13 +89,13 @@ fn buy(int amount):(string, int) {
 	return ('apple', amount)
 }
 
-var (balance, product) = buy(100)
+var (product, balance) = buy(100)
 
-println(balance, ' ', product)
+println(product, ' ', balance)
 ```
 
 In the example, the function's return type is declared as a tuple type `(string, int)`. `return ('apple', amount)` creates and returns a tuple instance, which doesn't violate the single return value rule.
 
-`var (balance, product)` is a new syntax form known as tuple destructuring assignment. This syntax was developed to simulate multiple return values from functions. In destructuring assignments, you must use `var` for automatic multi-type inference, and explicit typing is not allowed as it could be misleading and is not aesthetically pleasing. Therefore, this is forbidden in the syntax.
+`var (product, balance)` is a new syntax form known as tuple destructuring assignment. This syntax was developed to simulate multiple return values from functions. In destructuring assignments, you must use `var` for automatic multi-type inference, and explicit typing is not allowed as it could be misleading and is not aesthetically pleasing. Therefore, this is forbidden in the syntax.
 
 More details on the use of tuples will follow in subsequent sections.
