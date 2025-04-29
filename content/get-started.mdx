@@ -6,12 +6,12 @@ Nature is a general-purpose open source programming language and compiler that a
 
 ## Features 
   
-- ✓ Simple, natural, and consistent syntax design
+- ✓ Simple, natural, consistent syntax design, even programming beginners can easily grasp, quickly get started!
 - ✓ No dependency on llvm and VM, compiles directly to target platform machine code and supports cross-compilation.
 - ✓ Simple deployment, purely static linking based on musl libc, no additional dependencies, good cross-platform characteristics
 - ✓ Comprehensive type system with support for generics, union types, interfaces, null-value safety, etc.
 - ✓ High-performance GC implementation with a very short STW (Stop The World)
-- ✓ High-performance shared-stack concatenation implementation, capable of millions of concatenation switches per second
+- ✓ High-performance shared-stack Coroutine implementation, capable of millions of Coroutine switches per second
 - ✓ Built-in libuv to handle IO event loops in collaboration with the concatenators  
 - ✓ High-performance runtime and compiler based on a pure C implementation
 - ✓ Modularity and package management system npkg
@@ -27,62 +27,44 @@ Nature is a general-purpose open source programming language and compiler that a
 - ○ Compile to readable golang programming language.
 
 
-## Project Overview 
+## Project Overview
 
-The nature programming language has reached a usable version, and the syntax APIs are basically stable, there will not be any drastic changes before version 1.0, but there are some minor syntax changes.
+The nature programming language has reached an early usable version, and the syntax API is basically stable and will not change significantly before version 1.0.
 
-The current version of nature source code supports compilation on the following target platforms 
-- linux/amd64 
-- linux/arm64 
-- darwin/amd64 
-- darwin/arm64 
+The current version of nature source code supports compilation on the following target platforms
+- linux/amd64
+- linux/arm64
+- darwin/amd64
+- darwin/arm64
+
+nature includes a set of test cases and standard libraries to test the usability of basic functionality and syntax, and a small set of projects to test overall usability, but has not yet been tested in medium to large scale projects.
+
+The core work to follow will be to improve the usability of the nature programming language, including standard library refinement, user feedback collection, and bug fixes.
   
-nature includes a set of test cases and a standard library to test the usability of the syntax, but it has not been tested on a medium to large scale project, and so there are still many bugs. 
-
-Major work in the next versions of The main work is 
-- Standard library refinement 
-- Gathering user feedback 
-- Project validation and bug fixes 
-- Refinement of language features 
-
 ## Design Philosophy
 
-golang is the programming language I work with. It has a simple syntax, a very good and high-performance cross-platform compiler and runtime implementation, an advanced concurrent design style and high-performance network I/O, as well as good support for standard libraries. However, there are some inconveniences.
+Golang is the programming language I use at work. Its syntax is simple, and it boasts an excellent, high-performance cross-platform compiler and runtime implementation. It features an advanced coroutine design style, high-performance network I/O, and comprehensive standard library support. However, there are also some inconveniences:
 
-- Syntax is too simple, leading to lack of expressiveness.
-- Type system is not perfect, lack of nullable, enum parameters, generic (now available), etc.
-- Error handling is cumbersome.
-- Automatic GC and preemptive scheduling are excellent, but they limit the scope of golang.
+- The overly simple syntax leads to insufficient expressive power
+- The type system is not perfect, lacking features such as nullable types, enum parameters, and generics (which are now available)
+- The error handling mechanism is cumbersome
+- Although the design of automatic GC and preemptive scheduling is excellent, it also limits the application scope of golang
 
-nature is designed to be a continuation and optimization of the golang programming language, and pursues certain differences, as described in the Features section.
+The design philosophy of nature is a continuation and optimization of the golang programming language, while also pursuing certain differences, as described in the features section. Based on the current features of the nature programming language, it is suitable for fields such as game engines and game development, scientific computing and AI, operating systems and IoT, as well as web development.
 
-Based on the existing features of the nature programming language, it is suitable for game engines and game development, scientific computing and AI, OS and IoT, and web development.
-
-
-## Suggestions for Use
+## Recommendations for Use
 
 As an early programming language, it is currently suitable for the following types of developers
-1. technology explorers
-    - Developers who are curious about new technologies
-    - Developers who are curious about new technologies, willing to try new things, and able to live with the bugs that existed in earlier versions.
-    - Interested in participating in discussions about language design and improvement.
 
-2. language developers and researchers
-    - Developers interested in programming language design and implementation.
-    - Researchers in compilation principles
-    - Learners who want to learn how to implement a programming language.
+- Technical explorers - people who are willing to try new things, are comfortable with the bugs that existed in earlier versions, and are interested in participating in discussions about language design and improvement.
+- Language developers and researchers - developers interested in programming language design and implementation, learning about compilation principles, and learning how to implement a programming language.
+- Feedback Contributors - developers who are willing to provide feedback on their use of the language, are able to submit bug reports and suggestions for improvements, and are interested in participating in the project and in improving the standard library.
 
-3. Feedback Contributors
-    - Developers who are willing to provide feedback on their use of the language.
-    - Developers who are willing to provide feedback on their use of the language.
-    - Interested in contributing to projects and standards library improvements
-
-Not applicable to the following types of developers
-
-1. enterprise users who need to use in production environment
-2. project developers who require high stability.
-3. Programming beginners
-4. developers who need a lot of third-party library support
+Not for the following types of developers
+- Enterprise users who need to use the language in production environments
+- Project developers with high stability requirements
+- Beginners looking for a programming related job
+- Developers who need a lot of third-party library support
 
 
 ## Installation
@@ -162,10 +144,13 @@ Specify that the output binary is called hello
 
 ## Example project
 
-1. [parker](https://github.com/weiwenhao/parker) lightweight packaging tool
-2. [llama.n](https://github.com/weiwenhao/llama.n) Llama2 nature language implementation
-3. [tetris](https://github.com/weiwenhao/tetris) Tetris based on raylib, macos only.
-4. [playground](https://github.com/weiwenhao/playground) playground server api implementation
+[parker](https://github.com/weiwenhao/parker) lightweight packaging tool
+
+[llama.n](https://github.com/weiwenhao/llama.n) Llama2 nature language implementation
+
+[tetris](https://github.com/weiwenhao/tetris) Tetris based on raylib, macos only.
+
+[playground](https://github.com/weiwenhao/playground) playground server api implementation
 
 ## Editor support
 

@@ -21,7 +21,7 @@ fn main() {
 
   http: `import http
 
-fn main():void! {
+fn main() {
     var app = http.server()
 
     app.get('/', fn(http.request_t req, ptr<http.response_t> res) {
@@ -55,7 +55,7 @@ fn delay_sum(int a, int b):int {
     return a + b
 }
 
-fn main():void! {
+fn main() {
   var fut = go delay_sum(1, 1) // eq: future_t<int> fut = @async(delay_sum(1, 1), 0)
   var result = fut.await()
 
@@ -93,7 +93,7 @@ fn rem(int dividend, int divisor):int! {
 
 channel: `import co
 
-fn main():void! {
+fn main() {
     var ch = chan_new<string>()
 
     go delay_send(ch)

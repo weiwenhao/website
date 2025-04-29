@@ -46,6 +46,13 @@ export default function RootLayout({
             </div>
             <div className="flex items-center gap-2">
               <Link
+                href="https://nature-lang.cn"
+                className="p-2 hover:text-primary flex items-center justify-center"
+                style={{ fontWeight: 500, fontSize: 17 }}
+              >
+                <span className="inline-block align-middle">CN</span>
+              </Link>
+              <Link
                 href="https://github.com/nature-lang/nature"
                 target="_blank"
                 className="p-2 hover:text-primary"
