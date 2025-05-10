@@ -60,14 +60,17 @@ export default function Home() {
                 <h3 className="text-xl font-semibold mb-4">Clean & Natural Syntax</h3>
                 <p className="text-gray-600 dark:text-gray-300">Simple, natural, consistent syntax design, even programming beginners can easily grasp, quickly get started!</p>
               </div>
+
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
                 <h3 className="text-xl font-semibold mb-4">Cross-Platform</h3>
                 <p className="text-gray-600 dark:text-gray-300">No dependency on llvm and VM, compiles directly to target platform machine code and supports cross-compilation.</p>
               </div>
+
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
                 <h3 className="text-xl font-semibold mb-4">High Performance</h3>
                 <p className="text-gray-600 dark:text-gray-300">High-performance GC, High-performance Coroutine and Pure C implementation runtime</p>
               </div>
+
             </div>
             <div className="text-center text-gray-400 mt-4">Click to Get Started more feature support……</div>
           </section>

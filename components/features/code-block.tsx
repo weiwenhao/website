@@ -8,7 +8,7 @@ const CODE_EXAMPLES = {
   fib: `import fmt  
 
 fn fib(int n):int {
-    if (n <= 1) {
+    if n <= 1 {
         return n
     }
     return fib(n - 1) + fib(n - 2)
@@ -56,7 +56,7 @@ fn delay_sum(int a, int b):int {
 }
 
 fn main() {
-  var fut = go delay_sum(1, 1) // eq: future_t<int> fut = @async(delay_sum(1, 1), 0)
+  var fut = go delay_sum(1, 1) // eq: future_t<int> fut = @async(delay_sum(1, 1))
   var result = fut.await()
 
   println('result =', result)
@@ -84,14 +84,14 @@ fn rem(int dividend, int divisor):int! {
         is null -> -1
     }
 
-    assert(bar== -1) 
+    assert(bar == -1) 
 
     if foo is int {
         assert(foo == -1)
     }
 }`,
 
-channel: `import co
+  channel: `import co
 
 fn main() {
     var ch = chan_new<string>()
@@ -139,15 +139,15 @@ export function CodeBlock() {
           language="js"
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre 
-              className={className + " p-4 font-mono"} 
-              style={{ 
-                ...style, 
+            <pre
+              className={className + " p-4 font-mono"}
+              style={{
+                ...style,
                 backgroundColor: 'transparent',
                 margin: 0,
                 lineHeight: '1.4',
-                fontFamily: 'Operator Mono, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
-                fontWeight: '500',  // 添加这一行来控制字体粗细
+                fontFamily: 'Operator Mono, IBM Plex Mono, JetBrains Mono, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                fontWeight: '400',  // 添加这一行来控制字体粗细
                 fontSize: '0.9rem'  // 或使用 style 属性
               }}
             >

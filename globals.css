@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -81,6 +83,7 @@
 @tailwind utilities;
 
 @layer utilities {
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -135,7 +138,7 @@
   /* 应用 shadcn/ui TypographyInlineCode 的样式 */
   @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-normal;
   /* 保留或调整自定义字体 */
-  font-family: 'Operator Mono', 'JetBrains Mono', 'Monaco', 'Ubuntu Mono', 'Courier New', monospace;
+  font-family: 'Operator Mono', 'IBM Plex Mono', 'JetBrains Mono', 'Monaco', 'Ubuntu Mono', 'Courier New', monospace;
 }
 
 
@@ -151,7 +154,7 @@ figure[data-rehype-pretty-code-figure]>pre {
   /* 确保背景色不会覆盖边框，如果 pre 有内联背景色，可能需要 !important */
   background-color: transparent !important;
   /* 尝试添加这个，或者调整 pre 的内联样式 */
-  font-family: 'Operator Mono', 'JetBrains Mono', 'Monaco', 'Ubuntu Mono', 'Courier New', monospace;
+  font-family: 'Operator Mono', 'IBM Plex Mono', 'JetBrains Mono', 'Monaco', 'Ubuntu Mono', 'Courier New', monospace;
 }
 
 /* 全局滚动条美化样式 */
@@ -161,22 +164,27 @@ figure[data-rehype-pretty-code-figure]>pre {
   height: 8px;
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(120, 120, 128, 0.15);
   border-radius: 8px;
   transition: background 0.3s;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(120, 120, 128, 0.35);
 }
+
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
 /* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: rgba(120,120,128,0.15) transparent;
+  scrollbar-color: rgba(120, 120, 128, 0.15) transparent;
 }
+
 html:hover {
-  scrollbar-color: rgba(120,120,128,0.35) transparent;
+  scrollbar-color: rgba(120, 120, 128, 0.35) transparent;
 }
