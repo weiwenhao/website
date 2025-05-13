@@ -91,6 +91,52 @@ fn rem(int dividend, int divisor):int! {
     }
 }`,
 
+  match: `fn main() {
+    int n = 3
+    match n {
+        1|2 -> println('one or two')
+        3 -> println('three') // here
+        _ -> println('something else')
+    }
+
+    var res = match {
+        (n < 0)  -> 1
+        _ -> 2
+    }
+    println(res) // 2
+}`,
+
+
+  interface: `type measurable = interface{
+	fn perimeter():int
+	fn area():int
+}
+
+type rectangle: measurable = struct{
+	int width
+	int height
+}
+
+fn rectangle.area():int {
+	return self.width * self.height
+}
+fn rectangle.perimeter():int {
+	return 2 * (self.width + self.height)
+}
+
+fn print_shape(measurable s) {
+    println(s.area(), s.perimeter())
+}
+
+fn main():void! {
+    var r = rectangle{width=3, height=4}
+    print_shape(r)
+
+    var r1 = new rectangle(width=15, height=18)
+    print_shape(r1)
+}
+`,
+
   channel: `import co
 
 fn main() {
