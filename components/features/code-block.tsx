@@ -63,7 +63,7 @@ fn main() {
 }`,
 
   error: `fn main() {
-     var result = rem(10, 0) catch e {
+    var result = rem(10, 0) catch e {
         println(e.msg())
         break 1
     }
@@ -100,7 +100,7 @@ fn rem(int dividend, int divisor):int! {
     }
 
     var res = match {
-        (n < 0)  -> 1
+        (n < 0) -> 1
         _ -> 2
     }
     println(res) // 2
@@ -128,7 +128,7 @@ fn print_shape(measurable s) {
     println(s.area(), s.perimeter())
 }
 
-fn main():void! {
+fn main() {
     var r = rectangle{width=3, height=4}
     print_shape(r)
 
