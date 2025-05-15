@@ -1,6 +1,46 @@
 ---
-title: "Nature Programming Language Available Releases"
-date: 2025-05-05
+title: "Nature 0.5 Released，First Available Version"
+date: 2025-05-15
 ---
 
-TODO
+With the release of version 0.5, the original design goals of the nature programming language have been accomplished, and the syntax API is basically stable and will not change significantly before version 1.0.
+
+The current version of the nature source code supports compilation on the following target platforms
+- linux/amd64
+- linux/arm64
+- darwin/amd64
+- darwin/arm64
+
+nature includes a set of test cases and standard libraries to test the usability of basic functionality and syntax, and a small set of projects to test overall usability, but has not yet been tested in medium to large scale projects.
+
+The core work to follow will be to improve the usability of the nature programming language, including standard library refinement, performance optimization, user feedback collection, and bug fixes.
+
+installer [https://github.com/nature-lang/nature/releases](https://github.com/nature-lang/nature/releases)
+
+### What's Changed
+
+- Implement coroutines based on [hnes/libaco](https://github.com/hnes/libaco) and refactor runtime based on coroutines
+- GC is further improved and fully supports coroutines
+- Error handling refactoring based on coroutines, with try + catch syntax
+- Integration with [libuv](https://github.com/libuv/libuv) to handle network IO
+- type interface support
+- Panopticon refactoring and refinement
+- Compiling os supports darwin
+- Compiling arch supports arm64
+- See help via `nature -h`
+- Abandon preemptive scheduling in favor of collaborative scheduling (preemptive scheduling requires huge sacrifices)
+- LIR add safepoint to assist collaborative scheduling
+- Refactor method definition to use fn extend
+- Adaptation of array type declarations to use `[T;n]`
+- cptr is renamed to `anyptr`, `raw_ptr<T>` is renamed to `rawptr<T>`
+- channel and select support
+- match syntax support
+- Standard library adds http/fs/io/mem/process/unsafe/co.mutex/os.signal
+- strings Standard library refactoring based on fn extend
+- Use fn main as entry point
+- Remove template and add `#linkid` function tag to customize linker identifier
+- Use testar files for use case testing
+- Add built-in macros, e.g. `@sizeof(T)`
+- cmake add test case test_runtime_debug, support runtime debug
+- Official website refactoring and [playground](https://nature-lang.org/playground) support
+- lsp support [nature-lang/nls](https://github.com/nature-lang/nls)
