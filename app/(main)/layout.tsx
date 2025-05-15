@@ -6,6 +6,7 @@ import { Github, Twitter } from 'lucide-react';
 import Image from 'next/image';
 
 import { LandingNav } from "@/components/features/landing-nav";
+import { LanguageSwitcher } from "@/components/features/language-switcher";
 
 const font = Oxanium({
   weight: "400",
@@ -45,13 +46,7 @@ export default function RootLayout({
 
             </div>
             <div className="flex items-center gap-2">
-              <Link
-                href="https://nature-lang.cn"
-                className="p-2 hover:text-primary flex items-center justify-center"
-                style={{ fontWeight: 500, fontSize: 17 }}
-              >
-                <span className="inline-block align-middle">CN</span>
-              </Link>
+              <LanguageSwitcher />
               <Link
                 href="https://github.com/nature-lang/nature"
                 target="_blank"
