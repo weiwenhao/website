@@ -81,7 +81,7 @@ type sockaddr_in = struct {
     u16 sin_family     // Address family (AF_INET)
     u16 sin_port       // Port number
     u32 sin_addr       // IPv4 address
-    arr<u8,8> sin_zero // Padding bytes
+    [u8;8] sin_zero // Padding bytes
 }
 ```
 
@@ -93,7 +93,7 @@ type sockaddr_in6 = struct {
     u16 sin6_family   // Address family (AF_INET6)
     u16 sin6_port     // Port number
     u32 sin6_flowinfo // Flow information
-    arr<u32,4> sin6_addr // IPv6 address
+    [u32;4] sin6_addr // IPv6 address
     u32 sin6_scope_id  // Scope ID
 }
 ```

@@ -13,7 +13,7 @@ type server_t = struct {
     fn():void! handler_fn
     string addr
     int port
-    arr<{string:callback_fn},8> routers
+    [{string:callback_fn};8] routers
     anyptr uv_server_handler
     anyptr listen_co
 }
@@ -154,16 +154,13 @@ import http
 fn main() {
     var app = http.server()
 
-    app.get("/", fn(req, res) {
-        res.send("Hello World!")
+    app.get('/', fn(http.request_t req, ptr<http.response_t> res) {
+        res.send('hello nature')
     })
 
-    app.post("/api", fn(req, res) {
-        res.content_type = "application/json"
-        res.send("{\"status\": \"success\"}")
-    })
 
-    app.listen(8080)!
+    println('server will listen on port 8888 and block')
+    app.listen(8888)
 }
 ```
 

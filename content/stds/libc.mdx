@@ -41,7 +41,7 @@ type dirent_t = struct {
     u16 reclen   // Record length
     u16 namlen   // Filename length
     u8 t         // File type
-    arr<u8,1024> name // Filename
+    [u8;1024] name // Filename
 }
 ```
 
@@ -205,35 +205,6 @@ fn roundf(f32 x):f32
 
 ```nature
 fn round(f64 x):f64
-```
-
-## Usage Example
-
-```nature
-import libc
-
-fn main() {
-    // Get current working directory
-    var path = new arr<u8>(256)
-    libc.getcwd(path.ref(), path.len())
-
-    // Open directory
-    var dir = libc.opendir(path.ref())
-    if dir == null {
-        println("Failed to open directory")
-        return
-    }
-
-    // Read directory contents
-    var entry = libc.readdir(dir)
-    while entry != null {
-        // Process directory entry
-        entry = libc.readdir(dir)
-    }
-
-    // Close directory
-    libc.closedir(dir)
-}
 ```
 
 ## Notes
