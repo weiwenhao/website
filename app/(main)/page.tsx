@@ -123,7 +123,7 @@ export default function Home() {
                 href="https://github.com/linky6565"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-80 flex flex-row items-center gap-2" // 修改点：将 flex-col 改为 flex-row
+                className="transition-opacity hover:opacity-80 flex flex-row items-center gap-2" 
               >
                 <img
                   src="https://github.com/linky6565.png"
@@ -144,6 +144,20 @@ export default function Home() {
                   alt="JetBrains logo"
                   className="h-12"
                 />
+              </Link>
+
+              <Link
+                href="https://github.com/cn-lang"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80 flex flex-row items-center gap-2" 
+              >
+                <img
+                  src="https://github.com/cn-lang.png"
+                  alt="cn-lang logo"
+                  className="h-12 w-12 rounded-full"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">cn-lang</span>
               </Link>
 
               {/* New Sponsor End */}
