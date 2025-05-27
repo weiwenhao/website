@@ -2,12 +2,7 @@ import type { Metadata } from "next";
 import { Oxanium } from "next/font/google";
 import "@/globals.css";
 import Link from 'next/link';
-import { Github, Twitter, Heart } from 'lucide-react';
-import Image from 'next/image';
-import { Button } from "@/components/ui/button";
-
-import { LandingNav } from "@/components/features/landing-nav";
-import { LanguageSwitcher } from "@/components/features/language-switcher";
+import { Github, Twitter } from 'lucide-react';
 import { Header } from "@/components/features/header";
 
 const font = Oxanium({
