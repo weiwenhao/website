@@ -312,7 +312,7 @@ Nature supports extending both built-in and custom types with methods.
 
 **Built-in Types**
 
-Built-in types that support extension include: `bool`, `string`, `int`, `int8`, `int16`, `int32`, `int64`, `uint`, `uint8`, `uint16`, `uint32`, `uint64`, `float`, `float32`, `float64`, `chan`, `vec`, `map`, `set`, `tuple`.
+Built-in types that support extension include: `bool`, `string`, `int`, `i8`, `i16`, `i32`, `i64`, `uint`, `u8`, `u16`, `u32`, `u64`, `float`, `f32`, `f64`, `chan`, `vec`, `map`, `set`, `tuple`.
 
 Example of adding a method to a built-in type:
 
@@ -506,7 +506,7 @@ type person = struct {
 // Struct initialization; p is initialized on the stack
 var p = person{
     name = "Alice",
-    age = 25
+    age = 25,
 }
 
 // Using new initializes on the heap and obtains a struct pointer
@@ -653,7 +653,7 @@ for v in list {
 
 ### map
 
-`map` is nature's built-in associative array type for storing key-value pairs.
+`map` is nature's built-in associative array type for storing key-value pairs and stored on the heap.
 
 > Not thread-safe
 
@@ -760,7 +760,7 @@ var (list[0], list[1]) = (2, 4) // x Expressions are not allowed on the left sid
 `arr` is a fixed-size array, consistent with the data structure in C.
 
 ```nature
-[u8;3] array = [1, 2, 3] // Declare an array of length 12 with elements of type u8
+[u8;3] array = [1, 2, 3] // Declare an array of length 3 with elements of type u8
 array[0] = 12
 array[1] = 24
 var a = array[7]
@@ -1156,7 +1156,7 @@ For union types, you can use `is` for type matching. When the match subject is `
 any value = 2.33
 var result = match value {
     is int -> 0.0
-    is float -> value // value is automatically asserted to float type: var value = value as float
+    is float -> value // value is automatically asserted to float type: var result = value as float
     _ -> 0.0
 }
 ```
@@ -1964,7 +1964,7 @@ var s = person_t{ // No space between struct alias identifier and '{'
 }
 
 // 1. Function definition '{' should be on the same line as the function declaration
-// 2. There should be a space between the return parameters and ')'
+// 2. There should not be a space between the return parameters and ')'
 // 3. There should be a space between each parameter
 fn test(int arg1, int arg2):int {
 
