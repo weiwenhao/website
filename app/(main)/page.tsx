@@ -160,6 +160,20 @@ export default function Home() {
                 <span className="text-sm text-gray-700 dark:text-gray-300">cn-lang</span>
               </Link>
 
+              <Link
+                href="https://github.com/zhangchunlin"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80 flex flex-row items-center gap-2" 
+              >
+                <img
+                  src="https://github.com/zhangchunlin.png"
+                  alt="zhangchunlin logo"
+                  className="h-12 w-12 rounded-full"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">zhangchunlin</span>
+              </Link>
+
               {/* New Sponsor End */}
             </div>
           </section>
