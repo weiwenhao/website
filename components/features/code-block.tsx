@@ -24,7 +24,7 @@ fn main() {
 fn main() {
     var app = http.server()
 
-    app.get('/', fn(http.request_t req, ptr<http.response_t> res) {
+    app.get('/', fn(http.request_t req, ptr<http.response_t> res):void! {
         res.send('hello nature')
     })
 
@@ -65,7 +65,7 @@ fn main() {
   error: `fn main() {
     var result = rem(10, 0) catch e {
         println(e.msg())
-        break 1
+        1
     }
     println(result)
 }
@@ -154,7 +154,23 @@ fn main() {
 fn delay_send(chan<string> ch):void! {
     co.sleep(1000)
     ch.send('hello ch')
+}`,
+
+  json: `import json
+
+type book_t = struct{
+    string title
+    string author
+}
+
+fn main() {
+    var str = \`{"title":"杀死一只知更鸟","author":"Harper Lee"}\`
+
+    var book = json.deserialize<book_t>(str)
+
+    println(book.title, book.author) // 杀死一只知更鸟 Harper Lee
 }`
+
 
 };
 

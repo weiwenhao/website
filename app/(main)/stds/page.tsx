@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation'
-import { getStdLibs } from '@/lib/get-stdlibs'
+import { getStdLibsList } from '@/lib/stdlibs-config'
 
 export default async function DefaultPage() {
-  // 动态获取标准库列表并重定向到第一个标准库
-  const stdLibs = await getStdLibs()
+  // Get standard library list from configuration and redirect to first standard library
+  const stdLibs = getStdLibsList()
   const firstLib = stdLibs.length > 0 ? stdLibs[0].slug : 'co'
   
   redirect(`/stds/${firstLib}`)

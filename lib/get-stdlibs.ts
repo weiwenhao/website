@@ -1,35 +1,47 @@
 'use server'
 
-import { readdirSync } from 'fs'
-import { join } from 'node:path'
-
-export interface StdLib {
-  name: string
-  slug: string
+export interface StdLibContent {
+  content: string
+  metadata?: {
+    title?: string
+    description?: string
+    [key: string]: string | number | boolean | undefined
+  }
 }
 
 /**
- * 动态获取标准库列表
- * 通过读取content/stds目录下的所有mdx文件
+ * Fetch standard library content from remote repository
+ * @param slug - The standard library slug (e.g., 'fmt', 'io')
+ * @returns Promise with the Markdown content and metadata
  */
-export async function getStdLibs(): Promise<StdLib[]> {
+export async function getStdLibContent(slug: string): Promise<StdLibContent | null> {
   try {
-    const stdLibsDir = join(process.cwd(), 'content/stds')
-    const files = readdirSync(stdLibsDir)
+    const response = await fetch(
+      `https://raw.githubusercontent.com/nature-lang/nature/refs/heads/master/std/${slug}/README.md`,
+      {
+        cache: 'force-cache', // Cache for 1 hour
+        next: { revalidate: 3600 } // Revalidate every hour
+      }
+    )
+
+    if (!response.ok) {
+      console.error(`Failed to fetch std lib content for '${slug}': ${response.status}`)
+      return null
+    }
+
+    const content = await response.text()
     
-    // 过滤出所有mdx文件并转换为标准库对象
-    return files
-      .filter(file => file.endsWith('.mdx'))
-      .map(file => {
-        const slug = file.replace('.mdx', '')
-        return {
-          name: slug,
-          slug: slug
-        }
-      })
-      .sort((a, b) => a.name.localeCompare(b.name)) // 按名称字母顺序排序
+    // Extract basic metadata from content if needed
+    // For now, just return the raw content
+    return {
+      content,
+      metadata: {
+        title: slug,
+        description: `Standard library documentation for ${slug}`
+      }
+    }
   } catch (error) {
-    console.error('get std fils faild:', error)
-    return [] // 出错时返回空数组
+    console.error(`Failed to get std lib content for '${slug}':`, error)
+    return null
   }
 }

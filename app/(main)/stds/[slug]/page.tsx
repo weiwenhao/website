@@ -1,4 +1,7 @@
 import TableOfContents from '@/components/features/table-of-contents'
+import RemoteMDXRenderer from '@/components/features/remote-mdx-renderer'
+import { getStdLibContent } from '@/lib/get-stdlibs'
+import { notFound } from 'next/navigation'
 
 export default async function Page({
     params,
@@ -6,12 +9,21 @@ export default async function Page({
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params
-    const { default: Post } = await import(`@/content/stds/${slug}.mdx`)
+    
+    // Fetch content from remote repository
+    const stdLibContent = await getStdLibContent(slug)
+    
+    if (!stdLibContent) {
+        notFound()
+    }
 
     return (
         <div className="flex flex-col xl:flex-row mx-auto">
             <div className="w-full min-w-0" >
-                <Post />
+                <RemoteMDXRenderer 
+                    content={stdLibContent.content}
+                    className="prose prose-gray max-w-none"
+                />
             </div>
             <TableOfContents />
         </div>
@@ -19,11 +31,11 @@ export default async function Page({
 }
 
 export async function generateStaticParams() {
-    // 动态获取标准库列表
-    const { getStdLibs } = await import('@/lib/get-stdlibs')
-    const stdLibs = await getStdLibs()
+    // Get standard library list from configuration (build-time optimized)
+    const { getStdLibsList } = await import('@/lib/stdlibs-config')
+    const stdLibs = getStdLibsList()
 
-    // 转换为Next.js需要的格式
+    // Convert to Next.js required format
     return stdLibs.map(lib => ({
         slug: lib.slug
     }))

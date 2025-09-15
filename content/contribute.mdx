@@ -24,6 +24,9 @@ rm -rf build-runtime && cmake -B build-runtime -S runtime -DCMAKE_BUILD_TYPE=Rel
 
 # linux/arm64 architecture: Requires the aarch64-linux-musl-gcc compiler installed on the build machine.
 rm -rf build-runtime && cmake -B build-runtime -S runtime -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-arm64-toolchain.cmake && cmake --build build-runtime --target runtime
+
+# linux/riscv64 architecture: Requires the riscv64-linux-musl-gcc compiler installed on the build machine.
+rm -rf build-runtime && cmake -B build-runtime -S runtime -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-riscv64-toolchain.cmake && cmake --build build-runtime --target runtime
 ```
 
 Compiling the runtime generates `libruntime.a`, which is automatically placed in the corresponding architecture-specific subdirectory under `lib`, for example: `nature/lib/linux_arm64/libruntime.a`.
@@ -327,9 +330,9 @@ This module builds the Control Flow Graph (CFG) for the compiler.
       - Implemented via `cfg_pruning`.
       - Removes basic blocks unreachable from the entry block.
       - Maintains predecessor and successor relationships between basic blocks.
-4.  Return/Break Check:
+4.  Return Check:
       - Return statement check: Ensures all execution paths have a return statement.
-      - Break statement check: Ensures correct break statements within `match`/`catch` structures.
+      - Ret statement check: Ensures correct Ret statements within `match`/`catch` structures.
 
 ## SSA
 

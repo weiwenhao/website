@@ -1,44 +1,34 @@
-# Syntax Documentation
+# Syntax Document
 
 ## Source Code Structure
 
-This file `main.n` is a simple program written in the Nature programming language.
+Nature source code uses `.n` as the file extension, for example `main.n`. Here's a simple program example:
 
 ```nature showLineNumbers
-import fmt
+import fmt // import module declaration, fmt module is a standard library string formatting module
 
-fn main() {
-	fmt.printf('hello world')
+fn main() { // fn is used for function declaration, main function serves as the program entry point
+	fmt.printf('hello %s', 'world') // call printf function in fmt module for formatted output
 }
 ```
 
-`import fmt`
+This program's functionality is to output `hello world` in the console.
 
-This line imports a module named `fmt`, which is typically used for formatting and outputting text.
-
-`fn main() {`
-
-This line defines a function named `main`. The `main` function is the entry point of the program; the code within this function is executed first when the program runs.
-
-`fmt.printf('hello world')`
-
-This line uses the `printf` function from the `fmt` module to output the string `'hello world'` to the console.
-
-The function of this program is to output "hello world" to the console when run.
-
-> Only statements of type `fn`, `import`, `var`, and `type` can be declared directly at the top level of a file and have global scope. Other statements, such as `if`, `for`, `return`, etc., can only be declared within a function scope.
+> Only `fn`, `import`, `var`, `const`, `type` statements can be declared directly at the file top level and have global scope, which can be referenced by other modules. Other statements like `if`, `for`, `return` can only be declared within function scope.
 
 ```nature
 import fmt
 
-var globalv = 1
+var global_v = 1
 
-type globalt = int
+const PI = 3.14
+
+type global_t = int
 
 fn main() {
 	var localv = 2
-	type local t = int
-
+	type local_t = int
+	
 	if true {
 	}
 
@@ -46,275 +36,485 @@ fn main() {
 	}
 }
 
-if true { // x: Declaring an if statement in the global scope is not allowed
+if true { // x not allowed to declare if statement in global scope
 }
 ```
 
 ## Variables
 
-### Automatic Type Inference
+Automatic type inference:
 
 ```nature
-var foo = 1 // v: Declares variable foo and assigns a value; foo's type is automatically inferred as int
-
-var foo = 1 // x: Redeclaring a variable in the same scope is not allowed
-
-if (true) {
-var foo = 2 // v: Redeclaration is allowed in a different scope
+var foo = 1 // v declare variable foo and assign value, foo type is automatically inferred as int  
+  
+var foo = 1 // x duplicate variable declaration not allowed in the same scope  
+  
+if (true) {  
+    var foo = 2 // v duplicate declaration allowed in different scopes  
 }
 ```
 
-### Explicit Typing
+Direct type declaration without type inference:
 
 ```nature
 int foo = 1 // v
-float bar = 2.2 // v
-string car = 'hello world' // v: Strings are enclosed in single quotes
+u8 foo2 = 1 // v literal automatic type inference
 
-foo = 2 // v: Variables can be reassigned
+float bar = 2.2 // v  
 
-foo = 'hello world' // x: foo is defined as type int; assigning a string is not allowed
+string car = 'hello world' // v strings use single quotes  
+string car2 = "hello world" // v double quotes supported
+string car3 = `hello
+world` // v backticks supported
+  
+foo = 2 // v variables allow reassignment  
 
-i8 f2 = 12 // v: Literals can be automatically converted based on the type
-i16 f3 // x: Variable declaration must include an assignment
+foo = 'hello world' // x foo is already defined as int type, cannot assign string  
+  
+i8 f2 = 12 // v literals can automatically convert according to type  
+i16 f3 // x variable declaration must include assignment
 ```
 
-### Composite Type Variable Definition
+Compound type variable definition:
 
 ```nature
-string bar = '' // v: Use this method to declare an empty string
+string bar = '' // v use this method to declare an empty string
 
-[int] baz = [] // v: Declare an empty vec
+[int] baz = [] // v declare empty vec
+var baz2 = vec_new<string>('default value', 10) // method 2
 
-{float} s = {} // v: Declare an empty set
+{float} s = {} // v declare empty set
+var s = set_new<float>() // v method 2
 
-{string:float} m = {} // v: Declare an empty map
+{string:float} m = {} // v declare empty map
+var m = map_new<string,float>() // v method 2
 
-(int,bool,bool) t = (1, true, false) // v: Define a tuple. Access elements using t[0], t[1], t[2]
+(int,bool,bool) t = (1, true, false) // v define tuple, use as t[0], t[1], t[2]
 
-var (t1, t2, t3) = (1, true, 'hello') // Tuple destructuring declaration
+var (t1, t2, t3) = (1, true, 'hello') // tuple destructuring declaration
 
-var baz = [] // x: Cannot infer the element type of the vec
+var sum = fn(int a, int b):int { // closure declaration
+	return a + b
+}
 
-bar = null // x: Assigning null to any composite or simple type is not allowed
+
+var baz = [] // x, cannot infer vec element type
+
+bar = null // x cannot assign null to any compound type or simple type
 ```
 
-### How to Assign Null?
+How to assign null?
 
 ```nature
-// Method 1
+// method 1 nullable
 string? s = null
 s = 'i am string'
 
-// Method 2
-nullable<string> s2 = null
+// method 2
+nullable<string> s2 = null 
 s2 = 'hello world'
+
+// method 3 union
+type union_test = int|float|null
+union_test u = null
+
+// method 3 any
+any s3 = null // any is a special union type that includes all types by default
 ```
+
+## Constants
+
+```nature
+const PI = 3.14 // v float type, constant definition cannot declare type, compiler will automatically infer
+const STR = 'hello world' // v string type
+const INDEX = 1 // v int type
+const B = true // v bool type
+
+const STR2 = STR + 'byebye' // v constant folding calculation
+const AREA = PI * 2 * 2 // v calculation example, supports common operators
+
+const RESULT = test() // x constant definition only supports literal integer/float/string/bool types
+```
+
+Constant definition recommends using uppercase underscore separation.
 
 ## Control Structures
 
-### `if` Syntax
+### if syntax
 
 ```nature
 if condition {
-    // Code to execute when condition is true
+    // code executed when condition is true
 } else {
-    // Code to execute when condition is false
+    // code executed when condition is false
 }
 ```
 
-The type of `condition` must be `bool`.
+The condition type must be bool.
 
-You can use the `else if` syntax to check multiple conditions. Example:
+You can use else syntax to check multiple conditions, example:
 
 ```nature
 int foo = 23
 
 if foo > 100 {
     print('foo > 100')
-
 } else if foo > 20 {
-    print('foo > 20')
-
+    print('foo > 20')  // matches
 } else {
     print('else handle')
 }
 ```
 
-### `for` Syntax
+### for syntax
 
-The `for` statement is used to execute a block of code repeatedly. In the Nature language, the `for` statement has three main forms: classic loop, conditional loop, and iteration loop.
+The `for` statement is used for loop execution of code blocks. The `for` statement in nature language has three main forms: classic loop, conditional loop and iteration loop.
 
-* **Classic Loop**
+#### Classic loop
 
-    The classic loop is used to execute a loop a fixed number of times. The basic syntax is as follows:
+Classic loop is used for executing a fixed number of iterations. Basic syntax:
 
-    ```nature
-    var sum = 0
-    for int i = 1; i <= 100; i += 1 {
-        sum += i
+```nature
+var sum = 0
+for int i = 1; i <= 100; i += 1 {
+    sum += i
+}
+println('1 +..+100 = ', sum)
+```
+
+> ❗️Note: Nature does not have `++` syntax, please use `i+=1` instead of `i++`. The expression after `for` does not need parentheses.
+
+#### Conditional loop
+
+Conditional loop is used for executing loops based on conditions, similar to `while` expression in C language. Basic syntax:
+
+```nature
+var sum = 0
+var i = 0
+for i <= 100 {
+    sum += i
+    i += 1
+}
+println('1 +..+100 = ', sum)
+```
+
+In this example, the loop will continue until `i` is greater than 100. The final output is the same as the classic loop.
+
+#### Iteration loop
+
+Iteration loop is used for traversing collection types, supports vec, map, string, chan. Basic syntax:
+
+Traversing vec:
+
+```nature
+var list = [1, 1, 2, 3, 5, 8, 13, 21]
+for v in list {
+    println(v)
+}
+```
+
+Traversing map:
+
+```nature
+var m = {1:10, 2:20, 3:30, 4:40}
+for k in m {
+    println(k)
+}
+```
+
+In this example, the loop traverses each key in the `map` and outputs them.
+
+Traversing both keys and values, for vec k is the index:
+
+```nature
+for k,v in m {
+    println(k, v)
+}
+```
+
+Traversing channel:
+
+```nature
+// example: var ch = chan_new<int>()
+// yield until ch.recv() receives message to wake up current coroutine
+for v in ch {
+    println('recv v ->', v)  
+}
+```
+
+#### Break and Continue
+
+Keyword `break` is used to exit the current loop, `continue` skips the current loop logic and immediately enters the loop condition logic.
+
+## Functions
+
+Functions are first-class citizens in nature and can be passed as values. Nature supports various function definition and usage methods.
+
+### Function Definition
+
+Basic function definition syntax:
+
+```nature
+fn function_name(parameter_list):return_type {
+    // function body
+}
+```
+
+A simple addition function:
+
+```nature
+fn sum(int a, int b):int {
+    return a + b
+}
+```
+
+### Anonymous Functions
+
+Nature supports anonymous functions and performs closure processing on anonymous functions.
+
+```nature
+fn main() {
+	int c = 3
+	
+	var f = fn(int a, int b):int {
+	    return a + b + c
+	}
+	
+	var result = f(1, 2) // call anonymous function
+}
+```
+
+### Variadic Parameters
+
+Functions support variable number of parameters, using fixed format `...` + `vec<T>` to create a variadic parameter:
+
+```nature
+fn sum(...[int] numbers):int {
+    var result = 0
+    for v in numbers {
+        result += v
     }
-    println('1 +..+100 = ', sum)
-    ```
+    return result
+}
 
-    In this example, the loop starts with `i = 1`, increments `i` by 1 in each iteration, and continues until `i` is greater than 100. It finally outputs `1 +..+100 = 5050`.
+println(sum(1, 2, 3, 4, 5))
+```
 
-    > ❗️Note: Nature does not have the `++` syntax. Use `i += 1` instead of `i++`. The expression following `for` does not need to be enclosed in parentheses.
+### Parameter Destructuring
 
-* **Conditional Loop**
+Supports destructuring parameters when calling functions:
 
-    The conditional loop is used to execute a loop based on a condition, similar to the `while` expression in C. The basic syntax is as follows:
+```nature
+fn printf(string fmt, ...[any] args) {
+    var str = sprintf(fmt, ...args)
+    print(str)
+}
+```
 
-    ```nature
-    var sum = 0
-    var i = 0
-    for i <= 100 {
-        sum += i
-        i += 1
-    }
-    println('1 +..+100 = ', sum)
-    ```
+### Multiple Return Values
 
-    In this example, the loop continues to execute until `i` is greater than 100. The final output is the same as the classic loop.
+Nature programming language does not support multiple return values, but you can use tuple destructuring syntax to simulate multiple return values. Tuple data structure will be introduced in more detail later:
 
-* **Iteration Loop**
+```nature
+fn divide(int a, int b):(int, int) {
+    return (a / b, a % b)
+}
 
-    The iteration loop is used to iterate over collection types (such as `vec`, `map`, `string`, `chan`). The basic syntax is as follows:
+// Use tuple destructuring to receive return values
+var (quotient, remainder) = divide(10, 3)
+```
 
-    Iterating over a `vec`:
+### Function Types
 
-    ```nature
-    var list = [1, 1, 2, 3, 5, 8, 13, 21]
-    for v in list {
-        println(v)
-    }
-    ```
+Use fn to declare function types, function types can usually omit parameter names.
 
-    Iterating over a `map`:
+```nature
+type calc_fn = fn(int,int):int  // declare fn type
+  
+fn apply(calc_fn f, int x, int y):int {  
+    return f(x, y)  
+}  
+  
+fn main() {  
+    var result = apply(fn(int a, int b):int {  
+        return a + b  
+    }, 3, 4)  
+  
+    println(result)  
+}
+```
 
-    ```nature
-    var m = {1:10, 2:20, 3:30, 4:40}
-    for k in m {
-        println(k)
-    }
-    ```
+### Additional Notes
 
-    In this example, the loop iterates over each key in the `map` and prints them.
+Functions in nature must explicitly declare parameter types and return types. If a function does not need to return a value, you can omit the return type declaration, or use void type to declare that the function has no return value:
 
-    Iterating over keys and values simultaneously:
+```nature
+fn print() { // v
+}
 
-    ```nature
-    for k, v in m {
-        println(k, v)
-    }
-    ```
+fn print():void { // v
 
-* **Loop Break and Continue**
+}
+```
 
-    The `break` keyword is used to exit the current loop. The `continue` keyword skips the current iteration's logic and proceeds immediately to the loop's condition check.
+Nature programming language always uses type prefix, including return value types. If you think return_type after parameters is type postfix and confusing, you can understand it this way:
+
+```nature
+// This is return type postfix
+func sum(a int, b int) (c int) {  
+    c = a + b  
+    return c  
+}
+
+// This is return type prefix
+fn sum(int a, int b):(int c) {
+	c = a + b
+	return c
+}
+```
+
+In any case, the position of return value in function definition has nothing to do with type prefix or postfix!
 
 ## Comments
 
-### Single-line Comments
-
-Single-line comments start with `//`, followed by the comment text. For example:
+Single line comments:
 
 ```nature
-// This is a single-line comment
-var str = `hello world` // This is also a single-line comment
+// This is a single line comment
+var str = `hello world` // This is also a single line comment
 ```
 
-### Multi-line Comments
-
-Multi-line comments start with `/*` and end with `*/`. For example:
+Multi-line comments:
 
 ```nature
 /*
 This is a multi-line comment
-It can span multiple lines
+can span multiple lines
 */
 var str = `hello world`
 ```
-
-You can use these comments in your code to explain functionality or add notes.
 
 ## Type System
 
 ### Numeric Types
 
-| Type  | Bytes | Description                                                          |
-| :---- | :---- | :------------------------------------------------------------------- |
-| int   | -     | Signed integer, matches platform CPU bit width (8 bytes on 64-bit)   |
-| i8    | 1     | 8-bit signed integer                                                 |
-| i16   | 2     | 16-bit signed integer                                                |
-| i32   | 4     | 32-bit signed integer                                                |
-| i64   | 8     | 64-bit signed integer                                                |
-| uint  | -     | Unsigned integer, matches platform CPU bit width                     |
-| u8    | 1     | 8-bit unsigned integer                                               |
-| u16   | 2     | 16-bit unsigned integer                                              |
-| u32   | 4     | 32-bit unsigned integer                                              |
-| u64   | 8     | 64-bit unsigned integer                                              |
-| float | -     | Floating-point, matches platform CPU bit width (equals f64 on 64-bit) |
-| f32   | 4     | Single-precision floating-point                                      |
-| f64   | 8     | Double-precision floating-point                                      |
-| bool  | 1     | Boolean type, values are `true`/`false`                              |
+| Type  | Bytes | Description                                     |
+| ----- | ----- | ----------------------------------------------- |
+| int   | -     | Signed integer, consistent with platform CPU width (8 bytes on 64-bit platform) |
+| i8    | 1     | 8-bit signed integer                            |
+| i16   | 2     | 16-bit signed integer                           |
+| i32   | 4     | 32-bit signed integer                           |
+| i64   | 8     | 64-bit signed integer                           |
+| uint  | -     | Unsigned integer, consistent with platform CPU width |
+| u8    | 1     | 8-bit unsigned integer                          |
+| u16   | 2     | 16-bit unsigned integer                         |
+| u32   | 4     | 32-bit unsigned integer                         |
+| u64   | 8     | 64-bit unsigned integer                         |
+| float | -     | Floating point number, consistent with platform CPU width (equivalent to f64 on 64-bit platform) |
+| f32   | 4     | Single precision floating point                 |
+| f64   | 8     | Double precision floating point                 |
+| bool  | 1     | Boolean type, values are true/false            |
 
-### Composite Types
+### Compound Types
 
-| Type Name | Storage Location | Syntax    | Example                             | Description                                                              |
-| :-------- | :--------------- | :-------- | :---------------------------------- | :----------------------------------------------------------------------- |
-| string    | heap             | string    | `string str = 'hello'`              | String type. Can use single quotes, double quotes, or backticks.         |
-| vector    | heap             | `[T]`     | `[int] list = [1, 2, 3]`            | Dynamic array (vector)                                                   |
-| map       | heap             | `{T:T}`   | `{int:string} m = {1:'a'}`          | Map (keys limited to integer/float/string)                               |
-| set       | heap             | `{T}`     | `{int} s = {1, 2, 3}`               | Set                                                                      |
-| tuple     | heap             | `(T)`     | `(int, bool) t = (1, true)`         | Tuple                                                                    |
-| function  | heap             | `fn(T):T` | `fn(int,int):int f = fn(a,b){...}` | Function type                                                            |
-| struct    | stack            | struct {} | `struct { int x }`                  | Struct                                                                   |
-| array     | stack            | `[T;n]`   | `[int;3] a = [1,2,3]`               | Fixed-size array                                                         |
+| Type Name | Storage Location | Syntax             | Example                              | Description                         |
+| --------- | ---------------- | ------------------ | ------------------------------------ | ----------------------------------- |
+| string    | heap             | string             | `string str = 'hello'`               | String type, can use single quotes, double quotes, backticks to declare string type |
+| vec       | heap             | `[T]`              | `[int] list = [1, 2, 3]`             | Dynamic array                       |
+| map       | heap             | `{T:T}`            | `{int:string} m = {1:'a'}`           | Map can be iterated with for        |
+| set       | heap             | `{T}`              | `{int} s = {1, 2, 3}`                | Set                                 |
+| tup       | heap             | `(T)`              | `(int, bool) t = (1, true)`          | Tuple                               |
+| function  | heap             | `fn(T):T`          | `fn(int,int):int f = fn(a,b){...}`   | Function type                       |
+| channel   | heap             | `chan<T>`          | `var c = chan_new<T>()`              | Communication channel               |
+| struct    | stack            | `struct {T field}` | `struct{}`                           | Struct                              |
+| array     | stack            | `[T;n]`            | `[int;3] a = [1,2,3]`                | Fixed length array                  |
 
 ### Special Types
 
-| Type Name   | Description                                                                                                                              | Example                                                  |
-| :---------- | :--------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------- |
-| self        | Refers to the instance itself within type extension methods.                                                                             | `fn string.len():int { return self.length }`             |
-| ptr         | Safe pointer, cannot be null.                                                                                                            | `ptr<person> p = new person()`                           |
-| anyptr      | Unsafe integer pointer, equivalent to `uintptr`, used for C language interaction.                                                        | Any type except `float` can be converted to `anyptr` using `as`. |
-| `rawptr<T>` | Unsafe nullable pointer. Use the `&` (load address) syntax to obtain a `rawptr`. Use `*` (indirect address / dereference) to access value. | `rawptr<int> len_ptr = &len`                             |
-| any         | Container for any type, a special form of union type.                                                                                    | `any v = 42`                                             |
+| Type Name | Description                                                  | Example                                 |
+| --------- | ------------------------------------------------------------ | --------------------------------------- |
+| self      | Reference to self in struct methods, can only be used in fn extend |                                         |
+| ptr       | Safe pointer, cannot be null                                | `ptr<person> p = new person()`          |
+| anyptr    | Unsafe int pointer, equivalent to uintptr, commonly used for C language interaction and unsafe conversion | Any type except float can be converted to anyptr type via as |
+| rawptr    | Unsafe nullable pointer, use `&` load addr syntax to get rawptr, use `*` indirect addr to dereference | `rawptr<int> len_ptr = &len`            |
+| union     | Union type, only supports declaration via type definition   | type number = float\|int                |
+| any       | Special union type, union of all types                      |                                         |
 
 ## Type Operations
-
-### Type Conversion
-
-Explicit Type Conversion
-
-* Supports mutual conversion between integer/float types.
-* Supports mutual conversion between `string` and `[u8]` types.
-* Supports mutual conversion between `anyptr` and any type (except float).
-* Union type assertions also use the `as` syntax.
-
-```nature
-int i = 42.5 as int  // float to integer
-[u8] bytes = "hello" as [u8]  // string to byte array
-anyptr ptr = &i as anyptr  // rawptr<int> to anyptr
-```
 
 ### Type Definition
 
 ```nature
 type my_int = int
-type nullable<T> = T|null
+
+type person_t = struct{
+	int age
+	float height
+}
+
+type node_t = struct{
+	int id
+	[node_t] children // v use dynamic array or pointer nested reference type
+	rawptr<node_t> next // v reference through raw pointer
+	ptr<node_t>? next // v pointer+nullable reference
+	node_t next // x circular reference
+	[node_t;2] foo // x circular reference
+	node2_t bar // x circular reference
+}
+
+type nullable<T> = T|null // custom union type + type parameter generics
+
+type throwable = interface{} // interface definition, detailed introduction later
+```
+
+### Type Conversion
+
+Use `as` keyword for explicit type conversion:
+
+- Supports mutual conversion between integer/float types
+- Supports mutual conversion between string and `[u8]` types
+- Supports mutual conversion between anyptr and any type except float
+- Custom types and primitive types can convert to each other when underlying data structure is the same
+- `as` is used for type conversion as well as union, any type assertion
+
+```nature
+int i = 42.5 as int  // float to integer
+
+[u8] bytes = "hello" as [u8]  // string to vec
+
+string str = bytes as string // vec<u8> to string
+
+anyptr ptr = &i as anyptr  // rawptr<int> to anyptr
+
+type myint = int
+myint foo = 12
+
+int bar = foo as int // myint -> int
+int baz = bar as myint // int -> myint
+```
+
+Literals support implicit type conversion in most scenarios. If the specific type cannot be identified, it defaults to int or float type.
+
+```nature
+f32 a = 1.1 // automatic inference conversion
+f64 b = 2.2 // automatic inference conversion
+any c = 1.1 // cannot infer, defaults to float type
+
+i8 d = 1
+i16 e = 1
+i32 f = 1
+any g = 1 // cannot infer, defaults to int type
 ```
 
 ### Type Extension
 
-Nature supports extending both built-in and custom types with methods.
+Nature supports method extension for built-in types and custom types.
 
 **Built-in Types**
 
-Built-in types that support extension include: `bool`, `string`, `int`, `i8`, `i16`, `i32`, `i64`, `uint`, `u8`, `u16`, `u32`, `u64`, `float`, `f32`, `f64`, `chan`, `vec`, `map`, `set`, `tuple`.
+Supported built-in types for extension include: `bool`, `string`, `int`, `int8`, `int16`, `int32`, `int64`, `uint`, `uint8`, `uint16`, `uint32`, `uint64`, `float`, `float32`, `float64`, `chan`, `vec`, `map`, `set`, `tuple`.
 
-Example of adding a method to a built-in type:
+**Built-in Type extend**
 
 ```nature
 fn string.find_char(u8 char, int after):int {
@@ -328,9 +528,7 @@ fn string.find_char(u8 char, int after):int {
 }
 ```
 
-**Custom Types**
-
-Types defined using the `type` keyword also support method extension:
+**Custom Type extend**
 
 ```nature
 type square = struct {
@@ -339,233 +537,169 @@ type square = struct {
 }
 
 fn square.area():int {
+	// Use self for data reference in type extension
     return self.length * self.width
 }
+
+type box<T> = struct{
+	T length
+	T width
+}
+
+// Generic parameters need to be consistent with type declaration
+fn box<T>.area():T{
+	return self.length * self.width
+}
 ```
 
-**Extension Rules**
+**What type is self?** self always points to a safe pointer in the heap, so if it's a data structure like string/vec/map that is stored in the heap by default, the type of self remains consistent with the original type. Allocation in the heap means the data will be managed by GC, so it's safe data.
 
-* Custom type extensions must be defined within the same module.
-* Use the `self` keyword to refer to the current instance.
-* Supports generic parameters (details on generics will be provided later).
-
-
-## Functions
-
-In nature, functions are first-class citizens and can be passed and manipulated like other values. nature supports various ways to define and use functions.
-
-### Function Definition
-
-The basic syntax for defining a function is as follows:
+If it's a type like struct/int/float that is stored on the stack by default, self always references its safe pointer, which is `ptr<T>`. So how to call type extension methods?
 
 ```nature
-fn function_name(parameter_list):return_type {
-    // Function body
-}
+// For string this is simple, string is stored in the heap, so it can be called directly
+var str = 'hello world'
+var c = str.find_char()
+
+// But for scalar types and structs, you need to use the new keyword to allocate data in the heap, like
+var s = new square(length=5, width=10) // s type is ptr<square>
+var a = s.area() // self is ptr<square>
 ```
 
-For example, defining a simple addition function:
+**But what if you have a stack-allocated data type and want to call a type extension function?**
 
 ```nature
-fn sum(int a, int b):int {
-    return a + b
-}
+var s = square{}
+
+// If method won't be referenced across threads, maybe we can cheat the compiler with an unsafe pointer via as conversion
+(&s as anyptr as ptr<square>).area()
+
+// We can also use the built-in macro @ula(unsafe load addr), which does the above type conversion
+@ula(s).area()
+
+// If we want memory safety while not calling new keyword for heap allocation?
+// We can also use @sla(safe load addr) macro, which triggers simple escape analysis and allocates s in the heap by default.
+@sla(s).area() 
 ```
 
-### Anonymous Functions and Closures
-
-nature supports anonymous functions (lambdas) and closures:
+But having @sla macros everywhere can be annoying, so finally we can do this!
 
 ```nature
-// Assigning an anonymous function to a variable
-var f = fn(int a, int b):int {
-    return a + b
-}
+var s = square{}
 
-// Calling the anonymous function
-var result = f(1, 2)
+s.area() // v eq @sla(s).area()
 ```
 
-### Variadic Parameters
+Yes, when calling methods on stack data types, @sla macro is automatically added. But this is not intelligent enough, this is a compromise, the reason for this compromise is that there will be more intelligent and safe auto @sla based on escape analysis in the future.
 
-Functions support a variable number of parameters. Use the fixed format `...` + vec to create a variadic parameter.
-
-```nature
-fn sum(...[int] numbers):int {
-    var result = 0
-    for v in numbers {
-        result += v
-    }
-    return result
-}
-
-// Calling
-println(sum(1, 2, 3, 4, 5))
-```
-
-### Parameter Destructuring
-
-Parameter destructuring is supported during function calls:
-
-```nature
-fn printf(string fmt, ...[any] args) {
-    var str = sprintf(fmt, ...args)
-    print(str)
-}
-```
-
-### Multiple Return Values
-
-Functions can return multiple values using tuple syntax:
-
-```nature
-fn divide(int a, int b):(int, int) {
-    return (a / b, a % b) // Returns the quotient and remainder
-}
-
-// Receiving return values using tuple destructuring
-var (quotient, remainder) = divide(10, 3)
-```
-
-### Function Types
-
-The syntax for function types is `fn(parameter_types):return_type`:
-
-```nature
-// Defining a function type variable
-fn(int,int):int calculator = fn(int a, int b):int {
-     return a + b 
-}
-
-// Function type as a parameter
-fn apply(fn(int,int):int f, int x, int y):int {
-    return f(x, y)
-}
-```
-
-> In nature, functions must explicitly declare the types of their parameters and return values. If a function does not need to return a value, the return type declaration can be omitted.
-
-
+The above documentation is somewhat lengthy, but I hope users can remember that the self keyword in methods is always a safe pointer pointing to the heap (except for @ula of course).
 
 ## Arithmetic Operators
 
-| Precedence | Keyword | Example        | Description                     |
-| ---------- | ------- | -------------- | ------------------------------- |
-| 1          | ()      | (1 + 1)        | (expr)                          |
-| 2          | -       | -12            | -number_expr Negative number     |
-| 2          | !       | !true          | !bool_expr Logical NOT           |
-| 2          | ~       | ~12            | ~integer_expr Bitwise NOT       |
-| 2          | &       | &q             | &var Load stack address reference |
-| 2          | * | *p             | *ptr_var Dereference            |
-| 3          | /       | 1 / 2          | Division                        |
-| 3          | * | 1 * 2          | Multiplication                  |
-| 3          | %       | 5 % 2          | Remainder                       |
-| 4          | +       | 1 + 1          | Addition                        |
-| 4          | -       | 1 - 1          | Subtraction                     |
-| 5          | \<\<      | 100 \<\< 2       | Bitwise left shift              |
-| 5          | >>      | 100 >> 2       | Bitwise right shift             |
-| 6          | >       | 1 > 2          | Greater than                    |
-| 6          | >=      | 1 >= 2         | Greater than or equal to        |
-| 6          | \<       | 1 < 2          | Less than                       |
-| 6          | \<=      | 1 \<= 2         | Less than or equal to           |
-| 7          | ==      | 1 == 2         | Equal to                        |
-| 7          | !=      | 1 != 2         | Not equal to                    |
-| 8          | &       | 1 & 2          | Bitwise AND                     |
-| 9          | ^       | 1 ^ 2          | Bitwise XOR                     |
-| 10         | \|      | 1 \| 2         | Bitwise OR                      |
-| 11         | &&      | true && true   | Logical AND                     |
-| 12         | \|\|    | true \|\| true | Logical OR                      |
-| 13         | =       | a = 1          | Assignment operator             |
-| 13         | %=      | a %= 1         | Equivalent to a = a % 1         |
-| 13         | *=      | a *= 1         | a = a * 1                       |
-| 13         | /=      | a /= 1         | a = a / 1                       |
-| 13         | +=      | a += 1         | a = a + 1                       |
-| 13         | -=      | a -= 1         | a = a - 1                       |
-| 13         | \|=     | a \|= 1        | a = a \| 1                      |
-| 13         | &=      | a &= 1         | a = a & 1                       |
-| 13         | ^=      | a ^= 1         | a = a ^ 1                       |
-| 13         | \<\<=     | a \<\<= 1        | a = a \<\< 1                      |
-| 13         | >>=     | a >>= 1        | a = a >> 1                      |
+| Priority | Keyword | Usage Example      | Description       |
+| -------- | ------- | ------------------ | ----------------- |
+| 1        | ()      | (1 + 1)            | Expression grouping |
+| 2        | -       | -12                | Negative number   |
+| 2        | !       | !true              | Logical NOT       |
+| 2        | ~       | ~12                | Bitwise NOT       |
+| 2        | &       | &q                 | Load data address |
+| 2        | *       | *p                 | *ptr_var dereference |
+| 3        | /       | 1 / 2              | Division          |
+| 3        | \*      | 1 \* 2             | Multiplication    |
+| 3        | %       | 5 % 2              | Remainder         |
+| 4        | +       | 1 + 1              | Addition          |
+| 4        | -       | 1 - 1              | Subtraction       |
+| 5        | \<\<    | 100 \<\< 2         | Bitwise left shift |
+| 5        | >>      | 100 >> 2           | Bitwise right shift |
+| 6        | >       | 1 > 2              | Greater than      |
+| 6        | >=      | 1 >= 2             | Greater than or equal |
+| 6        | \<      | 1 < 2              | Less than         |
+| 6        | \<=     | 1 \<= 2            | Less than or equal |
+| 7        | ==      | 1 == 2             | Equal             |
+| 7        | !=      | 1 != 2             | Not equal         |
+| 8        | &       | 1 & 2              | Bitwise AND       |
+| 9        | ^       | 1 ^ 2              | Bitwise XOR       |
+| 10       | \|      | 1 \| 2             | Bitwise OR        |
+| 11       | &&      | true && true       | Logical AND       |
+| 12       | \|\|    | true \|\| true     | Logical OR        |
+| 13       | =       | a = 1              | Assignment operator |
+| 13       | %=      | a %= 1             | Equivalent to a = a % 1 |
+| 13       | \*=     | a \*= 1            | a = a \* 1        |
+| 13       | /=      | a /= 1             | a = a / 1         |
+| 13       | +=      | a += 1             | a = a + 1         |
+| 13       | -=      | a -= 1             | a = a - 1         |
+| 13       | \|=     | a \|= 1            | a = a \| 1        |
+| 13       | &=      | a &= 1             | a = a & 1         |
+| 13       | ^=      | a ^= 1             | a = a ^ 1         |
+| 13       | \<\<=   | a \<\<= 1          | a = a \<\< 1      |
+| 13       | >>=     | a >>= 1            | a = a >> 1        |
 
-> `&` and `*` are used to obtain raw pointers (`rawptr<T>`) to stack addresses. `rawptr` is unsafe and allows null values; pointers may become dangling or point to invalid memory regions. nature does not perform escape analysis. Avoid using `&` and `*` unless absolutely necessary. Use `new + ptr<T>` to obtain safer heap pointers.
+& gets address type `rawptr<T>`, rawptr is unsafe raw pointer that allows null. Pointer may dangle or point to invalid memory areas. Developers need to ensure pointer safety themselves, so raw pointers should only be used when necessary, such as when interacting with memory-unsafe languages like C.
 
-## Structs
+Nature programming language development recommends using the new keyword for GC heap allocation to get safe pointers.
 
-In nature, structs must be declared using the `type` keyword. Anonymous structs are not supported.
+## Struct
+
+Structs must be declared through the `type` keyword, which means defining a new type. Anonymous structs are not supported.
 
 ### Basic Syntax
 
 ```nature
 // Struct declaration
-type person = struct {
+type person_t = struct {
     string name
     int age
     bool active
 }
 
-// Struct initialization; p is initialized on the stack
-var p = person{
-    name = "Alice",
-    age = 25,
+// Struct initialization, struct is initialized on stack by default.
+var p = person_t{
+    name = 'Alice',
+    age = 25
 }
 
-// Using new initializes on the heap and obtains a struct pointer
-ptr<person> p2 = new person(name = "Bob", age = 30)
-p2.name = "Tom" // Automatic dereference
+//  Using new can initialize on heap and get struct pointer
+ptr<person> p2 = new person(name = 'Bob', age = 30)
+p2.name = 'Tom'  // automatic dereference
 ```
 
 ### Default Values
 
-Struct default values only support simple constants; closure default values are not supported.
+Struct default values only support simple constants, do not support closures, function calls and other complex default values.
 
 ```nature
+type sub_t = struct{
+	var name = 'alice' // supports automatic type inference when default value exists
+}
+
 type person_t = struct{
-    string name = "unnamed"
+    string name = 'unnamed'
     bool active = true
+
+    sub_t sub1         // Note! no default value here
+    var sub2 = sub_t{} // includes default value
 }
 
-// Initialization with default values
-var p = person_t{} // p.name="unnamed", p.active=true
-```
-
-### Type Extension
-
-```nature
-type rect = struct {
-    int width
-    int height
-}
-
-// Adding an extension function to the rect type
-fn rect.area():int {
-    return self.width * self.height // Use self to access struct fields
-}
-
-fn main() {
-    var r = rect{width = 10, height = 5}
-    println(r.area()) // Output: 50
-
-    ptr<rect> rp = new rect(width = 20, height = 10)
-    println(rp.area()) // Output: 200
-}
+// Initialize with default values
+// p.name is 'unnamed', p.active is true, 
+// p.sub1.name is '', p.sub2.name is 'alice'
+var p = person_t{}
 ```
 
 ### Nesting and Composition
 
 ```nature
-// Nested struct
 type outer = struct {
     int x
-    rect r = rect{} // Nested struct with default initialization
+    rect r = rect{} 
 }
 
-// Struct composition
 type animal = struct {
     string name
 }
 
 type dog = struct {
-    animal base // Compose the animal struct
+    animal base
     string breed
 }
 
@@ -573,7 +707,7 @@ type dog = struct {
 type dog = struct {
     struct {
         string name
-    } base // x Do not use anonymous structs; although declaration is possible, initialization and assignment are not, and it's only for memory structure conversion.
+    } base // x don't use anonymous struct, although it can be declared it cannot be initialized, only used for memory structure conversion
     string breed
 }
 ```
@@ -582,249 +716,293 @@ type dog = struct {
 
 ### string
 
-String is a built-in data type in nature for representing text sequences.
-
-- Strings use ASCII encoding.
-- Strings are stored on the heap.
+String is a built-in data type in nature language, data is stored on the heap. String and dynamic array `[u8]` have the same storage structure on the heap, so strings and `[u8]` can be converted to each other arbitrarily.
 
 ```nature
-// String declaration - supports single quotes, double quotes, or backticks
-string s1 = 'hello world'
+string s1 = 'hello world' // use single quotes to declare strings in non-special cases
 string s2 = "hello world"
-string s3 = `hello world`
+string s3 = `hello 
+world`
 
-// String concatenation
-string s4 = s1 + ' one piece'
+// use + sign for string concatenation
+var s4 = s1 + ' one piece'
 
-// String comparison
-bool b1 = 'hello' == 'hello' // true
-bool b2 = 'a' < 'b'         // true
+// string comparison
+bool b1 = 'hello' == 'hello'  // true
+bool b2 = 'a' < 'b'          // true
 
-// Get string length
+// get string length
 int len = s1.len()
 
-// Index access and modification
-s1[0] = 72 // Modify the first character to 'H' (ASCII code 72)
+// access and modify through index
+s1[0] = 72  // modify first character to 'H' (ASCII code 72)
 
-// String to byte array conversion
+// string and byte array conversion
 [u8] bytes = s1 as [u8]
 string s5 = bytes as string
 
-// String traversal
+// string traversal, traverse by char
 for v in s1 {
-    // The type of v is u8, representing the ASCII code value
+    // v type is u8, represents ASCII code value
     println(v)
+}
+```
+
+Since single quotes are also used to declare strings, if you need to get the char type of a string, you can use the following methods:
+
+```nature
+// method 1 through constant definition
+const A = 97
+const B = 99
+
+u8 c = A
+
+// method 2 through array reference
+u8 c2 = '@'[0]
+```
+
+More string operations can call the string processing library in standard library `import strings`:
+
+```nature
+import strings
+
+fn main() {
+	var s = 'hello world world'  
+	var index = s.find('wo')
+	
+	var list = s.split(' ')
+	
+	var list2 = ['nice', 'to', 'meet', 'you']  
+	var s2 = strings.join(list2, '-')
+	
+	var b = s.starts_with('hello')
+	
+	// more methods can refer to standard library documentation
 }
 ```
 
 ### vec
 
-`vec` is nature's built-in dynamic array type, supporting dynamic resizing and stored on the heap.
-
-> Not thread-safe
+vec is nature's built-in dynamic array type, supports dynamic expansion, stored on the heap. Concurrent calls are not safe, need to actively add locks.
 
 ```nature
 // Declaration and initialization
-[int] list = [1, 2, 3]           // Syntax 1: Declare using [T]
-vec<int> list2 = [1, 2, 3]       // Syntax 2: Declare using vec<T>
-var list3 = vec_new<int>(0, 10)  // Create an empty vec, the first parameter is the initial default type
-var list7 = vec_new<string>("hello", 10) // Initialize a string array with "hello" as the default value
-var list5 = [0;10]               // Equivalent to vec_new and automatically infers the type based on the default parameter
-var list6 = vec_cap<int>(10)     // Specify capacity, len = 0
-[int] list4 = []                 // Automatically infers the empty vec type
+[int] list = [1, 2, 3]        // Syntax 1: recommended using [T] declaration
+vec<int> list2 = [1, 2, 3]    // Syntax 2: using vec<T> declaration
 
-// Basic operations
-list[0] = 10                     // Modify element
-var first = list[0]              // Get element
-list.push(4)                     // Add element
-var len = list.len()             // Get array length
-var cap = list.cap()             // Get array capacity
+ // Create empty vec, first parameter is initialization default type
+var list3 = vec_new<int>(0, 10)
 
-// Slicing and concatenation
-var slice = list.slice(1, 3)     // Get a slice from index 1 to 3 (exclusive)
-list = list.concat([4, 5, 6])    // Concatenate two arrays
-list.append([4, 5, 6])           // Append to the list array
+// Initialize string array, default value is string
+var list7 = vec_new<string>("hello", 10) 
+
+// Similar to vec_new, automatically infer based on default parameter type
+var list5 = [0;10]
+
+// Initialize with specified cap, len = 0
+var list6 = vec_cap<int>(10)
+
+// Automatically infer empty vec type
+[int] list4 = []
+
+list[0] = 10                  // modify element
+var first = list[0]           // get element
+list.push(4)                  // add element
+var len = list.len()          // get vec length
+var cap = list.cap()          // get vec capacity
+
+// Slicing and merging
+var slice0 = list[1..3] // get slice from index 1 to 3(exclusive)
+var slice2 = list[..3] // get slice from 0 to 3(exclusive)
+var slice3 = list[1..] // get slice from 1 to len(exclusive)
+
+// Merge two vecs into a new vec
+var new_list = list.concat([4, 5, 6]) 
+
+ // Append to list
+list.append([4, 5, 6])
+
 
 // Traversal
-for v in list {
-    println(v)
+for value in list {
+}
+
+for index,value in list {
 }
 ```
 
 ### map
 
-`map` is nature's built-in associative array type for storing key-value pairs and stored on the heap.
-
-> Not thread-safe
+map is nature's built-in mapping table type, used to store key-value pairs. Concurrent calls are not safe, need to actively add locks.
 
 ```nature
 // Declaration and initialization
-var m3 = {'a': 1, 'b': 2}           // Type inference
-{string:int} m1 = {'a': 1, 'b': 2}  // Declare using {T:T}
-map<string,int> m2 = {'a': 1, 'b': 2} // Declare using map<T,T>
+var m3 = {'a': 1, 'b': 2}              // type inference
+{string:int} m1 = {'a': 1, 'b': 2}     // using {T:T} declaration
+map<string,int> m2 = {'a': 1, 'b': 2}  // using map<T,T> declaration
+{string:int} empty = {}                // empty map declaration method 1
+var empty = map_new<string,int>()      // empty map declaration method 2
 
-// Basic operations
-m1['c'] = 3                      // Insert/update element
-var v = m1['a']                  // Get element value
-m1.del('b')                      // Delete element
-var exists = m1.contains('a')    // Check if key exists
-var size = m1.len()              // Get the number of elements
+// Insert/update element
+m1['c'] = 3                   
+
+// Get element value, if element doesn't exist will produce panic error, need to catch panic via catch
+var v = m1['a']                
+var v2 = m1['a'] catch e {
+	// handle notfound
+}
+
+m1.del('b')                    // delete element
+
+var exists = m1.contains('a')  // check if key exists
+var size = m1.len()            // get element count
 
 // Traversal
-for k in m1 {                    // Iterate through keys only
+for k in m1 {                  // traverse keys only
     println(k)
 }
 
-for k, v in m1 {                 // Iterate through both keys and values
+for k, v in m1 {              // traverse both keys and values
     println(k, v)
 }
-
-// Empty map declaration examples
-{string:int} empty = {}
-var empty = map_new<string,int>()
 ```
 
 ### set
 
-`set` is nature's built-in collection type for storing unique elements. Sets are stored on the heap, and duplicate elements are not allowed.
-
-> Not thread-safe
+set is nature's built-in collection type, used to store unique elements. set is stored on the heap, elements are not allowed to be duplicated. Concurrent calls are not safe, need to actively add locks.
 
 ```nature
 // Declaration and initialization
-{int} s1 = {-32, -64, 13}   // Declare using {T}
-set<int> s3 = {1, 2, 3}     // Declare using set<T>
+{int} s1 = {-32, -64, 13}     // using {T} declaration
+set<int> s3 = {1, 2, 3}       // using set<T> declaration
+
+// Empty set declaration
+{int} empty = {}              
+var empty = set_new<int>()     
 
 // Basic operations
-s1.add(111)                 // Add element
-s1.del(13)                  // Delete element
-var exists = s1.contains(13) // Check if element exists
+s1.add(111)                   // add element
+s1.del(13)                    // delete element
+var exists = s1.contains(13)  // check if element exists
 
-var found = {1, 2, 3}.contains(2) // Supports method chaining
+var found = {1, 2, 3}.contains(2)  // supports method chaining
 
 // Traversal
 for v in s1 {
     println(v)
 }
-
-// Empty set declaration
-{int} empty = {}
-var empty = set_new<int>()
 ```
 
-### tuple
+### tup
 
-`tuple` is a built-in type in nature for aggregating a fixed-size collection of elements of potentially different types. Tuples are stored on the heap, with only a pointer stored on the stack.
+tuple is nature's built-in type, used to aggregate a group of different types of data in one structure. tuple is stored on the heap, only pointer is kept on stack.
 
 ```nature
-var tup = (1, 1.1, true) // v Declare and assign; multiple elements are separated by commas
+var tup = (1, 1.1, true) // v declare and assign, multiple elements separated by comma
 
-var tup = (1) // x A tuple must contain at least two elements
+var tup = (1) // x tuple must contain at least two elements, otherwise cannot distinguish between expression and tup
 
-var foo = tup[0] // v Literal 0 represents the first element in the tuple, and so on
+var foo = tup[0] // v index 0 represents the first element in tuple, and so on
 
-// x Expression access is not allowed for tuple elements; only integer literals are allowed
+// x element access in tuple does not allow expressions, only int literals are allowed
 var foo = tup[1 + 1]
 
-tup[0] = 2 // v Modify the value of an element in the tuple
+tup[0] = 2 // v modify value in tuple
 ```
 
-Tuple destructuring assignment syntax allows for simulating multiple return values from functions or quickly swapping variables.
+tup supports destructuring assignment:
 
 ```nature
-var list = [1, 2, 3]
 
-// 1. Variable creation
-// v Multiple variables can be created consecutively with automatic type inference using var
+// v values can be used with var for automatic type inference to continuously create multiple variables
 var (foo, bar, car) = (1, 2, true)
 
-// x Type declaration is prohibited; only automatic type inference via var is allowed
-// (custom_type, int, bool) (foo, bar, car) = (1, 2, true)
+// x prohibit type declaration, only allow automatic type inference through var
+(custom_type, int, bool) (foo, bar, car) = (1, 2, true)
 
-var (foo, (bar, car)) = (1, (2, true)) // v Nested creation of multiple variables
-var (list[0], list[1]) = (2, 4) // x Expressions are not allowed on the left side when creating variables
+// v nested form of creating multiple variables
+var (foo, (bar, car)) = (1, (2, true)) 
 
+// x when creating variables, left side does not allow expressions
+var list = [1, 2, 3]
+var (list[0], list[1]) = (2, 4)
 
-// 2. Variable assignment
-(foo, bar) = (bar, foo) // v Modify the values of variables foo and bar, allowing for quick swapping
-(foo, (bar, car)) = (2, (4, false)) // v Nested modification of variable values
-(foo, bar, car) = (2, (4, false)) // x Type mismatch between left and right values
+// v modify variable foo,bar values, can perform quick variable value swapping
+(foo, bar) = (bar, foo)
 
-// v Left-value expressions like ident/ident[T]/ident.T are allowed in tuple assignment
+// v nested form of modifying variable values
+(foo, (bar, car)) = (2, (4, false)) 
+
+// x left value and right value type mismatch
+(foo, bar, car) = (2, (4, false)) 
+
+ // v tuple assignment operation allows left value expressions like ident/ident[T]/ident.T
 (list[0], list[2]) = (1, 2)
-(1 + 1, 2 + 2) = (1, 2) // x 1+1 is a right-value expression
+
+// x 1+1 belongs to right value expression
+(1 + 1, 2 + 2) = (1, 2)
 ```
 
 ### arr
 
-`arr` is a fixed-size array, consistent with the data structure in C.
+arr is fixed-length array, same as data structure in C language.
 
 ```nature
-[u8;3] array = [1, 2, 3] // Declare an array of length 3 with elements of type u8
+[u8;3] array = [1, 2, 3] // declare an array with length 3, element type u8
 array[0] = 12
 array[1] = 24
 var a = array[7]
 ```
 
-The main difference between `arr` and `vec` is that `arr` is allocated on the stack by default, while `vec` only holds a pointer on the stack. For example, with structs:
+arr is allocated by default on stack or in data structures, vec is allocated on heap. This can be reflected in size calculation:
 
 ```nature
 type t1 = struct {
     [u8;12] array
 }
 
-var size = @sizeof(t1) // 12 * 1 = 12 bytes
+var size = @sizeof(t1) // 12 * 1 = 12byte
 
 type t2 = struct {
     [u8] list
 }
 
-var size = @sizeof(t2) // list is a pointer, size = 8 bytes
+var size = @sizeof(t2) // vec is pointer size = 8byte
 ```
 
-Unlike C, when using `array` as a parameter in nature, a copy of the array is made, and it is passed by value.
-
-
+Unlike C language, when using array as parameter in nature it's based on value passing.
 
 ## Error Handling
 
-The nature programming language uses `try catch + throw` for error handling.
+### Basic Syntax
 
-Example of `throw` syntax:
+throw syntax usage example:
 
 ```nature
-// x Incorrect usage: can't use throw stmt in a fn without an errable! declaration. example: fn rem(...):void!
+// x wrong usage, can't use throw stmt in a fn without an errable! declaration. example: fn rem(...):void!
 fn rem(int dividend, int divisor):int {
-    ...
+	throw errorf('....')
 }
 
-// v Correct usage: the function must declare that it can contain an error using !
+// v correct usage, function must declare containing errable(!), use `!` symbol to indicate function may throw error
 fn rem(int dividend, int divisor):int! {
-    if divisor == 0 {
-        throw errorf('divisor cannot zero')
-    }
-    return dividend % divisor
+	if divisor == 0 {
+		throw errorf('divisor cannot zero')
+	}
+	return dividend % divisor
 }
 ```
 
-Errors can be caught using the `catch` syntax:
+You can use catch syntax to catch errors:
 
 ```nature
-// Functions with error(!) declaration can be intercepted using catch, where e implements the throwable interface
-//type throwable = interface{
-//    fn msg():string
-//}
-//type errort:throwable = struct{
-// ...
-//}
-
-var result = rem(10, 0) catch e {
+var result = rem(10, 0) catch e { // e implements throwable interface, can call related methods
     println(e.msg())
-    break 1 // break can assign a default value to result
+    1 // last expression in catch body has value passing effect, can assign 1 to result
 }
 ```
 
-`try catch` can also be used to catch errors in multi-line expressions:
+You can also use try catch to catch multi-line expression errors:
 
 ```nature
 try {
@@ -832,12 +1010,12 @@ try {
     var b = a + 1
     rem(10, 0)
     var c = a + b
-} catch e { // e implements throwable
+} catch e { // e implements throwable interface, can call related methods
     println('catch err:', e.msg())
 }
 ```
 
-If an error is not caught, it propagates up the function call stack until it is caught by the coroutine scheduler, which then exits the program:
+If error is not caught, it will propagate up the function call stack until caught by coroutine scheduler and exit the program.
 
 ```nature
 fn bar():void! {
@@ -853,9 +1031,9 @@ fn main():void! {
 }
 ```
 
-Compiling and running this will produce an error traceback:
+Compile and run will get error trace stack:
 
-```sh
+```nature
 coroutine 'main' uncaught error: 'error in bar' at nature-test/main.n:2:22
 stack backtrace:
 0:	main.bar
@@ -866,283 +1044,415 @@ stack backtrace:
 		at nature-test/main.n:10:11
 ```
 
-Another special type of error is `panic`. Panics do not propagate up the function call stack; instead, they directly cause the program to crash. The most common example is index out of bounds:
+> main function as unified program entry automatically adds `errable(!)` by default, no need for additional declaration
+
+### Design Philosophy
+
+Nature's error handling is based on a design philosophy similar to Rust's `Result<T,E>`, but the actual performance and syntax API design is closer to the try + catch + throw pattern.
+
+Comparing with Rust:
+
+```nature
+
+// int! is equivalent to Result<int,err> in rust
+// int? is equivalent to Option<int> in rust
+fn rem(int dividend, int divisor):int! {
+	if divisor == 0 {
+		// equivalent to return Err('xxx')
+		throw errorf('divisor cannot zero')
+	}
+	
+	// equivalent to return Ok(xxx)
+	return dividend % divisor
+}
+
+fn main() {
+	// equivalent to int result = rem(10, 0)?
+	int result = rem(10, 0)
+	
+	/**
+	equivalent to
+	let result = match rem(10, 0) {
+		Err(e) => {
+			debug('has err', e)
+			0
+		}
+		Ok(r) => r
+	}
+	*/
+	int result = rem(10, 0) catch e {
+		println('has err', e.msg())
+		0
+	}
+}
+```
+
+Since nature automatically performs error destructuring and upward propagation, in most cases you don't need to handle errors at every level, only catch when really needed.
+
+### throwable
+
+throwable is a built-in interface, the expression after throw keyword must implement this interface.
+
+```nature
+import fmt
+
+type throwable = interface{  
+    fn msg():string  
+}  
+  
+type errort:throwable = struct{  
+    string message  
+    bool is_panic  
+}  
+  
+fn errort.msg():string {  
+    return self.message  
+}  
+  
+fn errorf(string format, ...[any] args):ptr<errort> {  
+    var msg = fmt.sprintf(format, ...args)  
+    return new errort(message = msg)  
+}
+```
+
+The return value of built-in function errorf is errort type, which implements the throwable interface, so errorf function can be used with throw keyword. Based on throwable interface, we can define error types more flexibly.
+
+### panic
+
+panic is a special error type, panic does not automatically propagate along the function call chain, but directly causes the program to crash and exit. Most common is index out of bounds:
 
 ```nature
 var list = [1, 2, 3]
-var a = list[4]
+var a = list[4] 
 ```
 
-Compiling and running this will produce an error:
+Compile and run will get error:
 
-```sh
-coroutine 'main' panic: 'index out of vec [4] with length 3' at nature-test/main.n:3:18
-```
+`coroutine 'main' panic: 'index out of vec [4] with length 3' at nature-test/main.n:3:18`
 
-Panics can also be caught using `catch` or `try catch`, but because they do not propagate up the call stack, they must be caught immediately and cannot be caught across function boundaries.
+panic can also be caught with catch or try catch, but since panic does not propagate along the call chain, it must be caught immediately and cannot be caught in upper layer functions of the call chain:
 
 ```nature
-// Panic catching is the same as error catching
+// panic catching method is same as error
 var a = list[4] catch e {
     println(e.msg())
 }
 
-// The panic function can be used to manually throw a panic
+// use built-in panic function to manually throw panic
 panic('failed')
 ```
 
-The `main` function implicitly has `errable(!)` added by default.
-
 ## Union Types
 
-Union types allow a variable to hold one of several possible types. nature provides a flexible union type system.
+Union types allow a variable to hold one of multiple possible types, nature provides a flexible union type system.
 
 Basic syntax:
 
 ```nature
-// Declare union types using the | operator
-type nullable<T> = T|null // Nullable type
-type number = int|float   // Numeric type
+// use | operator to declare union of multiple types
+type nullable<T> = T|null  // nullable type
+type number = int|float    // numeric type
 ```
 
-> Union types can only be declared in global type aliases; anonymous declarations are not supported.
+> ❗ Union types can only be declared in global type definitions, anonymous declaration is not supported
 
 ### nullable
 
+nullable is implemented based on union type, since it's commonly used, syntax is optimized, using `?` symbol can quickly declare nullable type:
+
 ```nature
-int? foo = null      // Equivalent to nullable<int> foo = null
-string? bar = "hello" // Equivalent to nullable<string> bar = "hello"
+int? foo = null        // equivalent to nullable<int> foo = null
+string? bar = "hello"  // equivalent to nullable<string> bar = "hello"
 ```
 
 ### Type Assertion
 
-Type assertion uses the same `as` syntax as type conversion:
+Type assertion uses the same as syntax as type conversion:
 
 ```nature
 int? foo = 42
-int val = foo as int // Assert the union type to a specific type
+int val = foo as int  // assert union type to specific type
 ```
 
 ### Type Checking
 
-The `is` syntax is used to check the current stored type of a union type:
+is syntax is used to check the current stored type of union type:
 
 ```nature
 int? foo = 42
-bool is_int = foo is int   // true
-bool is_null = foo is null // false
+bool is_int = foo is int    // true
+bool is_null = foo is null  // false
 
-// Used in conditional statements; if the specific type of foo can be determined by logical judgment,
-// foo will be automatically asserted in the if body: foo = foo as int
+// when using type checking in conditional statements, if foo's specific type can be inferred through logical reasoning, automatic type assertion will be triggered at compile time
+
 if foo is int {
-    println("foo is an integer", foo)
+	// auto as: foo = foo as int
+    println("foo is an integer", foo + 1)
+}
+
+// x cannot perform automatic type inference
+if !(foo is null) {  
+	var bar = foo + 1 // binary type inconsistency, left is 'union', right is 'i64'
 }
 ```
 
 ### Pattern Matching
 
-Successful pattern matching will result in automatic assertion:
+match syntax has special optimization for union type, can quickly perform type matching and automatic assertion.
 
 ```nature
 int? foo = null
 int result = match foo {
-    is int -> foo     // auto: foo = foo as int
-    is null -> -1    // auto: foo = foo as null
+    is int -> foo        // auto: foo = foo as int
+    is null -> -1        // auto: foo = foo as null
 }
 ```
 
 ### any
 
-`any` is a special union type that can contain any type.
-
-A union type with a smaller range of types can be assigned to a union type with a larger range of types. `any` has the largest type range.
+any is a special union type that can contain any type. Small-range union types can be assigned to large-range union types that contain these types, any contains the largest type range:
 
 ```nature
 any foo = 1
 int? bar = null
 foo = bar // v
-bar = foo // x The range of bar is smaller than foo
+bar = foo // x bar's range is smaller than foo
+
+type nullable2 = int|bool|null|string  
+nullable2 bar2 = bar // v, nullable2 contains larger type range
 ```
 
-## Interfaces
+## Interface
 
 Declaration method:
 
 ```nature
-type measurable = interface{
-    fn area():int
+type measurable = interface{  
+    fn area():int  
     fn perimeter():int
 }
 
-// Interface supports generic declaration
-type measurable<T> = interface{
-    fn area():T
-    fn perimeter():T
+// generic parameter declaration
+type measurable<T> = interface{  
+    fn area():T  
+    fn perimeter():T  
 }
 ```
 
 Complete declaration example:
 
 ```nature
-type measurable<T> = interface{
-    fn perimeter():T
-    fn area():T
-}
+type measurable<T> = interface{  
+    fn perimeter():T  
+    fn area():T  
+}  
 
 // type implements interface
-type rectangle: measurable<i64> = struct{
-    i64 width
-    i64 height
+type rectangle: measurable<i64> = struct{  
+    i64 width  
+    i64 height  
+}  
+
+fn rectangle.area():i64 {  
+    return self.width * self.height  
 }
 
-fn rectangle.area():i64 {
-    return self.width * self.height
-}
-
-fn rectangle.perimeter():i64 {
-    return 2 * (self.width + self.height)
+fn rectangle.perimeter():i64 {  
+    return 2 * (self.width + self.height)  
 }
 ```
 
-Interfaces can be used as function parameters. Any type that implements the interface can be passed as an argument:
+Interface can be used as function parameter, as long as it implements the interface it can pass function parameter example:
 
 ```nature
-fn print_shape(measurable<i64> s) {
-    println(s.area(), s.perimeter())
-}
+fn print_shape(measurable<i64> s) {  
+    println(s.area(), s.perimeter())  
+}  
 
 fn main() {
-    // Pass by value
-    var r = rectangle{width=3, height=4}
-    print_shape(r)
+	// value passing
+	var r = rectangle{width=3, height=4}  
+	print_shape(r)  
 
-    // Pass by pointer reference
-    var r1 = new rectangle(width=15, height=18)
-    print_shape(r1)
+	// pointer reference passing
+	var r1 = new rectangle(width=15, height=18)  
+	print_shape(r1)
 }
 ```
 
-If the passed parameter is a pointer (`ptr`), nature will check if the type pointed to by the pointer implements the `measurable` interface. A type can implement multiple interfaces, separated by commas:
+If the passed parameter is ptr, it will automatically destructure whether the type contained in ptr implements measurable. type can implement multiple interfaces, multiple interfaces are separated by `,`:
 
 ```nature
-type measurable<T> = interface{
-    fn perimeter():T
-    fn area():T
-}
-
-type updatable = interface{
-    fn update(i64)
-}
-
-type rectangle: measurable<i64>,updatable = struct{
-    i64 width
-    i64 height
-}
-fn rectangle.area():i64 {
-    return self.width * self.height
-}
-fn rectangle.perimeter():i64 {
-    return 2 * (self.width + self.height)
-}
-fn rectangle.update(i64 i) {
-   self.width = i
-   self.height = i
+type measurable<T> = interface{  
+    fn perimeter():T  
+    fn area():T  
+}  
+  
+type updatable = interface{  
+    fn update(i64)  
+}  
+  
+type rectangle: measurable<i64>,updatable = struct{  
+    i64 width  
+    i64 height  
+}  
+fn rectangle.area():i64 {  
+    return self.width * self.height  
+}  
+fn rectangle.perimeter():i64 {  
+    return 2 * (self.width + self.height)  
+}  
+fn rectangle.update(i64 i) {  
+   self.width = i  
+   self.height = i  
 }
 ```
 
-The specific type of an interface can be checked using `is`:
+You can use `is` to determine the specific type of interface:
 
 ```nature
-fn use_com(combination c):int {
-    if c is square {
-        // auto as: square c = c as square, c is interface
-        c.unique()
-        return 1
-    }
-    if c is ptr<square> {
-        // auto as: ptr<square> c = c as ptr<square>
-        c.unique()
-        return 2
-    }
-    return 0
+fn use_com(combination c):int {  
+    if c is square {  
+        // auto as: square c = c as square, c is interface  
+        c.unique()  
+        return 1  
+    }  
+    if c is ptr<square> {  
+        // auto as: ptr<square> c = c as ptr<square>  
+        c.unique()  
+        return 2  
+    }  
+    return 0  
 }
 
-// match is is also supported
-
-fn use_com(combination c):int {
-    return match c {
-        is square -> 10
-        is ptr<square> -> 20
-        _ -> 0
-    }
+// also supports match is
+fn use_com(combination c):int {  
+    return match c {  
+        is square -> 10  
+        is ptr<square> -> 20  
+        _ -> 0  
+    }  
 }
 ```
 
-Interfaces support nullable types:
+Interface supports nullable:
 
 ```nature
-fn use(testable? test) {
-    if (test is testable) { // test = test as testable
-        println('testable value is', test.nice())
-    } else {
-        println('test not testable')
-    }
+fn use(testable? test) {  
+    if (test is testable) { // test = test as testable  
+        println('testable value is', test.nice())  
+    } else {  
+        println('test not testable')  
+    }  
 }
 ```
 
-Interfaces can also be used as generic constraints, which will be introduced in the subsequent generics chapter.
+Interface can also be used as generic constraints, introduced in later generic sections. Nature programming language does not support duck typing, must actively declare implementing an interface.
 
+Interface supports composition for quick declaration:
 
+```nature
+type measurable<T> = interface{  
+    fn perimeter():T  
+    fn area():T  
+}  
+  
+type updatable = interface{  
+    fn update(i64)  
+    fn area():i64  
+}  
+  
+type combination: measurable<i64>,updatable = interface{  
+    fn to_str():string  
+}
+
+// square needs to implement to_str + area + update + perimeter methods.
+type square:combination = i64
+```
+
+Due to composition relationship, if square implements interface combination, it also implements interfaces measurable and updatable by default. As shown in the following example:
+
+```nature
+type measurable<T> = interface{  
+    fn perimeter():T  
+    fn area():T  
+}  
+type combination: measurable<i64> = interface{  
+    fn to_str():string  
+}  
+  
+type square:combination = i64  
+  
+fn square.area():i64 {  
+    i64 length = *self as i64  
+    return length * length  
+}  
+fn square.perimeter():i64 {  
+    return (*self * 4) as i64  
+}  
+fn square.to_str():string {  
+    return 'hello world'  
+}
+
+fn use_mea(measurable<i64> m):int {
+    return m.perimeter()  
+}  
+  
+fn main():void! {  
+    var sp = new square(8)  
+    println(use_mea(sp))  
+}
+```
 
 ## Pattern Matching
 
-nature provides a powerful pattern matching feature, allowing for complex conditional branching logic through the `match` expression.
+Nature provides powerful pattern matching functionality through `match` expressions to implement complex conditional branch logic.
 
 ### Basic Syntax
 
-The basic syntax of a `match` expression is as follows:
+Basic syntax of match expression:
 
 ```nature
 match subject {
     pattern1 -> expression1
     pattern2 -> expression2
     ...
-    _ -> default_expression // Default branch
+    _ -> default_expression  // default branch
 }
 ```
 
 ### Value Matching
 
-You can directly match literal values:
+Can directly match literal values:
 
 ```nature
 var a = 12
 match a {
     1 -> println('one')
-    12 -> println('twelve') // Match successful
+    12 -> println('twelve')  // matches successfully
     20 -> println('twenty')
     _ -> println('other')
 }
 ```
 
-String matching is supported:
+Supports string matching:
 
 ```nature
 match 'hello world' {
     'hello' -> println('greeting')
-    'hello world' -> println('full greeting') // Match successful
+    'hello world' -> println('full greeting')  // matches successfully
     _ -> println('other')
 }
 ```
 
 ### Expression Matching
 
-You can omit the subject. In this case, the match occurs if the result of `pattern1` is true. Only one branch will be matched and executed.
+Can carry no subject, in this case as long as pattern expression result is true it can match, but only matches the first expression that results in true and executes corresponding body:
 
 ```nature
 match {
     12 > 0 && 0 > 0 -> println('case 1')
-    (13|(1|2)) == 15 -> println('case 2') // Match successful
+    (13|(1|2)) == 15 -> println('case 2')  // matches successfully
     (1|2) > 3 -> println('case 3')
     _ -> println('default')
 }
@@ -1150,77 +1460,71 @@ match {
 
 ### Automatic Assertion
 
-For union types, you can use `is` for type matching. When the match subject is `var`, automatic type assertion occurs upon a successful match.
+For union types, can use `is` for type matching, when match subject is var, after successful matching automatic type assertion will be performed:
 
 ```nature
 any value = 2.33
 var result = match value {
     is int -> 0.0
-    is float -> value // value is automatically asserted to float type: var result = value as float
+    is float -> value  // auto as: var value = value as float
     _ -> 0.0
 }
 ```
 
-The type of `result` will be automatically inferred based on the return type of the first branch.
+result type will be automatically inferred based on the return type of the first branch.
 
-### Code Blocks and break
+### Code Blocks and Return Values
 
-Code blocks can be used within match branches, and values can be returned using `break`:
+Match branches can use code blocks, the last line expression will serve as the return value of the block scope:
 
 ```nature
-string result = match {
-    12 > 13 -> {
-        var msg = 'case 1'
-        break msg
-    }
-    12 > 11 -> {
-        var msg = 'case 2'
-        break msg // Match successful, returns 'case 2'
-    }
-    _ -> 'default'
+fn main() {  
+    string result = match {  
+        (12 > 13) -> {  
+            var msg = 'case 1'  
+            msg  
+        }  
+        (12 > 11) -> {  
+            var msg = 'case 2'  
+            msg  // matches successfully, return value msg will be assigned to result 
+        }  
+        _ -> 'default'  
+    }  
+    println(result)  
 }
 ```
 
-### Important Notes
-
-1.  The `match` expression must cover all possible cases, usually by including a default branch `_`.
-2.  The return types of all branches must be consistent. The return type of the `match` expression can be automatically inferred from the branch types.
-3.  When using `break` to return a value within a code block, its type must be consistent with the return types of other branches.
-4.  When matching a local variable of a union type, automatic assertion occurs after a successful match of `pattern1`.
-
 ## Generics
 
-nature supports parametric polymorphism through generics, which can be used with structs, union types, and functions.
+###  Type Parameters
 
-### Type Parameters
-
-The basic syntax uses `<T>` to declare a type parameter, where `T` is the name of the type parameter. Multiple type parameters can be declared, separated by commas.
+Basic syntax uses `<T>` to declare type parameters, where T is the type parameter name. Multiple type parameters can be declared, separated by commas.
 
 ```nature
-// Single type parameter
+// single type parameter
 type box<T> = struct {
     T value
 }
 
-// Multiple type parameters
+// multiple type parameters
 type pair<T, U> = struct {
     T first
     U second
 }
 
-type result<T> = T|error   // Generic union type
+type result<T> = T|error    // generic union type
 
-type list<T> = [T]         // Generic array type
+type list<T> = [T]         // generic array type
 ```
 
 Type parameters support nesting:
 
 ```nature
 type wrapper<T> = struct {
-    box<T> inner    // Nested use of generic type
+    box<T> inner    // nested use of generic type
 }
 
-// Using nested generics
+// using nested generics
 var w = wrapper<int>{
     inner = box<int>{value = 42}
 }
@@ -1229,17 +1533,17 @@ var w = wrapper<int>{
 ### Generic Functions
 
 ```nature
-// Generic function declaration
+// generic function declaration
 fn sum<T>(T a, T b):T {
     return a + b
 }
 
-// Generic function call
-var result = sum<int>(1, 2)     // Explicitly specify type
-var result2 = sum(1.1, 2.2)     // Type auto-inference
+// generic function call
+var result = sum<int>(1, 2)      // explicitly specify type
+var result2 = sum(1.1, 2.2)      // automatic type inference
 
 
-// Type parameter defined extension function
+//  type parameter definition method
 type box<T> = struct {
     T value
 }
@@ -1247,130 +1551,135 @@ type box<T> = struct {
 fn box<T>.get():T {
     return self.value
 }
+
+// type parameter method and fn generic conflict, cannot be used simultaneously
+
+fn box<T>.get<U>():U { // x method does not support generic parameters temporarily
+}
 ```
 
 ### Generic Constraints
 
-> nature's generic constraints are currently incomplete. They only verify if the parameters passed to the generic satisfy the declared constraint type, without verifying if the usage within the generic function satisfies the constraint. This issue will be resolved in a later version.
+> Nature's generic constraints are not yet complete, only validates whether parameters passed to generics satisfy the generic constraint declaration type, but does not validate whether usage in generic functions satisfies generic constraint usage, this issue will be resolved in future updates.
 
-nature's generic constraints support three types, and these three types of constraints cannot be combined; only one type constraint can be selected.
+Nature's generic constraints support three types, these three constraint types cannot be combined, only one constraint type can be selected:
 
 ```nature
 // union constraint
-type test_union = int|bool|float
-
-fn test<T:test_union>(T param) {
-    println(param)
+type test_union = int|bool|float  
+  
+fn test<T:test_union>(T param) {  
+    println(param)  
 }
 
-// Simplified union constraint
-fn test<T:int|bool|float>(T param) {
-    println(param)
+// union constraint can be abbreviated
+fn test<T:int|bool|float>(T param) {  
+    println(param)  
 }
 
 // interface constraint
-type test_interface = interface{}
-type test_interface2 = interface{}
-
-fn test<T:test_interface&test_interface2>(T param) {
-    println(param)
+type test_interface = interface{
+	fn bar()
+}  
+type test_interface2 = interface{
+	fn bar()
+}  
+  
+// parameter needs to implement methods contained in interface.
+fn test<T:test_interface&test_interface2>(T param) {  
+    println(param)  
 }
 ```
 
 ### Usage Example
 
 ```nature
-// Define a generic struct
+// define generic struct
 type pair<T, U> = struct {
     T first
     U second
 }
 
-// Define a generic method
+// define generic method
 fn pair<T, U>.swap():(U, T) {
     return (self.second, self.first)
 }
 
 fn main() {
-    // Create a generic instance
+    // create generic instance
     var p = pair<int, string>{
         first = 42,
         second = "hello"
     }
-
-    // Call the generic method
+    
+    // call generic method
     var (s, i) = p.swap()
 }
 ```
 
-### Important Notes
-
-1.  Generic type parameters must be determined at compile time.
-2.  Type constraints can be used to restrict the range of generic types.
-3.  Type parameters of generic functions can be automatically inferred from the argument types.
-4.  When using nested generics, complete type parameters need to be specified.
-
 ## Coroutines
 
-Coroutines are user-level lightweight threads that can run multiple coroutines on a single system thread.
+Coroutines are user-space lightweight threads that can run multiple coroutines on a single system thread.
 
 ### Basic Usage
 
-1.  Using the `go` keyword:
+Using `go` keyword:
 
 ```nature
-var fut = go sum(1, 2) // Create a shared coroutine
+var fut = go sum(1, 2)  // create a shared coroutine
 ```
 
-2.  Using the `@async` macro, which can take a flag parameter to define the coroutine's behavior:
+Using `@async` macro, can carry flag parameters to define coroutine behavior:
 
 ```nature
-var fut = @async(sum(1, 2), co.SAME) // SAME indicates that the new coroutine shares a processor with the current coroutine
+var fut = @async(sum(1, 2), co.SAME)  // SAME means new coroutine shares processor with current coroutine
 ```
 
-### future\<T\>
+### future
 
-After a coroutine is created, it returns a `future` object. At this point, the coroutine is already running but does not block the current coroutine. You can use the `await()` method to block and wait for the coroutine to complete and get its return value:
+After coroutine creation, it returns a future object. At this time the coroutine is already running, but it won't block the current coroutine. You can use `await()` method to block and wait for coroutine execution completion and get return value:
 
 ```nature
+import co // standard library co package contains some common coroutine functions
+
 fn sum(int a, int b):int {
-    co.sleep(1000) // Simulate a time-consuming operation, sleep unit is ms
+    co.sleep(1000)  // simulate time-consuming operation, sleep unit is ms
     return a + b
 }
 
 fn main() {
     var fut = go sum(1, 2)
-    var result = fut.await() // Wait for the coroutine to complete and get the result
-    println(result) // Output: 3
+    var result = fut.await()  // wait for coroutine execution completion and get result
+    println(result)  // output: 3
 }
 ```
 
-> Use `co.sleep()` to yield the current coroutine and sleep for the specified number of milliseconds.
-> Use `co.yield` to directly yield the execution right of the current coroutine and wait for the next scheduling.
+> Using `co.sleep()` can make current coroutine yield and sleep for specified milliseconds
+> Using `co.yield()` can directly yield current coroutine's execution right and wait for next scheduling
 
 ### mutex
 
-A mutex (mutual exclusion lock) is a concurrency control mechanism used to protect shared resources, ensuring that only one coroutine can access the protected resource at any given time.
+mutex (mutual exclusion lock) is a concurrency control mechanism used to protect shared resources, ensuring that only one coroutine can access protected resources at the same time.
 
 ```nature
 import co.mutex as m
 
-// Create a mutex
+// create mutex
 var mu = m.mutex_t{}
 
-// Lock
+// lock
 mu.lock()
 
-// Critical section code
+// critical section code
 // ...
 
-// Unlock
+// unlock
 mu.unlock()
 ```
 
 ### Error Handling
 
-Errors in coroutines can also be caught using the `catch` syntax:
+Errors in coroutines can also be caught using `catch` syntax:
 
 ```nature
 fn div(int a, int b):int! {
@@ -1384,122 +1693,110 @@ fn main() {
     var fut = go div(10, 0)
     var result = fut.await() catch e {
         println("error:", e.msg())
-        break 0 // Provide a default value
+        0  // return default value
     }
 }
 ```
 
-If an error in a coroutine is not caught, the program will terminate.
+If errors in coroutines are not caught, the program will terminate.
 
-### Important Notes
+## Channel
 
-1.  Coroutines are lightweight, and a large number of coroutines can be created.
-2.  Errors in coroutines should be handled appropriately; uncaught errors will cause the program to terminate.
-3.  The `await()` method blocks the current coroutine until the target coroutine completes.
-
-
-
-## channel
-
-`channel` is a fundamental mechanism provided by nature for inter-coroutine communication, used to safely pass data between different coroutines.
+channel is a communication mechanism provided by nature for inter-coroutine communication, used to safely pass data between different coroutines.
 
 ### Basic Usage
 
 ```nature
-// Create an unbuffered channel
-var ch = chan_new<int>()        // Create a channel for passing int type data
-var ch_str = chan_new<string>() // Create a channel for passing string type data
+// create unbuffered channel
+var ch = chan_new<int>()      // create channel for passing int type data
+var ch_str = chan_new<string>() // create channel for passing string type data
 
-// Create a buffered channel
-var ch_buf = chan_new<int>(5)   // Create a channel with a buffer size of 5
+// create buffered channel
+var ch_buf = chan_new<int>(5)  // create channel with buffer size 5
 
-// Send data
-ch.send(42)         // Send data to the channel
-ch_str.send("hello")
+// send data
+ch.send(42)        // send data to channel
+ch_str.send('hello') 
 
-// Receive data
-var value = ch.recv()     // Receive data from the channel
+// receive data
+var value = ch.recv()     // receive data from channel
 var msg = ch_str.recv()
 ```
 
-Channel State
+channel status:
 
 ```nature
-ch.close()                      // Close the channel
-bool closed = ch.is_closed()    // Check if the channel is closed
-var ok = ch.is_successful()    // Check if the most recent read or write operation was successful after the channel is closed
+ch.close()                    // close channel
+bool closed = ch.is_closed()  // check if coroutine is closed
+var ok = ch.is_successful()   //  in closed state can check if recent read or write operation was successful
 ```
 
-Sending data to a closed channel will produce an error, which can be caught using `catch`.
+Sending data in closed state will produce error, can use catch to catch. Unfinished chan buf can continue recv, after completion recv again will throw error.
 
-An unreceived buffered channel can continue to `recv`. Once all buffered data is received, further `recv` operations will throw an error.
+channel recv operation supports using for iterator iteration:
 
-### Channel Characteristics
+```nature
+fn handle(chan<int> ch) {  
+    for v in ch { // compiler automatically calls recv and yield until data is received
+        println('recv v ->', v)  
+    }  
+}
+```
 
-1.  **Unbuffered channel**
-    -   Send operations block until a receiver is ready to receive the data.
-    -   Receive operations block until a sender sends data.
+When using unbuffered channel, data must be processed by the peer coroutine to continue execution. When there's no handler on the peer, current coroutine will yield and wait for data in channel to be successfully sent or received by peer.
 
-2.  **Buffered channel**
-    -   Send operations do not block when the buffer is not full.
-    -   Receive operations do not block when the buffer is not empty.
-    -   Suitable for producer-consumer patterns.
+When using channel with buffer, yield waiting only occurs when channel is full.
 
 ### select Statement
 
-The `select` statement is used to simultaneously listen for operations on multiple channels, similar to a `switch` statement but specifically for channel operations.
-
-Basic Syntax:
+select statement is used to simultaneously monitor multiple channel operations, syntax structure is similar to match, but only used for channel operations.
 
 ```nature
 select {
     ch1.on_recv() -> msg {
-        // Process data received from ch1
+        // handle data received from ch1
     }
     ch2.on_send(value) -> {
-        // Processing after successful send on ch2
+        // handle after ch2 send success
     }
     _ -> {
-        // Default branch, executed when no channel is ready for operation
+        // default branch, executed when all channels are not operable
     }
 }
 ```
 
-Characteristics:
+When multiple cases are ready simultaneously, select will randomly choose one branch to execute. Default branch is not mandatory, when there's no default branch and no case is ready, current coroutine will yield and wait for case to be ready.
 
-1.  Can simultaneously listen for send and receive operations on multiple channels.
-2.  If multiple cases are ready at the same time, `select` will randomly choose one to execute.
-3.  If no case is ready and there is no default branch, `select` will block and wait.
-4.  `select` automatically handles closed channel errors, and `is_successful()` can be used to check if the awakened channel operation was successful.
+select automatically catches closed error, can check if current awakened channel operation was successful through `ch.is_successful()`.
 
 ### Usage Examples
 
-**Simple Producer-Consumer Pattern**
+**Simple producer-consumer pattern**
 
 ```nature
-// Producer
+// producer
 go (fn(chan<int> ch):void! {
     ch.send(42)
 })(ch)
 
-// Consumer
+// consumer
 var value = ch.recv()
 ```
 
-**Implementing a Rate Limiter using a Buffered Channel**
+**Using buffered channel to implement rate limiter**
 
 ```nature
-var limiter = chan_new<u8>(10) // Allow a maximum of 10 concurrent tasks
+var limiter = chan_new<u8>(10)  // allow maximum 10 concurrent tasks
 for u8 i = 0; i < 100; i+=1 {
-    limiter.send(i)           // Acquire a token
+    limiter.send(i)             // acquire token
     go (fn():void! {
-        // Process task
-        limiter.recv()           // Release the token
+        // process task
+        limiter.recv()          // release token
     })()
 }
 ```
 
-**Implementing Timeout Control using select**
+**Using select to implement timeout control**
 
 ```nature
 var ch = chan_new<string>()
@@ -1515,145 +1812,70 @@ select {
 }
 ```
 
-### Important Notes
+## Built-in Macros
 
-1.  Channels are type-safe; they can only transmit data of the type specified during declaration.
-2.  Data cannot be sent to a closed channel, but buffered data can still be received.
-3.  The `select` statement provides an elegant way to handle multiple channels.
-4.  Using buffered channels can improve program performance, but the buffer size should be set appropriately.
-
-## Macros
-
-Functionality that cannot be achieved with regular functions can be implemented through macros, such as delayed expansion of function calls or reading the size of types. The current version of nature does not support custom macros but includes some essential built-in macro functions.
+Nature programming language uses @ symbol for macro calls. The current version does not support custom macros, but has built-in some necessary macro functions:
 
 ```nature
-var size = @sizeof(i8) // sizeof reads the stack memory occupied by the type
+var size = @sizeof(i8) // sizeof reads type stack memory usage
 
 type double = f64
-var hash = @reflect_hash(double) // Reads the unique reflection identifier of the type
+var hash = @reflect_hash(double) // read type hash value.
 
-@async(delay_sum(1, 2), 0) // Create a coroutine
+@async(delay_sum(1, 2), 0) //  create coroutine
 
-// Use unsafe_load to avoid heap allocation for package structs
-@unsafe_load(package).set_age(25)
+// use ula to avoid heap allocation for package struct  
+@ula(package).set_age(25) 
 
-var a = @default // Assign the initial default value to a heap variable, commonly used for default value assignment in generics
+var a = @default(T) // initialize default value, can be used for default value assignment in generics
 ```
-
-> `@unsafe_load` is used because escape analysis has not been implemented. Therefore, when the compiler encounters struct call operations like `package.set_age(25)`, it performs a default heap allocation for `package` to avoid unsafe pointers in `set_age`. Subsequent versions will introduce escape analysis to make heap allocation more accurate.
 
 ## Function Tags
 
-Function tags are a special function declaration syntax used to add metadata to functions or modify their behavior. Tags start with the `#` symbol and must be placed before the function declaration.
+Function tags are a special function declaration syntax used to add metadata to functions or modify function behavior. Tags start with `#` symbol and must be placed before function declaration.
 
-### linkid Tag
+### \#linkid
 
-The `#linkid` tag is used to customize the linker symbol name of a function:
+`#linkid` tag is used to customize function's linker symbol name:
 
 ```nature
 #linkid print_message
 fn log(string message):void {
-    // Function implementation
+    // function implementation
 }
 ```
 
-### local Tag
+If log is defined in main.n file, then by default log's symbol in executable file is `main.log`. If linkid is defined, then the symbol in executable file is `print_message`.
 
-The `#local` tag is used to mark the visibility of a function, indicating that the function is only visible within the current module:
+linkid is most commonly used to declare C language header files, for example:
+
+```nature
+#linkid sleep  
+fn sleep(int second)
+```
+
+When function has no body, nature treats the function as template function, can be called directly in nature code. Linker will find the corresponding sleep symbol location for correct guided calls.
+
+### \#local
+
+`#local` tag is used to mark function visibility, indicating that the function is only visible within current module:
 
 ```nature
 #local
 fn internal_helper():void {
-    // Function implementation
+    // function implementation
 }
 ```
 
-> The compiler does not actually add any restrictions to `local`; it is a convention.
-
-### Important Notes
-
-1.  Tags must be placed directly before the function declaration.
-2.  Multiple tags can be used with a single function.
-3.  The order of tags is not significant.
-
-## Built-in Types
-
-### nullable\<T\>
-
-A nullable type used to represent that a value can be either null or of the specified type `T`.
-
-```nature
-nullable<int> foo = null
-foo = 42 // Can be assigned an int type
-
-// Shorthand syntax
-int? bar = null
-bar = 42
-```
-
-### throwable
-
-An error type used to represent runtime error information.
-
-```nature
-
-type throwable = interface{
-    fn msg():string
-}
-
-type errort:throwable = struct{
-    string message
-    bool is_panic
-}
-
-fn errort.msg():string {
-    return self.message
-}
-
-fn errorf(string format, ...[any] args):ptr<errort> {
-    var msg = fmt.sprintf(format, ...args)
-    return new errort(message = msg)
-}
-```
-
-
-## Built-in Functions
-
-### print
-Prints any number of arguments to standard output without adding a newline character.
-
-```nature
-print("Hello", 42, true)  // Output: Hello42true
-```
-
-### println
-Prints any number of arguments to standard output, adding spaces between multiple arguments and a newline character at the end.
-
-```nature
-println("Hello", 42)  // Output: Hello 42\n
-```
-
-### panic
-Triggers an unrecoverable runtime error, causing the program to terminate immediately.
-
-```nature
-panic("something went wrong")  // Program terminates and outputs an error message
-```
-
-### assert
-Asserts that a condition is true; if the condition is false, it triggers a panic.
-
-```nature
-assert(1 + 1 == 2)  // Executes normally
-assert(1 > 2)        // Triggers panic
-```
+> Compiler actually does not add any restrictions for local, this is a conventional agreement
 
 ## Modules
 
-Modules are the basic units for organizing and reusing code in nature. Each `.n` file is an independent module.
+Modules are the basic unit for organizing code in nature. Each `.n` file is an independent module.
 
 ### main Module
-Every nature program must contain a `main` function as the program's entry point:
+
+Every nature program must contain a `main` function as the program entry point:
 
 ```nature
 // main.n
@@ -1664,91 +1886,68 @@ fn main() {
 }
 ```
 
-The file containing the `main` function is considered the main module and serves as the program's entry module.
+The entry file specified in compilation command is treated as main module, such as `nature build main.n`
 
-### Module Definition
+### import
 
-A module can contain the following global declarations:
-- Types (`type`)
-- Variables (`var`)
-- Functions (`fn`)
+Use import keyword to import other modules or standard library:
 
 ```nature
-// user.n
-type user = struct {
-    int id
-    string username
-}
-
-int total_users = 0
-
-fn create_user(string name):user {
-    total_users += 1
-    return user{
-        id = total_users,
-        username = name
-    }
-}
-```
-
-### Module Import and Usage
-
-Use the `import` keyword to import modules:
-
-```nature
-// Basic import
+// basic import, by default takes user as module ident
 import "user.n"
 
-// Using an alias
+// custom module keyword
 import "user.n" as u
+
+// import standard library
+import fmt
 
 fn main() {
     var new_user = user.create_user("alice")
-    // Or using the alias
+    
     var another = u.create_user("bob")
+    
+    fmt.printf('name is %s', another.name)
 }
 ```
 
-### Notes
-
-1. Each program must have exactly one module containing the `main` function.
-2. Only type, variable, and function declarations can be at the module level.
-3. Variable declarations within a module must explicitly specify the type.
-4. Currently, only relative path imports based on the current file are supported.
+File-based module import has strict path restrictions, only supports relative paths, and does not support using `./` or `../` to reference. Therefore import files can only import modules in current directory or subdirectories, cannot import modules in parent directories.
 
 ## Package Management
 
+Nature installation package includes npkg program as package management software, npkg needs to work with package.toml.
+
 ### package.toml
 
-Creating a `package.toml` file in the project root directory automatically enables package management features. This file defines project information and dependencies.
+Create `package.toml` in project root directory to automatically enable package management functionality, this file defines project information and dependencies:
 
 ```toml
-# Basic information
-name = "myproject"        # Project name
-version = "1.0.0"         # Version number
+# basic information
+name = "myproject"        # project name
+version = "1.0.0"        # version number
 authors = ["Alice <a@example.com>"]
-description = "Project description"
+description = "project description"
 license = "MIT"
-type = "bin"              # bin or lib
-entry = "main"            # Entry file for the library (used when type = "lib")
+type = "bin"             # bin or lib
+entry = "main"           # library entry file (used when type = "lib")
 
-# Dependencies, can be specified via git or local path
+# dependency packages, can be specified via git or local path
 [dependencies]
-rand = { type = "git", version = "v1.0.1", url = "[jihulab.com/nature-lang/rand](https://jihulab.com/nature-lang/rand)" }
+rand = { type = "git", version = "v1.0.1", url = "jihulab.com/nature-lang/rand" }
 local_pkg = { type = "local", version = "v1.0.0", path = "./local" }
 ```
 
 ### Dependency Management
 
-The package management component `npkg` is installed with the nature installation package. Use the `npkg sync` command in the project root directory to synchronize dependencies defined in `package.toml`. Packages will be synchronized to the `$HOME/.nature/package` directory.
+Use `npkg sync` command in directory containing package.toml to synchronize packages in dependency management. Packages will be synced to $HOME/.nature/package directory.
 
 ```sh
 $HOME/.nature/package
 ├── caches
 └── sources
     ├── jihulab.com.nature-lang.os@v1.0.1
-    │    ├── main.n
-    │    └── package.toml
+    │   ├── main.n
+    │   └── package.toml
     └── local@v1.0.0
         ├── main.linux_amd64.n
         ├── main.linux.n
@@ -1759,78 +1958,88 @@ $HOME/.nature/package
 
 ### Import Syntax
 
+Nature uses file name as module ident:
+
 ```nature
-import rand                  // Import the main module of the package (equivalent to import rand.main)
-import rand.utils.seed       // Import a specific module
-import rand.utils.seed as seed // Use an alias
+import rand                    // import package main module (equivalent to import rand.main)
+import rand.utils.seed         // import specified module, i.e., rand/utils/seed.n file
+import rand.utils.seed as s    // custom module name
 ```
 
-`import` will look for modules in the following order:
+`import` searches for modules in the following order:
 
-- Current project (`name` in `package.toml`)
-- Project dependencies (packages defined in `dependencies`)
+- Current project's name field in package.toml, i.e., referencing other modules of current project
+- Project dependencies (third-party packages defined in dependencies)
 - Standard library
 
-### Cross-Platform Support
+### Cross-platform Support
 
-When using `import syscall`, the imported module will be searched for in the following order:
+Can distinguish application platform through file names, for example when using `import syscall`, modules will be searched and imported in the following order:
 
-1. syscall.\{os}_\{arch}.n
-2. syscall.\{os}.n
-3. syscall.n
+1. `syscall.{os}_{arch}.n`
+2. `syscall.{os}.n`
+3. `syscall.n`
 
-Supported platforms:
-- os: linux, darwin
-- arch: amd64, arm64
+Currently supported platforms:
+- os: linux、darwin
+- arch: amd64、arm64、riscv64
 
 ### Conflict Resolution
 
-When there are naming conflicts with imported packages, you can use different key names in `dependencies`:
+When imported package names conflict, can use different key names in dependencies:
 
 ```toml
 [dependencies]
-rand_v1 = { type = "git", version = "v1.0", url = "[jihulab.com/nature-lang/rand](https://jihulab.com/nature-lang/rand)" }
-rand_v2 = { type = "git", version = "v2.0", url = "[jihulab.com/nature-lang/rand](https://jihulab.com/nature-lang/rand)" }
+rand_v1 = { type = "git", version = "v1.0", url = "jihulab.com/nature-lang/rand" }
+rand_v2 = { type = "git", version = "v2.0", url = "jihulab.com/nature-lang/rand" }
 ```
 
-Then import using the different names:
+Then import using different names:
 
 ```nature
 import rand_v1
 import rand_v2
 ```
 
-### Notes
-
-1. **Circular imports are prohibited.**
-2. `package.toml` must be located in the project root directory.
-3. The `npkg sync` and `nature build` commands must be executed in the project root directory.
-4. Module import supports cross-platform features; direct file import does not.
-5. The current project can access modules in any subdirectory through the package name.
-
-
+Since based on file modules, editor does not detect circular imports, but in actual development it's recommended to distinguish code hierarchy relationships and avoid circular imports.
 
 ## Interacting with C
 
-First, define the static library files in `package.toml`. The compiler will automatically link the static library files for the relevant architecture. Then, declare C function templates using the `#linkid` tag. When calling template functions in nature, the compiler will automatically link to the corresponding C functions in the static library.
+Besides nature's built-in libc/libuv libraries, we can also reference other static library files in package.toml, compiler will automatically link related architecture static library files. In nature code, declare corresponding function templates through `#linkid` tags and call them. Linker will automatically perform correct linking.
 
-Of course, nature can interact with any programming language that can generate static libraries.
+Not only C language, as long as programming languages can generate static libraries, nature can conveniently interact with them. But nature is based on musl libc for static compilation, so static libraries also need to be compiled purely static based on musl libc. Recommend using musl-gcc component to compile static libraries.
 
-### Static Libraries and Template Function Declarations
+Since nature can customize linker and link parameters, static libraries can also be referenced through link parameters, such as:
 
-Define the static libraries to be linked in the `[links]` section of `package.toml`:
+```sh
+nature build --ld '/usr/bin/ld' --ldflags '-nostdlib -static -lm -luv' main.n
+```
+
+Nature integrates musl libc and macOS C library by default, can directly use related functions, directly call related functions through `import libc`:
+
+```nature
+import libc
+
+fn main() {
+	i32 r = libc.rand()
+}
+```
+
+### Static Libraries and Template Function Declaration
+
+Define static libraries to be linked through `[links]` section in `package.toml`:
 
 ```toml
 [links]
-libz = {
+libz = { 
     linux_amd64 = 'libs/libz_linux_amd64.a',
     darwin_amd64 = 'libs/libz_darwin_amd64.a',
-    linux_arm64 = 'libs/libz_linux_arm64.a',
+    linux_arm64 = 'libs/libz_linux_arm64.a', 
     darwin_arm64 = 'libs/libz_darwin_arm64.a'
 }
 ```
 
-Use the `#linkid` tag and function templates to declare the C function ID and related parameters to be called:
+Use `#linkid` tags and function templates to declare C function id and related parameters to be called:
 
 ```nature
 #linkid gzopen
@@ -1840,7 +2049,7 @@ fn gzopen(anyptr fname, anyptr mode):anyptr
 fn sleep(int second)
 ```
 
-### Calling Example
+Call example:
 
 ```nature
 // zlib.n
@@ -1849,186 +2058,161 @@ fn gzopen(anyptr fname, anyptr mode):anyptr
 
 // main.n
 import zlib
+import libc
 
 fn main() {
     var output = "output.gz"
-    // Use the string.ref function to get a C-style string, including '\0'
-    var gzfile = zlib.gzopen(output.ref(), "wb".ref())
+    var gzfile = zlib.gzopen(output.to_cstr(), "wb".to_cstr())
     if gzfile == null {
-        throw errof("failed to open gzip file")
+        throw errorf("failed to open gzip file")
     }
-    // ... use gzfile
+    // ...
 }
 ```
 
 ### Type Mapping
 
-Mapping between nature and C types:
+Type mapping relationship between nature and C language:
 
-| nature Type    | C Type             | Description                                                                  |
-| -------------- | ------------------ | ---------------------------------------------------------------------------- |
-| anyptr         | uintptr            | Universal pointer type                                                       |
-| `rawptr<T>`    | T* | Typed pointer                                                                |
-| i8/u8          | int8_t/uint8_t     | 8-bit integer                                                                |
-| i16/u16        | int16_t/uint16_t   | 16-bit integer                                                               |
-| i32/u32        | int32_t/uint32_t   | 32-bit integer                                                               |
-| i64/u64        | int64_t/uint64_t   | 64-bit integer                                                               |
-| int            | size_t             | Platform-dependent integer, equivalent to int64_t on 64-bit systems          |
-| f32            | float              | 32-bit floating-point number                                                 |
-| f64            | double             | 64-bit floating-point number                                                 |
-| `[T,n]`        | T[n]               | Fixed-size array, N is a compile-time constant                               |
+| nature type | C type           | Description                                    |
+| ----------- | ---------------- | ---------------------------------------------- |
+| anyptr      | uintptr          | Universal pointer type                         |
+| `rawptr<T>` | T*               | Typed pointer                                  |
+| i8/u8       | int8_t/uint8_t   | 8-bit integer                                  |
+| i16/u16     | int16_t/uint16_t | 16-bit integer                                 |
+| i32/u32     | int32_t/uint32_t | 32-bit integer                                 |
+| i64/u64     | int64_t/uint64_t | 64-bit integer                                 |
+| i32         | int              |                                                |
+| int         | size_t           | Platform-dependent integer, equivalent to int64_t on 64-bit system |
+| f32         | float            | 32-bit floating point                          |
+| f64         | double           | 64-bit floating point                          |
+| `[T;n]`     | `T[n]`           | Fixed length array, N is compile-time constant |
+| struct      | struct           | nature struct uses same alignment and ABI handling as C struct |
 
-Getting C-style strings and pointers:
+Get C language strings and pointers:
 
 ```nature
-// Get the address of a variable
+import libc
+
 var str = "hello"
-anyptr ptr = str.ref()  // Get the string address
+libc.cstr ptr = str.to_cstr()  // get string address
+string str2 = ptr.to_string() // cstr convert to nature string
 
-// Get a rawptr type
-rawptr<tm_t> time_ptr = &time_info  // Get the address of a struct
+// get rawptr type
+rawptr<tm_t> time_ptr = &time_info
 
-// Get an anyptr type
-anyptr c_ptr = time_info as anyptr // Any nature type can be converted to anyptr type
-```
-
-Structure mapping:
-
-```nature
-type tm_t = struct {
-    i32 tm_sec
-    i32 tm_min
-    i32 tm_hour
-    i32 tm_mday
-    i32 tm_mon
-    i32 tm_year
-    i32 tm_wday
-    i32 tm_yday
-    i32 tm_isdst
-    i64 tm_gmtoff
-    anyptr tm_zone
-}
-```
-
-### Standard Library Functions
-
-nature integrates musl libc and macOS C library by default. Standard library functions can be used directly by simply defining function templates. nature's standard libc has already defined some functions that can be used directly.
-
-```nature
-// ...
-#linkid localtime
-fn localtime(rawptr<i64> timestamp):rawptr<tm_t>
-
-#linkid strlen
-fn strlen(anyptr str):uint
-
-#linkid fork
-fn fork():int
-
-// ...
+// get anyptr type
+// any nature type (except floating point) can be converted to anyptr type
+anyptr c_ptr = time_info as anyptr 
 ```
 
 ### Notes
 
-1. When interacting with C, pay special attention to memory management. nature does not automatically manage memory allocated by C functions.
-2. Use `anyptr` and `rawptr` with extreme caution, as they bypass nature's type safety checks.
+- C language is memory unsafe, so need to pay special attention to memory-related issues. Using rawptr and anyptr can easily bypass nature programming language's safety checks
+- Nature programming language is based on cooperative scheduling, when calling blocking C functions like sleep, read, write etc., will cause nature scheduler to block. Scheduler blocking will prevent other coroutines from running and unable to perform GC processing.
 
 ## Formatting
 
+Nature fmt tool has not been developed yet, so need some simple writing conventions.
+
 ```nature
-var bar = '' // No semicolon needed at the end of a statement
+var bar = '' // stmt ending does not need to carry ; 
+
+var global_v = 12 // except constant definitions, all other idents recommend lowercase underscore separation (including file names)
+
+const GLOBAL_V = 12 // constants recommend uppercase underscore separation
 
 if true {
-    var foo = 1 // Use 4 spaces for indentation
+    var foo = 1 // use 4 spaces for indentation
 }
 
 call_test(
     1,
-    2, // Multi-line parameters need a comma on the last line
+    2, // multi-line parameters, need to add , on last line
 )
 
 var v = [
     1,
     2,
-    3, // Same as above
+    3, // same as above
 ]
 
 var m = {
     "a": 1,
-    "b": 2, // Same as above
+    "b": 2, // same as above
 }
 
-var s = person_t{ // No space between struct alias identifier and '{'
+type person_t:io.reader,io.writer = struct{ // no space needed between struct and {
+	var f = fn() {
+	
+	}
+	int a = 1
+	int b
+	bool c
+}
+
+var s = person_t{ // no space needed between struct ident and {
     name: "john",
-    age: 18, // Same as above
+    age: 18, // same as above
 }
 
-// 1. Function definition '{' should be on the same line as the function declaration
-// 2. There should not be a space between the return parameters and ')'
-// 3. There should be a space between each parameter
+// 1. Function definition '{' and function declaration need to be on same line
+// 2. Space needed between return parameter and ')'
+// 3. Space needed between each parameter
+// 4. No space needed for return value
 fn test(int arg1, int arg2):int {
 
+}
+
+// for loop format
+for int i = 0; i < 12; i += 1 {
+
+}
+
+// match format
+match a {
+	v -> {
+	
+	}
+	_ -> {
+	
+	}
 }
 ```
 
 ## Keywords
 
-Type Keywords
-- `void`, `any`, `null`, `anyptr`
-- `bool`, `string`
-- `int`, `uint`, `float`
-- `i8`, `i16`, `i32`, `i64`
-- `u8`, `u16`, `u32`, `u64`
-- `f32`, `f64`
+Type keywords:
+- void, any, null, bool, ptr, rawptr, anyptr
+- int, i64, i32, i16, i8
+- uint, u64, u32, u16, u8
+- float, f64, f32
+- struct, interface
+- vec, map, set, tup, chan
 
-Composite Type Keywords
-- `struct`
-- `chan`
-- `arr`
-- `vec`
-- `map`
-- `set`
-- `tup`
-- `ptr`
-- `rawptr`
+Declaration keywords:
+- var - variable declaration
+- const - constant definition
+- type - type definition
+- fn - function definition
+- import - import module
+- new - create instance
 
-Declaration Keywords
-- `var` - variable declaration
-- `type` - type definition
-- `fn` - function definition
-- `import` - import module
-- `new` - create instance
+Control flow keywords:
+- if, else, else if
+- for, in, break, continue
+- return
+- match, select
+- try, catch, throw
 
-Control Flow Keywords
-- `if`, `else`
-- `for`, `in`
-- `break`
-- `continue`
-- `return`
-- `match`
-- `select`
+Other keywords:
+- go - concurrency primitive
+- as - type conversion
+- is - type judgment
+- true, false - bool values
+- null - null value
 
-Error Handling Keywords
-- `try`
-- `catch`
-- `throw`
+Reserved keywords:
 
-Concurrency Keywords
-- `go`
+impl, let, pub, package, static, macro, alias
 
-Type Operation Keywords
-- `as` - type conversion
-- `is` - type checking
-
-Boolean Values
-- `true`
-- `false`
-
-Reserved Keywords
-- `let`
-- `const`
-- `pub`
-- `package`
-- `static`
-- `macro`
-- `impl`

@@ -1,88 +1,42 @@
 # Get Started
 
-## Introduction
+## Features
 
-Nature is a general-purpose open source programming language and compiler that aspires to provide developers with a **simple and elegant** development experience that can **simply and efficiently** build secure and reliable cross-platform software.
-
-## Features 
-  
-- ✓ Simple, natural, consistent syntax design, even programming beginners can easily grasp, quickly get started!
-- ✓ No dependency on llvm and VM, compiles directly to target platform machine code and supports cross-compilation
-- ✓ Simple deployment, purely static linking based on musl libc, no additional dependencies, good cross-platform characteristics
-- ✓ Comprehensive type system with support for generics, union types, interfaces, null-value safety, etc.
-- ✓ Same high-performance GC implementation as go, with very short STW (Stop The World)
-- ✓ High-performance memory allocator implementation like go, similar to google/tcmalloc
-- ✓ High-performance shared-stack Coroutine implementation, capable of millions of Coroutine switches per second
-- ✓ Built-in libuv to handle IO event loops in collaboration with the concatenators  
-- ✓ High-performance runtime and compiler based on a pure C implementation
-- ✓ Modularity and package management system npkg
-- ✓ Built-in implementations of common data structures and standard libraries
-- ✓ Use try+catch for error handling, match for pattern matching, channel for concurrent communication, select for concurrent processing
-- ✓ Follow the system ABI, built-in libc, you can directly call the C language standard library functions to accelerate code development
-- ✓ editor lsp support
-- ○ High-performance memory management to assist in automatic GC 
-- ○ Testing DSL in hopes of utilizing AI coding efficiently and consistently
-- ○ macho cross-platform linker (lack of macho linker currently prevents cross-compilation on darwin platform)
-- ○ Collaborative scheduling system  
-- ○ Cross-platform compilation support for wasm and risc64 platforms
-- ○ Compile to readable go programming language
-
+- ✓ Lightweight, concise, and consistent syntax design, easy to master and quick to get started
+- ✓ Strong typing, static analysis and compilation, memory safety, exception handling, easily write safe and reliable software
+- ✓ Built-in concurrency primitives: go/future/channel/select
+- ✓ Directly compiles to target platform machine code with cross-compilation and linking support, no third-party libraries like llvm required
+- ✓ Simple deployment, efficient compilation, static linking based on musl libc with excellent cross-platform characteristics
+- ✓ Complete type system supporting generics, union types, interface, nullable(?), errable(!)
+- ✓ High-performance GC implementation with very short STW (Stop The World)
+- ✓ High-performance memory allocator implementation, referencing tcmalloc
+- ✓ High-performance shared stack coroutine implementation, capable of millions of coroutine switches per second
+- ✓ High-performance IO based on libuv implementation
+- ✓ Pure C implementation of high-performance runtime and compiler
+- ✓ Built-in data structures vec/map/set/tup and common standard library implementations
+- ✓ Function calls follow system ABI, built-in libc, convenient for calling C standard library functions
+- ✓ Centralized package management system npkg
+- ✓ Editor LSP support
+- ○ More controllable GC implementation, such as gc switch, fast free obj, etc.
+- ○ Cross-linker based on zig build source code and refactoring
+- ○ Cooperative scheduling system improvements
+- ○ Compilation target support for golang, wasm
 
 ## Project Overview
 
-The nature programming language has reached an early usable version, and the syntax API is basically stable and will not change significantly before version 1.0.
+The Nature programming language has reached an early usable version with stable syntax APIs. There will be no major changes before version 1.0, and subsequent versions will add some necessary and commonly used syntax features such as enum, ternary operators, struct labels, etc.
 
-The current version of nature source code supports compilation on the following target platforms
-- linux/amd64
-- linux/arm64
-- darwin/amd64
-- darwin/arm64
+The current version compilation target architectures include linux_amd64, linux_arm64, linux_riscv64, darwin_amd64, darwin_arm64. Future versions will compile to Windows platform using zig ld.
 
-nature includes a set of test cases and standard libraries to test the usability of basic functionality and syntax, and a small set of projects to test overall usability, but has not yet been tested in medium to large scale projects.
-
-The core work that followed was to improve the usability of the nature programming language, including standard library refinement, performance optimization, user feedback collection, and bug fixes.
-  
-## Design Philosophy
-
-Go is the programming language I use in my daily work. Its syntax is simple, and it offers very convenient cross-compilation and deployment, a highly efficient and high-performance runtime implementation, and an advanced concurrent design style. However, it also has some inconvenient aspects:
-
-- The overly simplistic syntax leads to insufficient expressive power.
-- The type system is not sufficiently comprehensive.
-- The error handling mechanism is cumbersome.
-- Although the automatic GC and preemptive scheduling designs are excellent, they also limit the application scope of Go.
-- Package management methods.
-- `interface{}` 
-- ...
-
-nature is designed to be a continuation and improvement of the go programming language, and pursues certain differences. While improving the above problems, nature has runtime, GMP model, allocator, collector, coroutine, channel, std, etc. similar to go. nature also has no dependency on llvm, high compilation speed, and easy cross-compilation and deployment.
-
-Based on the existing features of the nature programming language, it is suitable for game engines and game development, scientific computing and AI, operating systems and the Internet of Things, the command line, and web development.
-
-  
-
-## Recommendations for Use
-
-As an early programming language, it is currently suitable for the following types of developers
-
-- Technical explorers - people who are willing to try new things, are comfortable with the bugs that existed in earlier versions, and are interested in participating in discussions about language design and improvement.
-- Language developers and researchers - developers interested in programming language design and implementation, learning about compilation principles, and learning how to implement a programming language.
-- Feedback Contributors - developers who are willing to provide feedback on their use of the language, are able to submit bug reports and suggestions for improvements, and are interested in participating in the project and in improving the standard library.
-
-Not for the following types of developers
-- Enterprise users who need to use the language in production environments
-- Project developers with high stability requirements
-- Beginners looking for a programming related job
-- Developers who need a lot of third-party library support
-
+Nature includes a set of test cases and standard libraries to test basic functionality and syntax availability, contains a set of small to medium projects to test overall availability, but has not yet been tested with large-scale projects.
 
 ## Installation
 
-1️⃣ Download the binary zip for your system at [https://github.com/nature-lang/nature/releases](https://github.com/nature-lang/nature/releases) and extract it.
+1️⃣ Download the binary package suitable for your system from [https://github.com/nature-lang/nature/releases](https://github.com/nature-lang/nature/releases) and extract it.
 
+2️⃣ Move the nature folder to the `/usr/local` directory. If you need to install nature in another directory, please manually set the NATURE_ROOT environment variable to point to the nature directory.
 
-2️⃣ Move the nature folder to the `/usr/local` directory. If you need to install nature in another directory, manually set the NATURE_ROOT environment variable to point to the nature directory.
-
-```sh
+```
 /usr/local/nature/
 ├── LICENSE-APACHE
 ├── LICENSE-MIT
@@ -90,94 +44,101 @@ Not for the following types of developers
 ├── bin
 ├── lib
 └── std
-└── std
 ```
 
-3️⃣ Add the `/usr/local/nature/bin` directory to the system environment variables, e.g. `cat ~/.zshrc`
+3️⃣ Add the `/usr/local/nature/bin` directory to your system environment variables, for example `cat ~/.zshrc`
 
-```sh
+```
 ...
 export PATH="/usr/local/nature/bin:$PATH"
 ...
 ```
 
-4️⃣ Run the command `nature --version` to view the current version
+4️⃣ Run the command `nature --version` to check the current version
 
-```sh
+```
 > nature --version
-nature v0.5.0-beta - release build 2025-02-22
+nature vx.x.x - release build 1970-01-01
 ```
 
-5️⃣ Run the command `nature -h` to see the available commands
+5️⃣ Run the command `nature -h` to view help
 
-```bash
+```
 > nature -h
 Nature Programming Language Compiler vx.x.x
 
-Usage.
+Usage:
   nature [command] [flags] [arguments]
 ...
 ```
 
-## Hello Nature
+## Hello World
 
-Create the main.n file
+Create a main.n file
 
-```nature
-import fmt
-
-fn main() {
+```nature  
+import fmt  
+  
+fn main() {  
     fmt.printf('hello nature')
-}
+}  
 ```
 
-Compile and run the binary main
+Compile and run the binary file main
 
 ```sh
-> nature build main.n && . /main
+> nature build main.n && ./main
 hello nature
 ```
 
-Specify the target platform and architecture
+Specify compilation target platform and architecture
 
 ```sh
 > nature build --target darwin_amd64 main.n
 ```
 
-Specify that the output binary is called hello
+Specify output binary file name as hello
 
 ```sh
 > nature build -o hello main.n
 ```
 
-## Example project
+## Project Examples
 
-[parker](https://github.com/weiwenhao/parker) lightweight packaging tool
+mysql/postgresql/redis drivers https://github.com/weiwenhao/dbdriver
 
-[llama.n](https://github.com/weiwenhao/llama.n) Llama2 nature language implementation
+sqlite driver https://github.com/weiwenhao/nature-sqlite
 
-[tetris](https://github.com/weiwenhao/tetris) Tetris based on raylib, macos only.
+RESTful API example https://github.com/weiwenhao/emoji-api
 
-[playground](https://github.com/weiwenhao/playground) playground server api implementation
+Lightweight container packaging tool and runtime https://github.com/weiwenhao/parker
 
-## Editor support
+Llama2 inference model implementation https://github.com/weiwenhao/llama.n
 
-The lsp server `nls` has been installed in the /usr/local/nature/bin directory along with the nature installer.
+Tetris game based on raylib https://github.com/weiwenhao/tetris
 
-``` sh
+More syntax examples https://github.com/nature-lang/nature/tree/master/tests/features/cases
+
+## Editor Support
+
+The LSP server `nls` is already installed with the nature installation package in the /usr/local/nature/bin directory.
+
+```sh
 ls -lh /usr/local/nature/bin
 total 44696
--rwxr-xr-x@ 1 root wheel 764K Feb 24 13:18 nature
--rwxr-xr-x@ 1 root wheel 6.1M Feb 24 13:20 nls
--rwxr-xr-x@ 1 root wheel 15M Feb 24 13:20 npkg
+-rwxr-xr-x@ 1 root  wheel   764K Feb 24 13:18 nature
+-rwxr-xr-x@ 1 root  wheel   6.1M Feb 24 13:20 nls
+-rwxr-xr-x@ 1 root  wheel    15M Feb 24 13:20 npkg
 ```
 
-Search for nature language in the vscode extension store and download it.
+Search for "nature language" in the VSCode extension marketplace to download the LSP client and start using it.
 
-## Learn more
+## Learn More
 
-[Syntax documentation](https://nature-lang.org/docs/syntax) - A detailed description of the syntax of the Nature language.
+Syntax documentation [https://nature-lang.org/docs/syntax](https://nature-lang.org/docs/syntax)
 
-[Standard Library Documentation](https://nature-lang.org/stds) - Nature Standard Library API reference.
+Standard library documentation [https://nature-lang.org/stds](https://nature-lang.org/stds/co)
 
-[Contribution Guidelines](https://nature-lang.org/docs/contribute) - How to get involved in Nature language development.
+Online playground https://nature-lang.org/playground
+
+Contribution guide https://nature-lang.org/docs/contribute

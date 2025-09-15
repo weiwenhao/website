@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CodeBlock } from "@/components/features/code-block";
-import { Gamepad2, Bot, Cog, Globe } from "lucide-react";
+import { Gamepad2, Infinity, Cog, Globe } from "lucide-react";
 import Link from 'next/link';
 
 export default function Home() {
@@ -57,20 +57,17 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-center mb-12">Why Nature?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
-                <h3 className="text-xl font-semibold mb-4">Clean & Natural Syntax</h3>
-                <p className="text-gray-600 dark:text-gray-300">Simple, natural, consistent syntax design, even programming beginners can easily grasp, quickly get started!</p>
+                <h3 className="text-xl font-semibold mb-4">Lightweight & Concise & Natural</h3>
+                <p className="text-gray-600 dark:text-gray-300">Lightweight, concise, consistent syntax design, easy to master and quickly get started</p>
               </div>
-
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
-                <h3 className="text-xl font-semibold mb-4">Cross-Platform</h3>
-                <p className="text-gray-600 dark:text-gray-300">No dependency on llvm and VM, compiles directly to target platform machine code and supports cross-compilation.</p>
+                <h3 className="text-xl font-semibold mb-4">Safe & Reliable</h3>
+                <p className="text-gray-600 dark:text-gray-300">Strong typing, static analysis and compilation, memory safety, exception handling, easily write safe and reliable software</p>
               </div>
-
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
                 <h3 className="text-xl font-semibold mb-4">High Performance</h3>
-                <p className="text-gray-600 dark:text-gray-300">High-performance GC, High-performance Coroutine and Pure C implementation runtime</p>
+                <p className="text-gray-600 dark:text-gray-300">High-performance GC implementation, high-performance shared stack coroutine implementation, libuv-based network IO, runtime implemented in pure C</p>
               </div>
-
             </div>
             <div className="text-center text-gray-400 mt-4">Click to Get Started more feature support……</div>
           </section>
@@ -83,31 +80,34 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Gamepad2 className="w-6 h-6 text-nature-red" />
-                  <h3 className="text-lg font-semibold">Game Development</h3>
+                  <Globe className="w-6 h-6 text-nature-red" />
+                  <h3 className="text-lg font-semibold">Server Applications</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">Game engines and game development</p>
+                <p className="text-gray-600 dark:text-gray-300">API, command line, MCP services, network middleware</p>
               </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-2">
-                  <Bot className="w-6 h-6 text-nature-red" />
-                  <h3 className="text-lg font-semibold">Scientific Computing</h3>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300">AI and scientific applications</p>
-              </div>
+
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
                   <Cog className="w-6 h-6 text-nature-red" />
                   <h3 className="text-lg font-semibold">Systems Programming</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">Operating systems and IoT</p>
+                <p className="text-gray-600 dark:text-gray-300">Operating systems, IoT, container systems</p>
               </div>
+
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Globe className="w-6 h-6 text-nature-red" />
-                  <h3 className="text-lg font-semibold">Web Development</h3>
+                  <Gamepad2 className="w-6 h-6 text-nature-red" />
+                  <h3 className="text-lg font-semibold">Game Development</h3>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">Modern web applications</p>
+                <p className="text-gray-600 dark:text-gray-300">Game engines and game development</p>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-2">
+                  <Infinity className="w-6 h-6 text-nature-red" />
+                  <h3 className="text-lg font-semibold">Explore Possibilities</h3>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300">Databases, programming education, GUI, computer science ...</p>
               </div>
             </div>
           </section>
@@ -131,19 +131,6 @@ export default function Home() {
                   className="h-12 w-12 rounded-full"
                 />
                 <span className="text-sm text-gray-700 dark:text-gray-300">linky6565</span>
-              </Link>
-
-              <Link
-                href="https://www.jetbrains.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-80"
-              >
-                <img
-                  src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.png"
-                  alt="JetBrains logo"
-                  className="h-12"
-                />
               </Link>
 
               <Link

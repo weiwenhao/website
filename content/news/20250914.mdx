@@ -1,0 +1,57 @@
+---
+title: "Nature 0.6 Released, Exploration and Practice in Server-Side Applications"
+date: 2025-09-17
+---
+
+Nature 0.6 version advances with usability as its goal. With the help of packages like net, http, json, and dbdriver, the Nature programming language can now do much more, especially in server-side applications.
+
+With further improvements to the standard library and numerous bug fixes, the Nature programming language will be able to complete more challenging projects!
+
+### What's Changed
+
+[https://github.com/nature-lang/nature/releases](https://github.com/nature-lang/nature/releases)
+
+### Version Changes
+
+- linux_riscv64 compilation target support
+- const support
+- libc standard library improvements
+- New net standard library, including tcp/udp/tls/url/dns modules
+- New HTTP client standard library
+- New JSON and reflect standard libraries
+- New crypto library, including bcrypt/blowfish/hmac/md5/rsa/sha256 modules
+- New base64 standard library
+- mysql/postgresql/redis drivers https://github.com/weiwenhao/dbdriver
+- sqlite driver https://github.com/weiwenhao/nature-sqlite
+- [RESTful API example](https://github.com/weiwenhao/emoji-api) including router/middleware/db pool/mail/JWT/config modules
+- GitHub CI support [@JustAnotherID](https://github.com/JustAnotherID)
+- zig build toolchain support [@wzzc-dev](https://github.com/wzzc-dev)
+- Removed break in catch/match, using the last line expression as block return value
+- testar test support for arch/os/repeat filtering
+- Use `list[1..5]` instead of `list.slice(1, 5)` for vec slicing
+- Type conversion inline optimization
+- Support for multi-line string declaration using backticks
+- Integrated nls and npkg projects directly into the nature repository, subsequent issues and code adjustments will be made directly in the main repository
+- LSP support for simple code completion
+- Fixed recycle type exceptions
+- Fixed various GC/register allocation/system ABI related bugs
+- Fixed u64 max storage exception [@JustAnotherID](https://github.com/JustAnotherID)
+- Fixed https://github.com/nature-lang/nature/issues/138
+- Fixed https://github.com/nature-lang/nature/issues/134
+- Fixed https://github.com/nature-lang/nature/issues/133
+- Fixed https://github.com/nature-lang/nature/issues/116
+- Fixed https://github.com/nature-lang/nature/issues/114
+- Fixed https://github.com/nature-lang/nature/issues/107
+- Fixed https://github.com/nature-lang/nature/issues/103
+- Fixed https://github.com/nature-lang/nature/issues/101
+- Fixed lsp https://github.com/nature-lang/nls/issues/1
+- Fixed lsp https://github.com/nature-lang/nls/issues/5
+- Fixed lsp https://github.com/nature-lang/nls/issues/4
+
+### Acknowledgments
+
+Thanks to [@JustAnotherID](https://github.com/JustAnotherID) [@wzzc-dev](https://github.com/wzzc-dev) for their code contributions to this release
+
+Thanks to [@felixf4xu](https://github.com/felixf4xu) [@cn-lang](https://github.com/cn-lang) [@zhangchunlin](https://github.com/zhangchunlin) [@GAMIS65](https://github.com/GAMIS65) for their financial support
+
+Special thanks to [@linky6565](https://github.com/linky6565) for their financial sponsorship, which is extremely helpful for the development of the Nature programming language!

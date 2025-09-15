@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { getStdLibs } from '@/lib/get-stdlibs'
+import { getStdLibsList } from '@/lib/stdlibs-config'
 
 export default function StdsLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
@@ -11,8 +11,9 @@ export default function StdsLayout({ children }: { children: React.ReactNode }) 
     const [stdLibs, setStdLibs] = useState<Array<{ name: string, slug: string }>>([])
 
     useEffect(() => {
-        // 获取动态标准库列表
-        getStdLibs().then(libs => setStdLibs(libs))
+        // Get standard library list from configuration
+        const libs = getStdLibsList()
+        setStdLibs(libs)
 
         const slug = pathname.split('/').pop() || ''
         setActiveSlug(slug)
