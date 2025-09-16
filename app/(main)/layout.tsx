@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Oxanium } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "@/globals.css";
 import Link from 'next/link';
 import { Github, Twitter } from 'lucide-react';
 import { Header } from "@/components/features/header";
 
-const font = Oxanium({
+const font = Outfit({
   weight: "400",
   subsets: ["latin"]
 });

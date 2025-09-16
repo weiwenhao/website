@@ -208,7 +208,7 @@ export function CodeBlock() {
                 backgroundColor: 'transparent',
                 margin: 0,
                 lineHeight: '1.4',
-                fontFamily: 'Operator Mono, IBM Plex Mono, JetBrains Mono, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                fontFamily: 'Operator Mono, JetBrains Mono, IBM Plex Mono, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
                 fontWeight: '400',  // 添加这一行来控制字体粗细
                 fontSize: '0.9rem'  // 或使用 style 属性
               }}
