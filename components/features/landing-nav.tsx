@@ -71,12 +71,12 @@ export function LandingNav() {
                 mysql/postgresql/redis driver
               </ListItem>
               <ListItem
-                title="Restful API"
+                title="Web Framework"
                 href="https://github.com/weiwenhao/emoji-api"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                contains router/middleware/jwt/db poo/mail module
+                Although this is a RESTful api example, it can be used as a web framework.
               </ListItem>
               <ListItem
                 title="Parker"

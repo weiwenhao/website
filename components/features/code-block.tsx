@@ -19,17 +19,19 @@ fn main() {
     fmt.printf('result=%d', result)
 }`,
 
-  http: `import http
+  http: `import emoji.services.api // package: https://github.com/weiwenhao/emoji-api
 
 fn main() {
-    var app = http.server()
+    var app = api.new()
 
-    app.get('/', fn(http.request_t req, ptr<http.response_t> res):void! {
-        res.send('hello nature')
+    app.use(fn(ptr<api.ctx_t> c):void! { // middleware
+        println(c.req.url)
+        c.next()
+    })
+    app.get('/hello/:msg', fn(ptr<api.ctx_t> c):void! {
+        return c.json(200, {'message': 'ok', 'data': 'hello ' + c.param('msg')})
     })
 
-
-    println('server will listen on port 8888 and block')
     app.listen(8888)
 }`,
 
