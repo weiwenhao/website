@@ -654,8 +654,8 @@ type person_t = struct {
 
 // Struct initialization, struct is initialized on stack by default.
 var p = person_t{
-    name = 'Alice',
-    age = 25
+    name: 'Alice',
+    age: 25
 }
 
 //  Using new can initialize on heap and get struct pointer
@@ -1271,7 +1271,7 @@ fn print_shape(measurable<i64> s) {
 
 fn main() {
 	// value passing
-	var r = rectangle{width=3, height=4}  
+	var r = rectangle{width: 3, height: 4}  
 	print_shape(r)  
 
 	// pointer reference passing
@@ -1608,8 +1608,8 @@ fn pair<T, U>.swap():(U, T) {
 fn main() {
     // create generic instance
     var p = pair<int, string>{
-        first = 42,
-        second = "hello"
+        first: 42,
+        second: "hello"
     }
     
     // call generic method

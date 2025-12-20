@@ -45,7 +45,7 @@ fn box<T, U>.perimeter():T {
 }
 
 fn main() {
-    var b = box<i16, i32>{width=10, length=20}
+    var b = box<i16, i32>{width: 10, length: 20}
     println('perimeter =', b.perimeter())
 }`,
 
@@ -131,7 +131,7 @@ fn print_shape(measurable s) {
 }
 
 fn main() {
-    var r = rectangle{width=3, height=4}
+    var r = rectangle{width: 3, height: 4}
     print_shape(r)
 
     var r1 = new rectangle(width=15, height=18)

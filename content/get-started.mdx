@@ -2,25 +2,21 @@
 
 ## Features
 
-- ✓ Lightweight, concise, and consistent syntax design, easy to master and quick to get started
-- ✓ Strong typing, static analysis and compilation, memory safety, exception handling, easily write safe and reliable software
-- ✓ Built-in concurrency primitives: go/future/channel/select
-- ✓ Directly compiles to target platform machine code with cross-compilation and linking support, no third-party libraries like llvm required
-- ✓ Simple deployment, efficient compilation, static linking based on musl libc with excellent cross-platform characteristics
-- ✓ Complete type system supporting generics, union types, interface, nullable(?), errable(!)
-- ✓ High-performance GC implementation with very short STW (Stop The World)
-- ✓ High-performance memory allocator implementation, referencing tcmalloc
-- ✓ High-performance shared stack coroutine implementation, capable of millions of coroutine switches per second
-- ✓ High-performance IO based on libuv implementation
-- ✓ Pure C implementation of high-performance runtime and compiler
-- ✓ Built-in data structures vec/map/set/tup and common standard library implementations
-- ✓ Function calls follow system ABI, built-in libc, convenient for calling C standard library functions
-- ✓ Centralized package management system npkg
-- ✓ Editor LSP support
-- ○ More controllable GC implementation, such as gc switch, fast free obj, etc.
-- ○ Cross-linker based on zig build source code and refactoring
-- ○ Cooperative scheduling system improvements
-- ○ Compilation target support for golang, wasm
+- Lightweight, concise, and consistent syntax design, easy to master and get started quickly
+- Strong type system, static analysis and compilation, memory safety, exception handling, making it easy to write secure and reliable software
+- Built-in concurrency primitives: go/future/channel/select
+- Compiles directly to machine code for the target platform, does not rely on LLVM, and supports cross-compilation.
+- Simple deployment, efficient compilation, static linking based on musl libc with good cross-platform characteristics
+- Comprehensive type system supporting generics, union types, interfaces, nullable(?), errable(!)
+- High-performance GC implementation with very short STW (Stop The World)
+- High-performance memory allocator implementation, referencing tcmalloc
+- High-performance shared-stack coroutine implementation, capable of millions of coroutine switches per second
+- High-performance IO based on libuv implementation
+- High-performance runtime and compiler based on pure C implementation
+- Built-in data structures vec/map/set/tup and common standard library implementations
+- Function calls follow system ABI, built-in libc, convenient for calling C standard library functions
+- Centralized package management system npkg
+- Editor LSP support
 
 ## Project Overview
 
@@ -36,7 +32,7 @@ Nature includes a set of test cases and standard libraries to test basic functio
 
 2️⃣ Move the nature folder to the `/usr/local` directory. If you need to install nature in another directory, please manually set the NATURE_ROOT environment variable to point to the nature directory.
 
-```
+```sh
 /usr/local/nature/
 ├── LICENSE-APACHE
 ├── LICENSE-MIT
@@ -48,7 +44,7 @@ Nature includes a set of test cases and standard libraries to test basic functio
 
 3️⃣ Add the `/usr/local/nature/bin` directory to your system environment variables, for example `cat ~/.zshrc`
 
-```
+```sh
 ...
 export PATH="/usr/local/nature/bin:$PATH"
 ...
@@ -56,14 +52,14 @@ export PATH="/usr/local/nature/bin:$PATH"
 
 4️⃣ Run the command `nature --version` to check the current version
 
-```
+```sh
 > nature --version
 nature vx.x.x - release build 1970-01-01
 ```
 
 5️⃣ Run the command `nature -h` to view help
 
-```
+```sh
 > nature -h
 Nature Programming Language Compiler vx.x.x
 

@@ -33,6 +33,8 @@ Compiling the runtime generates `libruntime.a`, which is automatically placed in
 
 ### Compile the Source Code
 
+> The source code compilation depends on libruntime.a, which is compiled manually as needed.
+
 ```sh
 # Use 'build-release' as the build directory. If cross-compilers are installed, specify the target architecture using TOOLCHAIN_FILE.
 # cmake -B build-release -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-amd64-toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DCPACK_OUTPUT_FILE_PREFIX=$(pwd)/release

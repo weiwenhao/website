@@ -1,0 +1,35 @@
+---
+title: "Nature 0.7 released, First Performance Optimizations Completed"
+date: 2025-12-18
+---
+
+Nature v0.7 has achieved significant performance improvements through systematic optimizations of core modules including TCP/UDP/HTTP, CPU, string, GC, and closure. In benchmark tests, nature demonstrated unexpectedly strong performance, and there is still room for further optimization.
+
+### Installation Package
+
+https://github.com/nature-lang/nature/releases/tag/v0.7.0
+
+### What's Changed
+- Closure implementation refactored, JIT mode closure removed
+- GC cleanup logic optimized, added needzero to distinguish whether a span needs cleanup
+- String constantization handling, string as vec will perform deep copy
+- HTTP server connection pool added
+- Memory allocator performance optimized
+- libuv usage refactored, removed multi-threading loop, using global loop
+- TCP library performance optimized, connection pool added
+- UDP removed libuv API, implemented using C API
+- LIR BCC instruction assembly implementation optimized
+- LIR safepoint instruction assembly implementation optimized, based on global flag to determine if GC is needed
+- LIR stack instruction assembly implementation optimized, using sp register instead of fp register
+- arm64/riscv64 added temporary variable elimination based on MOV instruction
+- Struct instantiation method changed, assignment symbol from `=` to `:` https://github.com/nature-lang/nature/issues/174
+- Editor NLS module development experience optimized, added language configuration files, struct completion, auto import, module suggestions, etc. https://github.com/nature-lang/nature/pull/178
+
+
+### Acknowledgments
+
+Thanks to [@arjendevos](https://github.com/arjendevos) for code contributions to this release
+
+Thanks to [@mmachatschek](https://github.com/mmachatschek) [@zhangchunlin](https://github.com/zhangchunlin) [@Angluca](https://github.com/Angluca) [@nunu886](https://github.com/nunu886) for financial support
+
+Special thanks to [@linky6565](https://github.com/linky6565) for financial sponsorship, which has been a great help to the development of the nature programming language!
