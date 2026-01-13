@@ -5,6 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Highlight, themes } from "prism-react-renderer"
 
 const CODE_EXAMPLES = {
+
+  http: `import emoji.services.api.{new, ctx_t} // package: https://github.com/weiwenhao/emoji-api
+
+fn main() {
+    var app = new()
+
+    app.use(fn(ptr<ctx_t> c):void! {
+        c.next()
+    })
+
+    app.get('/hello/:msg', fn(ptr<ctx_t> c):void! {
+        return c.json(200, {'message': 'ok', 'data': 'hello ' + c.param('msg')})
+    })
+
+    app.listen(8888)
+}`,
+
   fib: `import fmt  
 
 fn fib(int n):int {
@@ -19,21 +36,6 @@ fn main() {
     fmt.printf('result=%d', result)
 }`,
 
-  http: `import emoji.services.api // package: https://github.com/weiwenhao/emoji-api
-
-fn main() {
-    var app = api.new()
-
-    app.use(fn(ptr<api.ctx_t> c):void! { // middleware
-        println(c.req.url)
-        c.next()
-    })
-    app.get('/hello/:msg', fn(ptr<api.ctx_t> c):void! {
-        return c.json(200, {'message': 'ok', 'data': 'hello ' + c.param('msg')})
-    })
-
-    app.listen(8888)
-}`,
 
   generics: `type box<T, U> = struct {
 	T width
@@ -82,14 +84,14 @@ fn rem(int dividend, int divisor):int! {
   nullable: `fn main() {
     int? foo = null
     int bar = match foo {
-        is int -> foo // auto assert
+        is int v -> v // auto assert
         is null -> -1
     }
 
     assert(bar == -1) 
 
-    if foo is int {
-        assert(foo == -1)
+    if foo is int v {
+        assert(v == -1)
     }
 }`,
 
@@ -179,7 +181,7 @@ fn main() {
 type CodeExample = keyof typeof CODE_EXAMPLES;
 
 export function CodeBlock() {
-  const [activeExample, setActiveExample] = useState<CodeExample>("fib");
+  const [activeExample, setActiveExample] = useState<CodeExample>("http");
 
   return (
     <div className="w-full flex flex-col">

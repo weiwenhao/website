@@ -1185,9 +1185,9 @@ bool is_null = foo is null  // false
 
 // when using type checking in conditional statements, if foo's specific type can be inferred through logical reasoning, automatic type assertion will be triggered at compile time
 
-if foo is int {
-	// auto as: foo = foo as int
-    println("foo is an integer", foo + 1)
+if foo is int v {
+	// auto as: var v = foo as int
+    println("foo is an integer", v + 1)
 }
 
 // x cannot perform automatic type inference
@@ -1203,8 +1203,8 @@ match syntax has special optimization for union type, can quickly perform type m
 ```nature
 int? foo = null
 int result = match foo {
-    is int -> foo        // auto: foo = foo as int
-    is null -> -1        // auto: foo = foo as null
+    is int v -> v        // auto: var v = foo as int
+    is null -> -1 
 }
 ```
 
@@ -1312,14 +1312,14 @@ You can use `is` to determine the specific type of interface:
 
 ```nature
 fn use_com(combination c):int {  
-    if c is square {  
-        // auto as: square c = c as square, c is interface  
-        c.unique()  
+    if c is square s {  
+        // auto as: var s = c as square, c is interface  
+        s.unique()  
         return 1  
     }  
-    if c is ptr<square> {  
-        // auto as: ptr<square> c = c as ptr<square>  
-        c.unique()  
+    if c is ptr<square> s {  
+        // auto as: var s = c as ptr<square>  
+        s.unique()  
         return 2  
     }  
     return 0  
@@ -1339,8 +1339,8 @@ Interface supports nullable:
 
 ```nature
 fn use(testable? test) {  
-    if (test is testable) { // test = test as testable  
-        println('testable value is', test.nice())  
+    if (test is testable v) { // var v = test as testable  
+        println('testable value is', v.nice())  
     } else {  
         println('test not testable')  
     }  
@@ -1460,13 +1460,12 @@ match {
 
 ### Automatic Assertion
 
-For union types, can use `is` for type matching, when match subject is var, after successful matching automatic type assertion will be performed:
-
+For union types, you can use `is` for type matching, and variables can be added after the type for automatic derivation.
 ```nature
 any value = 2.33
 var result = match value {
     is int -> 0.0
-    is float -> value  // auto as: var value = value as float
+    is float v -> v  // auto as: var v = value as float
     _ -> 0.0
 }
 ```

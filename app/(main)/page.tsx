@@ -18,9 +18,8 @@ export default function Home() {
                 </h1>
 
                 <p className="text-2xl leading-relaxed text-gray-800 dark:text-gray-200">
-                  A general-purpose open-source <span className="font-semibold">programming language</span> and <span className="font-semibold">compiler</span> designed to provide developers with an{" "}
-                  <span className="font-semibold">elegant and concise</span> development experience, enabling them to build secure and reliable cross-platform software{" "}
-                  <span className="font-semibold">simply and efficiently</span>.
+                  A general-purpose system <span className="font-semibold">programming language</span> and <span className="font-semibold">compiler</span>,
+                   designed to build high-performance, safe, and reliable cross-platform software in a <span className="font-semibold"> concise and elegant</span> way.
                 </p>
               </div>
 
