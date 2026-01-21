@@ -1,0 +1,198 @@
+---
+title: "Integrating WebView with Nature Programming Language"
+date: 2026-01-21
+---
+
+A developer attempted to integrate WebView into the Nature programming language (project repository: [https://github.com/wzzc-dev/nature-webview](https://github.com/wzzc-dev/nature-webview)) using an integration approach similar to Rust's Tauri. After successful packaging, the result is a compact, lightweight executable desktop application.
+
+Here's a simple hello world example:
+
+```nature
+import webview as w
+import webview.{webview_t}
+import libc.{cstr, to_cfn}
+import co.{sleep}
+import co
+import runtime
+
+fn interval_callback() {
+    co.yield() // Yield coroutine every 10ms to allow GC to run
+}
+
+fn other() {
+    for true {
+        println('other co')
+        sleep(1000)
+    }
+}
+
+fn main() {
+    println("Hello, Nature Webview!")
+
+    @async(other(), co.SAME)
+
+    var window = w.create(1, null)
+    w.set_title(window, "Hello World".to_cstr())
+    w.bind(window, "interval_callback".to_cstr(), to_cfn(interval_callback as anyptr), 0)
+
+    var html = `
+      <html>
+          <body>
+              <script>setInterval(() => {window.interval_callback();}, 10);</script>
+              <h1>Hello, Nature!</h1>
+          </body>
+      </html>`
+
+    w.set_html(window, html.to_cstr())
+
+    w.run(window) // blocking coroutine!
+    w.destroy(window)
+}
+
+```
+
+Nature is a programming language based on a global coroutine model, and its compatibility with WebView was not ideal initially. The solution failed to run entirely at first. The author of nature-webview reached out to me, and I recognized this as a highly meaningful effort that represents an important step in enabling GUI support for Nature. I therefore set out to identify and resolve the issues preventing the solution from running. After a weekend of work, the major issues were resolved, and I couldn't wait to share this achievement!
+
+## WebView Must Run on the t0 System Stack + System Thread
+
+On macOS, the program started successfully after compilation, but crashed when attempting to callback from JavaScript to Nature. The crash stack trace was extremely deep and difficult to trace. Even when building WebView in Debug mode, a complete stack trace could not be obtained.
+
+I eventually discovered that this was because **WebView dynamically depends on the WebKit library, which cannot track the call stack**. After multiple attempts, I accidentally found macOS crash reports that contained complete stack trace logs! I had been overlooking this crucial information.
+
+> When a command-line program crashes, you can also view stack trace logs directly at ~/Library/Logs/DiagnosticReports/
+
+
+```
+Crashed Thread:        0  Dispatch queue: com.apple.main-thread
+Exception Type:        EXC_BREAKPOINT (SIGTRAP)
+
+Termination Reason:    Namespace SIGNAL, Code 5 Trace/BPT trap: 5
+Terminating Process:   exc handler [37708]
+
+Thread 0 Crashed::  Dispatch queue: com.apple.main-thread
+0   JavaScriptCore                 	    0x7ff828e4b7d1 JSC::LocalAllocator::allocate(JSC::Heap&, JSC::GCDeferralContext*, JSC::AllocationFailureMode)::'lambda'()::operator()() const + 6801
+1   JavaScriptCore                 	    0x7ff829574b24 JSC::VM::VM(JSC::VM::VMType, JSC::HeapType, WTF::RunLoop*, bool*) + 24452
+```
+
+Based on the logs, this appears to be a breakpoint-type exception thrown by something similar to assert, occurring during memory allocation. This strongly suggests it's related to the runtime environment.
+
+I then attempted to reproduce the issue using C + WebView for comparison testing. Since Nature runs on coroutines with coroutine stacks, I simulated Nature's runtime model using mcontext + mmap stack from the C library. This successfully reproduced the error. At this point, I suspected that WebKit performs runtime stack detection using `pthread_get_stackaddr_np` to directly read the thread's default stack.
+
+This was a challenging problem. Supporting WebView would require modifying Nature's underlying architecture. Up to this point, this was still just a hypothesis. To confirm it, I downloaded the multi-gigabyte WebKit codebase to locate the function mentioned in the stack trace. I eventually found the critical logic below:
+
+```c++
+ALWAYS_INLINE void* LocalAllocator::allocate(JSC::Heap& heap, size_t cellSize, GCDeferralContext* deferralContext, AllocationFailureMode failureMode)
+{
+    VM& vm = heap.vm();
+    if constexpr (validateDFGDoesGC)
+        vm.verifyCanGC();
+    return m_freeList.allocateWithCellSize(
+        [&]() ALWAYS_INLINE_LAMBDA {
+            sanitizeStackForVM(vm);
+            return static_cast<HeapCell*>(allocateSlowCase(heap, cellSize, deferralContext, failureMode));
+        }, cellSize);
+}
+
+```
+
+The structure of this function matches what was shown in the stack trace. Despite version differences, this was likely the function causing the crash. Further tracing revealed that the `sanitizeStackForVM` function indeed uses `pthread_get_stackaddr_np` to obtain stack information and perform assert checks.
+
+With the problem identified, I could attempt to solve it. In the past, I knew that UI must be rendered on the system's default thread, but I never expected some UI libraries to have such strict requirements for the stack. **Since Nature's coroutines run on shared stacks, the solution was relatively simple: use the system stack directly as the shared coroutine stack. However, since the system stack also needs to drive the processor, I temporarily used half of it as the coroutine shared stack.**
+
+This is a temporary solution. The newer macOS 26.2 system does not experience this type of crash, so in the future, we may be able to return to using mmap for stack allocation.
+
+## WebView Must Use glibc
+
+Since macOS has a single distribution version and enforces dynamic library linking, Nature did not encounter compilation issues on macOS. However, problems arose on Linux.
+
+Nature uses musl for pure static compilation on Linux. The core dependencies are `libruntime.a + libuv.a + libc.a`, all of which are statically compiled with musl libc. This provides excellent cross-platform compatibility, allowing "compile once, run anywhere".
+
+However, **WebKit and GTK, which WebView depends on on Linux, must be dynamically compiled with glibc**. This conflicts significantly with Nature's current compilation philosophy. Dynamically compiled WebKit and GTK also have compatibility issues across different Linux distributions. Is this unsolvable? Unfortunately, yes—Rust's Tauri faces similar compatibility challenges on Linux.
+
+Since WebKit and GTK have shattered the dream of static compilation, requiring dynamic compilation and glibc dependency (sacrificing some cross-platform compatibility), Nature will simply abandon static and cross-compilation and use glibc for dynamic compilation directly.
+
+After mixing static libraries (Nature dependencies) with dynamic libraries (WebKit-related) using the system's native ld linker, the solution finally ran successfully on Ubuntu 22.04 Desktop.
+
+> Nature's handwritten linker only implements static compilation, so dynamic compilation requires specifying the system linker using `--ld /usr/local/ld`.
+
+For better compatibility, Nature's `build` command's `--ldflags` parameter needs adjustment. When it detects the `-lc` parameter, it automatically removes the `libc.a` dependency. Interestingly, `libruntime.a` and `libuv.a` compiled with the musl libc toolchain can be directly mixed and linked with glibc libraries.
+
+Here's the final complex compilation command 😄. Since Nature doesn't depend on the GCC toolchain, we need to handle initialization files like `crtendS` in ldflags:
+
+```
+nature build --ld '/usr/bin/ld' --ldflags "/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o --dynamic-linker=/lib64/ld-linux-x86-64.so.2 -L/usr/lib/x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11 --whole-archive /usr/local/lib/libwebview.a --no-whole-archive -lwebkit2gtk-4.1 -lgtk-3 -lgdk-3 -lz -lpangocairo-1.0 -lcairo-gobject -lgdk_pixbuf-2.0 -latk-1.0 -lpango-1.0 -lcairo -lharfbuzz -lsoup-3.0 -lgio-2.0 -lgmodule-2.0 -ljavascriptcoregtk-4.1 -lgobject-2.0 -lglib-2.0 -lstdc++ -lgcc_s -lpthread -lc" test.n --verbose
+```
+
+
+## w.run Blocks the Runtime
+
+Have all issues been resolved now? Look at this line of code—it directly calls the C++ function `webview_run`, which never returns. What happens next?
+
+```js
+w.run(window) // blocking coroutine!
+```
+
+After the above adaptations, WebView runs successfully in a coroutine. If you understand coroutine runtime principles, you'll know that this blocking operation will take control of the core thread, preventing the coroutine scheduler and other coroutines on that thread from ever running. However, this isn't fatal—Nature can easily solve this by creating a new thread. **The real problem is that blocking system calls prevent the thread from entering STW (Stop-the-World) state, which blocks the entire GC. This is truly unsolvable and fatal.**
+
+Nature uses a cooperative scheduling scheme, giving developers more control. For a better GUI experience, I needed to try a different approach. I ultimately solved this using a somewhat hacky method:
+
+```nature
+w.bind(window, "interval_callback".to_cstr(), to_cfn(co.yield as anyptr), 0)
+
+var html = `
+  <html>
+	  <body>
+		  <script>setInterval(() => {window.interval_callback();}, 10);</script>
+		  <h1>Hello, Nature!</h1>
+	  </body>
+  </html>`
+```
+
+**We created a timer in JavaScript that calls a Nature function binding every 10ms. This function binding yields the current coroutine, returning control to the coroutine scheduler.** This approach allows the entire coroutine scheduler to operate normally without modifying the Nature compiler. The cost is approximately 10ms of latency instead of on-demand scheduling, but at least it doesn't cause GC issues.
+
+
+## C/C++ Callback to Nature Functions
+
+Can unsafe, unmanaged C/C++ functions callback to Nature functions? In principle, no—for example, Go doesn't allow this because Go's C code runs on a different stack than Go code, making direct calls impossible.
+
+However, **Nature and C code run on the same shared stack**, so callbacks can be triggered normally. But in the current design, Nature wasn't designed to be called back from C code, so the GC cannot correctly identify this mixed call pattern. This is relatively easy to fix: we can trace stack frames to get the complete function call chain on the stack and perform GC root marking. C generally follows the same stack frame rules in most cases.
+
+Another issue is closures:
+
+```go
+fn foo() {}
+
+fn main() {
+	int a = 1
+	fn() f = foo
+	f = fn() {
+		var b = a // Reference to external var
+	}
+	
+	f()
+	foo()
+
+}
+```
+
+In high-level programming languages, closures and global functions are typically distinguished. In the example above, when dealing with a `fn` type variable `f`, the compiler cannot track whether it's a global function or a closure. A common compromise is to treat all `fn` type variables as closures for storage and usage. As shown in the diagram, `fn` isn't a single pointer to the function address—it's a 16-byte pair structure.
+
+
+![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20260121020009894.png)
+
+Therefore, when directly passing a global function from Nature as a parameter, the parameter is 16 bytes of opaque data that C doesn't understand. We need to extract the function address from the closure to pass to C. Here, `libc.to_cfn` simply discards the env ptr (which is always null for global functions) and extracts the function pointer to pass to the C function.
+
+```nature
+w.bind(window, "interval_callback".to_cstr(), libc.to_cfn(interval_callback as anyptr), 0)
+```
+
+
+## Summary
+
+All known issues have been resolved. While the solution involves some compromises, Nature has successfully integrated WebView, achieving native performance comparable to C + WebView while enjoying the safety of a GC language and the convenience of coroutines. WebView is a typical example of a C/C++ UI library, and similar integration approaches can be used for libraries like sokol/ImGui.
+
+As mentioned at the end of my previous article (https://nature-lang.cn/news/20260115), a controllable memory allocator and unsafe bare function support were originally planned as the foundation for GUI support. However, I didn't expect shared-stack coroutines to have such excellent compatibility with C/C++, enabling seamless integration. However, this compromise won't be the final solution. Work on unsafe bare functions and controllable memory allocation will continue. In the future, Nature's `main` function will be able to run on a separate thread and stack independent of the coroutine scheduler, making Nature more suitable for native GUI development.
+
+Of course, Windows is also an important platform for GUI support, and I will look into adding support for it. Since I modified Nature's source code, nature-webview will only be available in version 0.7.3. In the meantime, I will develop a small project using Nature and WebView to further test its usability.
+
+If you plan to use Nature for open-source project development or to integrate existing components, you can contact me via GitHub Issues or WeChat. I will provide technical guidance and fast bug fixes.
