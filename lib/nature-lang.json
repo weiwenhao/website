@@ -92,8 +92,7 @@
         },
         {
           "name": "storage.type.composite.nature",
-          "match": "\\b(struct|chan|arr|vec|map|set|tup|ptr|rawptr)\\b"
-        }
+          "match": "\\b(struct|chan|arr|vec|map|set|tup|ptr|rawptr|enum|union)\\b"        }
       ]
     },
     "functions": {
