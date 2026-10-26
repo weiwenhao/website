@@ -8,7 +8,7 @@ The `libc` standard library provides a low-level binding for the C standard libr
 ### tm_t
 Time information struct, used to represent broken-down time information.
 
-```nature
+```nax
 type tm_t = struct {
     i32 tm_sec   // Seconds [0-60]
     i32 tm_min   // Minutes [0-59]
@@ -27,14 +27,14 @@ type tm_t = struct {
 ### dir_t
 Directory handle type.
 
-```nature
+```nax
 type dir_t = anyptr
 ```
 
 ### dirent_t
 Directory entry struct, used to represent file information within a directory.
 
-```nature
+```nax
 type dirent_t = struct {
     u64 ino      // inode number
     u64 off      // Directory offset
@@ -52,21 +52,21 @@ type dirent_t = struct {
 #### localtime
 Converts a timestamp to a local time struct.
 
-```nature
+```nax
 fn localtime(rawptr<i64> timestamp):rawptr<tm_t>
 ```
 
 #### mktime
 Converts a time struct to a timestamp.
 
-```nature
+```nax
 fn mktime(rawptr<tm_t> time_info):i64
 ```
 
 #### strftime
 Formats a time string.
 
-```nature
+```nax
 fn strftime(anyptr s, i64 size, anyptr format, rawptr<tm_t> time_info):i64
 ```
 
@@ -75,21 +75,21 @@ fn strftime(anyptr s, i64 size, anyptr format, rawptr<tm_t> time_info):i64
 #### opendir
 Opens a directory.
 
-```nature
+```nax
 fn opendir(anyptr str):dir_t
 ```
 
 #### readdir
 Reads a directory entry.
 
-```nature
+```nax
 fn readdir(dir_t d):rawptr<dirent_t>
 ```
 
 #### closedir
 Closes a directory.
 
-```nature
+```nax
 fn closedir(dir_t d):int
 ```
 
@@ -98,35 +98,35 @@ fn closedir(dir_t d):int
 #### getcwd
 Gets the current working directory.
 
-```nature
+```nax
 fn getcwd(anyptr path, uint size):anyptr
 ```
 
 #### fork
 Creates a child process.
 
-```nature
+```nax
 fn fork():int
 ```
 
 #### exit
 Exits the program.
 
-```nature
+```nax
 fn exit(i32 status)
 ```
 
 #### sleep
 Sleeps for a specified number of seconds.
 
-```nature
+```nax
 fn sleep(int second)
 ```
 
 #### usleep
 Sleeps for a specified number of microseconds.
 
-```nature
+```nax
 fn usleep(u32 usec):i32
 ```
 
@@ -135,21 +135,21 @@ fn usleep(u32 usec):i32
 #### strlen
 Gets the string length.
 
-```nature
+```nax
 fn strlen(anyptr str):uint
 ```
 
 #### strstr
 Finds a substring.
 
-```nature
+```nax
 fn strstr(anyptr haystack, anyptr needle):anyptr
 ```
 
 #### strrstr
 Finds a substring from the end backwards.
 
-```nature
+```nax
 fn strrstr(anyptr haystack, anyptr needle):anyptr
 ```
 
@@ -158,52 +158,52 @@ fn strrstr(anyptr haystack, anyptr needle):anyptr
 #### get_envs
 Gets the list of environment variables.
 
-```nature
+```nax
 fn get_envs():[string]
 ```
 
 #### errno
 Gets the most recent error code.
 
-```nature
+```nax
 fn errno():int
 ```
 
 #### strerror
 Gets the error description string.
 
-```nature
+```nax
 fn strerror():string
 ```
 
 #### sqrtf
-```nature
+```nax
 fn sqrtf(float x):float
 ```
 
 #### powf
-```nature
+```nax
 fn powf(float x, float y):float
 ```
 
 #### sinf
-```nature
+```nax
 fn sinf(float x):float
 ```
 
 #### cosf
-```nature
+```nax
 fn cosf(float x):float
 ```
 
 #### roundf
-```nature
+```nax
 fn roundf(f32 x):f32
 ```
 
 #### round
 
-```nature
+```nax
 fn round(f64 x):f64
 ```
 

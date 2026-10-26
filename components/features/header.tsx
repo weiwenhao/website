@@ -13,12 +13,12 @@ export function Header() {
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/logo.svg"
-              alt="Nature Logo"
+              alt="Nax Logo"
               width={32}
               height={32}
             />
-            <span className="text-2xl font-semibold tracking-tight text-nature-red">
-              Nature
+            <span className="text-2xl font-semibold tracking-tight text-nax-red">
+              Nax
             </span>
           </Link>
           <LandingNav />
@@ -26,7 +26,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           <Link
-            href="https://github.com/nature-lang/nature"
+            href="https://github.com/naxlang/nax"
             target="_blank"
             className="p-2 hover:text-primary"
           >

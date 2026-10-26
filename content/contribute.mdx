@@ -2,7 +2,7 @@
 
 ## Source Code Compilation
 
-The Nature compiler is written entirely in C, adhering to the C11 standard. It requires GCC version 11 or higher. The Linux runtime is statically compiled against musl libc. CMake is used as the build tool, requiring version 3.22 or higher.
+The Nax compiler is written entirely in C, adhering to the C11 standard. It requires GCC version 11 or higher. The Linux runtime is statically compiled against musl libc. CMake is used as the build tool, requiring version 3.22 or higher.
 
 Build Environment Used for Current Releases:
 
@@ -29,7 +29,7 @@ rm -rf build-runtime && cmake -B build-runtime -S runtime -DCMAKE_BUILD_TYPE=Rel
 rm -rf build-runtime && cmake -B build-runtime -S runtime -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(pwd)/cmake/linux-riscv64-toolchain.cmake && cmake --build build-runtime --target runtime
 ```
 
-Compiling the runtime generates `libruntime.a`, which is automatically placed in the corresponding architecture-specific subdirectory under `lib`, for example: `nature/lib/linux_arm64/libruntime.a`.
+Compiling the runtime generates `libruntime.a`, which is automatically placed in the corresponding architecture-specific subdirectory under `lib`, for example: `nax/lib/linux_arm64/libruntime.a`.
 
 ### Compile the Source Code
 
@@ -46,7 +46,7 @@ cmake --build build-release
 # Test
 cmake --build build-release --target test
 
-# Install (Defaults to /usr/local/nature, may require sudo privileges)
+# Install (Defaults to /usr/local/nax, may require sudo privileges)
 cmake --build build-release --target install
 
 # Package (Creates an archive in the 'release' directory)
@@ -103,13 +103,13 @@ All test files reside in the `tests` directory. Source code tests are located in
 
 ## Git Branch Management
 
-All Nature-related repositories follow the [Github Flow](https://docs.github.com/en/get-started/using-github/github-flow) workflow.
+All Nax-related repositories follow the [Github Flow](https://docs.github.com/en/get-started/using-github/github-flow) workflow.
 
 This means the `master` branch always contains the latest, thoroughly tested code. Feature development and bug fixes should be done on separate branches checked out from `master`. Once development is complete, submit a Pull Request (PR) to merge into `master`. After merging, the feature/bugfix branch should be deleted.
 
 ## How to Contribute Code?
 
-The Nature programming language uses GitHub as its primary code repository. Currently, there are no committees or similar organizations. Development decisions, PR merges, reviews, and releases are handled by the project initiator, [weiwenhao](https://github.com/weiwenhao).
+The Nax programming language uses GitHub as its primary code repository. Currently, there are no committees or similar organizations. Development decisions, PR merges, reviews, and releases are handled by the project initiator, [weiwenhao](https://github.com/weiwenhao).
 
 For code contributions involving Features, Refactoring, Standard Library additions, or complex Bug Fixes, you must first propose your idea and discuss it in a GitHub Issue or via email. Development should only begin after the discussion concludes with approval. Once development is complete, submit a Pull Request (PR). Simple Bug Fixes can be submitted directly as PRs without prior discussion.
 
@@ -117,7 +117,7 @@ After developing Features, Standard Library additions, or Bug Fixes, test cases 
 
 ## DeepWiki
 
-https://deepwiki.com/nature-lang/nature Refer to deepwiki and subsequent chapters to understand the source structure and flow of nature.
+https://deepwiki.com/naxlang/nax Refer to deepwiki and subsequent chapters to understand the source structure and flow of nax.
 
 ## Directory Structure
 
@@ -164,7 +164,7 @@ https://deepwiki.com/nature-lang/nature Refer to deepwiki and subsequent chapter
 │   ├── error.h             # Error handling definitions
 │   ├── linear.h            # AST to LIR compilation logic
 │   ├── lir.h               # Low-level IR definition
-│   ├── module.h            # Nature compiles module by module; module-related type definitions
+│   ├── module.h            # Nax compiles module by module; module-related type definitions
 │   ├── package.h           # Package management definitions
 │   ├── ssa.h               # SSA form definitions
 │   └── types.h             # Basic type definitions
@@ -193,13 +193,13 @@ https://deepwiki.com/nature-lang/nature Refer to deepwiki and subsequent chapter
     ├── string_view.h       # String view
     ├── table.h             # Hash table (deprecated, use sc_map instead)
     ├── toml.h              # TOML configuration parsing
-    ├── type.h              # Nature type definitions and reflection implementation shared by runtime/compiler
+    ├── type.h              # Nax type definitions and reflection implementation shared by runtime/compiler
     └── ymal                # YAML parsing related
 ```
 
 ## Compilation Flow
 
-Nature's [LSP (Language Server Protocol)](https://github.com/nature-lang/nls) is implemented in Rust and shares the same frontend logic as the Nature compiler. If you are more familiar with Rust, you can refer directly to the Nature LSP source code.
+Nax's [LSP (Language Server Protocol)](https://github.com/naxlang/nls) is implemented in Rust and shares the same frontend logic as the Nax compiler. If you are more familiar with Rust, you can refer directly to the Nax LSP source code.
 
 ### Compiler Frontend
 
@@ -251,7 +251,7 @@ This file implements the Syntax Parser, which is mainly responsible for converti
 
 Expression parsing employs the Operator Precedence Climbing algorithm, implemented via `parser_expr()` and `parser_precedence_expr()`. `parser_expr` handles several special expressions, such as `go`, `match`, `fndef`, and `struct_new`.
 
-Error checking and reporting use the `PARSER_ASSERTF` macro. Currently, the compiler does not implement error recovery mechanisms. The [LSP](https://github.com/nature-lang/nls) has implemented relevant error recovery, allowing it to continue parsing beyond errors.
+Error checking and reporting use the `PARSER_ASSERTF` macro. Currently, the compiler does not implement error recovery mechanisms. The [LSP](https://github.com/naxlang/nls) has implemented relevant error recovery, allowing it to continue parsing beyond errors.
 
 Ambiguous symbols are resolved using lookahead parsing to determine their semantics.
 
@@ -305,7 +305,7 @@ Closure compilation uses a JIT-based approach, simplifying the compilation proce
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20250227134520874.png)
 
-Nature requires variables to be assigned a value upon initialization. However, it is more lenient with struct initialization, assigning default values to most types:
+Nax requires variables to be assigned a value upon initialization. However, it is more lenient with struct initialization, assigning default values to most types:
 
   - The default value for `int` is 0.
   - The default value for `string` is the empty string `''`.
@@ -359,11 +359,11 @@ The primary characteristic of SSA form is that each variable is assigned only on
 2.  Facilitation of subsequent code optimizations.
 3.  Clearer definition-use relationships for variables.
 
-Currently, the Nature compiler has not yet begun implementing optimizations based on SSA form.
+Currently, the Nax compiler has not yet begun implementing optimizations based on SSA form.
 
 SSA Example 1:
 
-```nature
+```nax
 int foo = 1
 foo = foo + 2
 if (true) {
@@ -379,7 +379,7 @@ println(foo)
 
 SSA Example 2:
 
-```nature
+```nax
 int foo = 0
 for (int i = 0; i <= 100; i+=1) {
  if ((i % 2) == 0) {
@@ -408,7 +408,7 @@ These architecture-related physical register (Fixed Register) constraints must b
 
 Special Handling for Array Parameter Passing:
 
-In C, when an array is passed as a function parameter, it automatically decays into a pointer, effectively passing the array's base address. In the Nature programming language, however, the intention is for array parameters to be passed by value (i.e., copying the entire array content). To achieve this, during the processing of function call arguments (Lower Call Args):
+In C, when an array is passed as a function parameter, it automatically decays into a pointer, effectively passing the array's base address. In the Nax programming language, however, the intention is for array parameters to be passed by value (i.e., copying the entire array content). To achieve this, during the processing of function call arguments (Lower Call Args):
 
 1.  Allocate space on the stack equal to the size of the original array.
 2.  Copy the entire content of the original array into this allocated stack space.
@@ -422,7 +422,7 @@ This ensures that modifications to the array within the function do not affect t
 
 Register allocation is the process of mapping program variables to physical registers. Since registers are limited in number but fast to access, effective register allocation significantly impacts program performance.
 
-The Nature compiler employs a linear scan algorithm based on SSA-form LIR for register allocation. It primarily references two papers:
+The Nax compiler employs a linear scan algorithm based on SSA-form LIR for register allocation. It primarily references two papers:
 
 1.  *Linear Scan Register Allocation for the Java HotSpot Client Compiler.* — Wimmer, C.
 2.  *Linear Scan Register Allocation on SSA Form.* — Christian Wimmer, Michael Franz
@@ -482,7 +482,7 @@ Finally, all encoded instruction data is written into the code section, and the 
 
 `src/binary/elf/linker.c#elf_exe_file_format` — ELF linker implementation
 
-The linker is responsible for merging multiple object/archive files into a single executable file. Nature's linker is a simple implementation, primarily focusing on static linking. Its workflow involves:
+The linker is responsible for merging multiple object/archive files into a single executable file. Nax's linker is a simple implementation, primarily focusing on static linking. Its workflow involves:
 
   - `elf_resolve_common_symbols`: Handles COMMON symbols, allocating them to the `.bss` section.
   - `elf_build_got_entries`: Builds GOT/PLT entries, handling relocations related to dynamic linking (though dynamic linking itself is not fully supported).
@@ -500,7 +500,7 @@ It does not support dynamic linking, version control, or debug information proce
 
 `runtime/processor.c#sched_init`
 
-Nature's scheduler (`sched`) is a simple implementation resembling Go's GMP scheduling model, built around a Processor + Coroutine model.
+Nax's scheduler (`sched`) is a simple implementation resembling Go's GMP scheduling model, built around a Processor + Coroutine model.
 
 ### Core Components
 
@@ -525,12 +525,12 @@ Nature's scheduler (`sched`) is a simple implementation resembling Go's GMP sche
 ### Tips
 
 1.  Scheduling is cooperative based on safepoints. Safepoints are inserted at function ends and before function calls. Therefore, long-running `for` loops without function calls can prevent other coroutines from being scheduled and block GC.
-2.  Nature currently has a very basic coroutine scheduler. Once created, coroutines are generally balanced and fixed to a Processor.
-3.  Nature uses shared stack coroutines. This allows for more lightweight coroutine stacks, faster creation, and faster switching. Shared stack diagram:
+2.  Nax currently has a very basic coroutine scheduler. Once created, coroutines are generally balanced and fixed to a Processor.
+3.  Nax uses shared stack coroutines. This allows for more lightweight coroutine stacks, faster creation, and faster switching. Shared stack diagram:
     ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20250227145536207.png)
       - Before a yield, `valid_sz` and `SP` are not fixed, making it impossible to calculate the exact location of the `foo` variable on the `save_stack`\!
       - If `valid_sz`'s position were fixed, the offset `align_retpt - 0xn` would equal `save_stack.ptr + valid_sz - 0xn`.
-4.  A significant issue with shared stacks is that the stack pointer becomes invalid for other coroutines upon yielding. Therefore, obtaining `&q` in Nature results in something like `rawptr<T>`, an unverified, unsafe pointer. This might be solvable through escape analysis or stack switching, but Nature currently implements neither. If you can guarantee no coroutine yield will occur, you can use `rawptr`. Otherwise, you must explicitly allocate data on the heap.
+4.  A significant issue with shared stacks is that the stack pointer becomes invalid for other coroutines upon yielding. Therefore, obtaining `&q` in Nax results in something like `rawptr<T>`, an unverified, unsafe pointer. This might be solvable through escape analysis or stack switching, but Nax currently implements neither. If you can guarantee no coroutine yield will occur, you can use `rawptr`. Otherwise, you must explicitly allocate data on the heap.
 
 ## Runtime GC
 
@@ -550,7 +550,7 @@ GC (Garbage Collection) is an automatic memory management mechanism that automat
   - **Allocator:** The memory allocator, responsible for requesting free memory from the heap. The allocated memory unit is typically called an object (`obj`), which consists of one or more fields.
   - **Collector:** The garbage collector, responsible for identifying and cleaning up objects (`obj`) that are no longer used by the user program.
 
-Nature's compiler uses Tri-color Marking GC, as illustrated below:
+Nax's compiler uses Tri-color Marking GC, as illustrated below:
 
 ![https://upload.wikimedia.org/wikipedia/commons/1/1d/Animation_of_tri-color_garbage_collection.gif](https://upload.wikimedia.org/wikipedia/commons/1/1d/Animation_of_tri-color_garbage_collection.gif)
 
@@ -562,7 +562,7 @@ Incremental garbage collection typically refers to a single-threaded model where
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20250227181856310.png)
 
-Extending incremental GC techniques to multi-core, multi-threaded environments allows for a form of incremental GC that can run concurrently most of the time. This is the GC approach adopted by both Go and Nature.
+Extending incremental GC techniques to multi-core, multi-threaded environments allows for a form of incremental GC that can run concurrently most of the time. This is the GC approach adopted by both Go and Nax.
 
 Although each thread might block its mutator during GC work, from a multi-threaded perspective, there will always be some user program threads making progress. Therefore, in a multi-threaded context, the definition of STW (Stop-The-World) needs refinement: only when the collector blocks *all* threads simultaneously is it considered a true STW. For example, the diagram above shows two STW phases.
 
@@ -693,7 +693,7 @@ Even if the object pointed to by `a.foo` is white, it's safe because the object 
 
 ### Hybrid Write Barrier
 
-Go version 1.8 implemented a [hybrid write barrier based on Dijkstra + Yuasa](https://github.com/golang/proposal/blob/master/design/17503-eliminate-rescan.md), and Nature adopts a similar approach. This allows for concurrent GC with very short STW pauses.
+Go version 1.8 implemented a [hybrid write barrier based on Dijkstra + Yuasa](https://github.com/golang/proposal/blob/master/design/17503-eliminate-rescan.md), and Nax adopts a similar approach. This allows for concurrent GC with very short STW pauses.
 
 The hybrid barrier inherits the best properties of both: it allows concurrent scanning of roots starting from the mark phase and ensures roots are black by the end of marking.
 
@@ -742,23 +742,23 @@ Different barrier techniques require STW pauses at different stages:
   - **Black Mutator:** Requires an STW before marking starts to scan roots and enable write barriers. No STW rescan is needed at the end.
   - **Hybrid Write Barrier:** Only requires a brief STW before marking starts to enable the write barrier. Subsequent marking and root scanning happen concurrently.
 
-Although Nature uses a hybrid write barrier, it still requires two STW phases, but these pauses are designed to be very short.
+Although Nax uses a hybrid write barrier, it still requires two STW phases, but these pauses are designed to be very short.
 
 ## Runtime Allocator
 
 `runtime/allocator.c#rti_gc_malloc`
 
-The allocator component is responsible for requesting memory from the operating system. Nature's memory allocator is directly inspired by Go's implementation, with some simplifications. The structure is shown below:
+The allocator component is responsible for requesting memory from the operating system. Nax's memory allocator is directly inspired by Go's implementation, with some simplifications. The structure is shown below:
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20250227180015798.png)
 
-At the lowest level, Nature uses the `mmap` function (or equivalent) to request large chunks of memory from the OS. After the collector finishes, the `madvise` function (or equivalent) is used to return unused memory back to the operating system.
+At the lowest level, Nax uses the `mmap` function (or equivalent) to request large chunks of memory from the OS. After the collector finishes, the `madvise` function (or equivalent) is used to return unused memory back to the operating system.
 
 ![](https://raw.githubusercontent.com/weiwenhao/pictures/main/20250227185730849.png)
 
 ## Runtime Libuv
 
-[libuv](https://github.com/libuv/libuv) is a cross-platform asynchronous I/O library. Nature uses libuv to handle network I/O.
+[libuv](https://github.com/libuv/libuv) is a cross-platform asynchronous I/O library. Nax uses libuv to handle network I/O.
 
 In the runtime implementation, an event loop is created for each shared processor (typically matching the CPU count) to handle asynchronous I/O events. However, libuv is **not thread-safe**. This conflicts with the coroutine model where coroutines can migrate between processors (threads). Therefore, care must be taken when using libuv: avoid using a libuv event loop across different shared processors.
 

@@ -12,7 +12,7 @@ const font = Outfit({
 
 
 export const metadata: Metadata = {
-  title: "Nature Programming Language",
+  title: "Nax Programming Language",
   description: "A modern programming language designed for elegant, efficient, and reliable software development",
 };
 
@@ -73,7 +73,7 @@ export default function RootLayout({
                     </Link>
                   </li>
                   <li>
-                    <Link href="https://github.com/nature-lang/nature/tree/master/tests/features/cases" className="text-sm hover:text-primary">
+                    <Link href="https://github.com/naxlang/nax/tree/master/tests/features/cases" className="text-sm hover:text-primary">
                       Examples
                     </Link>
                   </li>
@@ -93,7 +93,7 @@ export default function RootLayout({
                 <h3 className="font-semibold mb-3">Social Media</h3>
                 <div className="flex items-center gap-4">
                   <Link
-                    href="https://github.com/nature-lang/nature"
+                    href="https://github.com/naxlang/nax"
                     target="_blank"
                     className="hover:text-primary"
                   >

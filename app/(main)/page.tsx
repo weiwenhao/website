@@ -13,8 +13,8 @@ export default function Home() {
             {/* 左侧内容 */}
             <div className="flex flex-col gap-8">
               <div className="space-y-6">
-                <h1 className="text-5xl font-bold text-nature-red">
-                  Nature is...
+                <h1 className="text-5xl font-bold text-nax-red">
+                  Nax is...
                 </h1>
 
                 <p className="text-2xl leading-relaxed text-gray-800 dark:text-gray-200">
@@ -26,7 +26,7 @@ export default function Home() {
               <div className="flex items-center gap-6">
                 <Button
                   size="lg"
-                  className="bg-nature-red hover:bg-nature-red/80 text-white px-8 py-6 text-lg rounded-md shadow-lg flex items-center gap-2"
+                  className="bg-nax-red hover:bg-nax-red/80 text-white px-8 py-6 text-lg rounded-md shadow-lg flex items-center gap-2"
                   asChild
                 >
                   <Link href="/docs/get-started" rel="noopener noreferrer">
@@ -36,7 +36,7 @@ export default function Home() {
                 <span className="text-gray-600 dark:text-gray-400">or</span>
                 <Link
                   href="/playground"
-                  className="text-nature-red hover:text-nature-red/90 text-lg font-medium hover:underline"
+                  className="text-nax-red hover:text-nax-red/90 text-lg font-medium hover:underline"
                 >
                   Try in Browser
                 </Link>
@@ -53,7 +53,7 @@ export default function Home() {
         {/* 主要特性 */}
         <div className="w-full bg-gray-50 dark:bg-gray-900">
           <section className="container mx-auto px-4 py-16">
-            <h2 className="text-3xl font-bold text-center mb-12">Why Nature?</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Why Nax?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="p-6 rounded-lg border bg-white dark:bg-gray-800">
                 <h3 className="text-xl font-semibold mb-4">Lightweight & Concise & Natural</h3>
@@ -79,7 +79,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Globe className="w-6 h-6 text-nature-red" />
+                  <Globe className="w-6 h-6 text-nax-red" />
                   <h3 className="text-lg font-semibold">Server Applications</h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">API, command line, MCP services, network middleware</p>
@@ -87,7 +87,7 @@ export default function Home() {
 
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Cog className="w-6 h-6 text-nature-red" />
+                  <Cog className="w-6 h-6 text-nax-red" />
                   <h3 className="text-lg font-semibold">Systems Programming</h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">Operating systems, IoT, container systems</p>
@@ -95,7 +95,7 @@ export default function Home() {
 
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Gamepad2 className="w-6 h-6 text-nature-red" />
+                  <Gamepad2 className="w-6 h-6 text-nax-red" />
                   <h3 className="text-lg font-semibold">Game Development</h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">Game engines and game development</p>
@@ -103,7 +103,7 @@ export default function Home() {
 
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-2">
-                  <Infinity className="w-6 h-6 text-nature-red" />
+                  <Infinity className="w-6 h-6 text-nax-red" />
                   <h3 className="text-lg font-semibold">Explore Possibilities</h3>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300">Databases, programming education, GUI, computer science ...</p>

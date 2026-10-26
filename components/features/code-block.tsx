@@ -192,7 +192,7 @@ export function CodeBlock() {
             variant={activeExample === example ? "default" : "ghost"}
             size="sm"
             onClick={() => setActiveExample(example as CodeExample)}
-            className={activeExample === example ? "bg-nature-red hover:bg-nature-red/90 text-white" : ""}
+            className={activeExample === example ? "bg-nax-red hover:bg-nax-red/90 text-white" : ""}
           >
             {example}
           </Button>

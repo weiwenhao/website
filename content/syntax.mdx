@@ -2,9 +2,9 @@
 
 ## Source Code Structure
 
-Nature source code uses `.n` as the file extension, for example `main.n`. Here's a simple program example:
+Nax source code uses `.n` as the file extension, for example `main.n`. Here's a simple program example:
 
-```nature showLineNumbers
+```nax showLineNumbers
 import fmt // import module declaration, fmt module is a standard library string formatting module
 
 fn main() { // fn is used for function declaration, main function serves as the program entry point
@@ -16,7 +16,7 @@ This program's functionality is to output `hello world` in the console.
 
 > Only `fn`, `import`, `var`, `const`, `type` statements can be declared directly at the file top level and have global scope, which can be referenced by other modules. Other statements like `if`, `for`, `return` can only be declared within function scope.
 
-```nature
+```nax
 import fmt
 
 var global_v = 1
@@ -44,7 +44,7 @@ if true { // x not allowed to declare if statement in global scope
 
 Automatic type inference:
 
-```nature
+```nax
 var foo = 1 // v declare variable foo and assign value, foo type is automatically inferred as int  
   
 var foo = 1 // x duplicate variable declaration not allowed in the same scope  
@@ -56,7 +56,7 @@ if (true) {
 
 Direct type declaration without type inference:
 
-```nature
+```nax
 int foo = 1 // v
 u8 foo2 = 1 // v literal automatic type inference
 
@@ -77,7 +77,7 @@ i16 f3 // x variable declaration must include assignment
 
 Compound type variable definition:
 
-```nature
+```nax
 string bar = '' // v use this method to declare an empty string
 
 [int] baz = [] // v declare empty vec
@@ -105,7 +105,7 @@ bar = null // x cannot assign null to any compound type or simple type
 
 How to assign null?
 
-```nature
+```nax
 // method 1 nullable
 string? s = null
 s = 'i am string'
@@ -124,7 +124,7 @@ any s3 = null // any is a special union type that includes all types by default
 
 ## Constants
 
-```nature
+```nax
 const PI = 3.14 // v float type, constant definition cannot declare type, compiler will automatically infer
 const STR = 'hello world' // v string type
 const INDEX = 1 // v int type
@@ -142,7 +142,7 @@ Constant definition recommends using uppercase underscore separation.
 
 ### if syntax
 
-```nature
+```nax
 if condition {
     // code executed when condition is true
 } else {
@@ -154,7 +154,7 @@ The condition type must be bool.
 
 You can use else syntax to check multiple conditions, example:
 
-```nature
+```nax
 int foo = 23
 
 if foo > 100 {
@@ -168,13 +168,13 @@ if foo > 100 {
 
 ### for syntax
 
-The `for` statement is used for loop execution of code blocks. The `for` statement in nature language has three main forms: classic loop, conditional loop and iteration loop.
+The `for` statement is used for loop execution of code blocks. The `for` statement in nax language has three main forms: classic loop, conditional loop and iteration loop.
 
 #### Classic loop
 
 Classic loop is used for executing a fixed number of iterations. Basic syntax:
 
-```nature
+```nax
 var sum = 0
 for int i = 1; i <= 100; i += 1 {
     sum += i
@@ -182,13 +182,13 @@ for int i = 1; i <= 100; i += 1 {
 println('1 +..+100 = ', sum)
 ```
 
-> ❗️Note: Nature does not have `++` syntax, please use `i+=1` instead of `i++`. The expression after `for` does not need parentheses.
+> ❗️Note: Nax does not have `++` syntax, please use `i+=1` instead of `i++`. The expression after `for` does not need parentheses.
 
 #### Conditional loop
 
 Conditional loop is used for executing loops based on conditions, similar to `while` expression in C language. Basic syntax:
 
-```nature
+```nax
 var sum = 0
 var i = 0
 for i <= 100 {
@@ -206,7 +206,7 @@ Iteration loop is used for traversing collection types, supports vec, map, strin
 
 Traversing vec:
 
-```nature
+```nax
 var list = [1, 1, 2, 3, 5, 8, 13, 21]
 for v in list {
     println(v)
@@ -215,7 +215,7 @@ for v in list {
 
 Traversing map:
 
-```nature
+```nax
 var m = {1:10, 2:20, 3:30, 4:40}
 for k in m {
     println(k)
@@ -226,7 +226,7 @@ In this example, the loop traverses each key in the `map` and outputs them.
 
 Traversing both keys and values, for vec k is the index:
 
-```nature
+```nax
 for k,v in m {
     println(k, v)
 }
@@ -234,7 +234,7 @@ for k,v in m {
 
 Traversing channel:
 
-```nature
+```nax
 // example: var ch = chan_new<int>()
 // yield until ch.recv() receives message to wake up current coroutine
 for v in ch {
@@ -248,13 +248,13 @@ Keyword `break` is used to exit the current loop, `continue` skips the current l
 
 ## Functions
 
-Functions are first-class citizens in nature and can be passed as values. Nature supports various function definition and usage methods.
+Functions are first-class citizens in nax and can be passed as values. Nax supports various function definition and usage methods.
 
 ### Function Definition
 
 Basic function definition syntax:
 
-```nature
+```nax
 fn function_name(parameter_list):return_type {
     // function body
 }
@@ -262,7 +262,7 @@ fn function_name(parameter_list):return_type {
 
 A simple addition function:
 
-```nature
+```nax
 fn sum(int a, int b):int {
     return a + b
 }
@@ -270,9 +270,9 @@ fn sum(int a, int b):int {
 
 ### Anonymous Functions
 
-Nature supports anonymous functions and performs closure processing on anonymous functions.
+Nax supports anonymous functions and performs closure processing on anonymous functions.
 
-```nature
+```nax
 fn main() {
 	int c = 3
 	
@@ -288,7 +288,7 @@ fn main() {
 
 Functions support variable number of parameters, using fixed format `...` + `vec<T>` to create a variadic parameter:
 
-```nature
+```nax
 fn sum(...[int] numbers):int {
     var result = 0
     for v in numbers {
@@ -304,7 +304,7 @@ println(sum(1, 2, 3, 4, 5))
 
 Supports destructuring parameters when calling functions:
 
-```nature
+```nax
 fn printf(string fmt, ...[any] args) {
     var str = sprintf(fmt, ...args)
     print(str)
@@ -313,9 +313,9 @@ fn printf(string fmt, ...[any] args) {
 
 ### Multiple Return Values
 
-Nature programming language does not support multiple return values, but you can use tuple destructuring syntax to simulate multiple return values. Tuple data structure will be introduced in more detail later:
+Nax programming language does not support multiple return values, but you can use tuple destructuring syntax to simulate multiple return values. Tuple data structure will be introduced in more detail later:
 
-```nature
+```nax
 fn divide(int a, int b):(int, int) {
     return (a / b, a % b)
 }
@@ -328,7 +328,7 @@ var (quotient, remainder) = divide(10, 3)
 
 Use fn to declare function types, function types can usually omit parameter names.
 
-```nature
+```nax
 type calc_fn = fn(int,int):int  // declare fn type
   
 fn apply(calc_fn f, int x, int y):int {  
@@ -346,9 +346,9 @@ fn main() {
 
 ### Additional Notes
 
-Functions in nature must explicitly declare parameter types and return types. If a function does not need to return a value, you can omit the return type declaration, or use void type to declare that the function has no return value:
+Functions in nax must explicitly declare parameter types and return types. If a function does not need to return a value, you can omit the return type declaration, or use void type to declare that the function has no return value:
 
-```nature
+```nax
 fn print() { // v
 }
 
@@ -357,9 +357,9 @@ fn print():void { // v
 }
 ```
 
-Nature programming language always uses type prefix, including return value types. If you think return_type after parameters is type postfix and confusing, you can understand it this way:
+Nax programming language always uses type prefix, including return value types. If you think return_type after parameters is type postfix and confusing, you can understand it this way:
 
-```nature
+```nax
 // This is return type postfix
 func sum(a int, b int) (c int) {  
     c = a + b  
@@ -379,14 +379,14 @@ In any case, the position of return value in function definition has nothing to 
 
 Single line comments:
 
-```nature
+```nax
 // This is a single line comment
 var str = `hello world` // This is also a single line comment
 ```
 
 Multi-line comments:
 
-```nature
+```nax
 /*
 This is a multi-line comment
 can span multiple lines
@@ -444,7 +444,7 @@ var str = `hello world`
 
 ### Type Definition
 
-```nature
+```nax
 type my_int = int
 
 type person_t = struct{
@@ -477,7 +477,7 @@ Use `as` keyword for explicit type conversion:
 - Custom types and primitive types can convert to each other when underlying data structure is the same
 - `as` is used for type conversion as well as union, any type assertion
 
-```nature
+```nax
 int i = 42.5 as int  // float to integer
 
 [u8] bytes = "hello" as [u8]  // string to vec
@@ -495,7 +495,7 @@ int baz = bar as myint // int -> myint
 
 Literals support implicit type conversion in most scenarios. If the specific type cannot be identified, it defaults to int or float type.
 
-```nature
+```nax
 f32 a = 1.1 // automatic inference conversion
 f64 b = 2.2 // automatic inference conversion
 any c = 1.1 // cannot infer, defaults to float type
@@ -508,7 +508,7 @@ any g = 1 // cannot infer, defaults to int type
 
 ### Type Extension
 
-Nature supports method extension for built-in types and custom types.
+Nax supports method extension for built-in types and custom types.
 
 **Built-in Types**
 
@@ -516,7 +516,7 @@ Supported built-in types for extension include: `bool`, `string`, `int`, `int8`,
 
 **Built-in Type extend**
 
-```nature
+```nax
 fn string.find_char(u8 char, int after):int {
     int len = self.len()
     for int k = after; k < len; k += 1 {
@@ -530,7 +530,7 @@ fn string.find_char(u8 char, int after):int {
 
 **Custom Type extend**
 
-```nature
+```nax
 type square = struct {
     int length
     int width
@@ -556,7 +556,7 @@ fn box<T>.area():T{
 
 If it's a type like struct/int/float that is stored on the stack by default, self always references its safe pointer, which is `ptr<T>`. So how to call type extension methods?
 
-```nature
+```nax
 // For string this is simple, string is stored in the heap, so it can be called directly
 var str = 'hello world'
 var c = str.find_char()
@@ -568,7 +568,7 @@ var a = s.area() // self is ptr<square>
 
 **But what if you have a stack-allocated data type and want to call a type extension function?**
 
-```nature
+```nax
 var s = square{}
 
 // If method won't be referenced across threads, maybe we can cheat the compiler with an unsafe pointer via as conversion
@@ -584,7 +584,7 @@ var s = square{}
 
 But having @sla macros everywhere can be annoying, so finally we can do this!
 
-```nature
+```nax
 var s = square{}
 
 s.area() // v eq @sla(s).area()
@@ -636,7 +636,7 @@ The above documentation is somewhat lengthy, but I hope users can remember that 
 
 & gets address type `rawptr<T>`, rawptr is unsafe raw pointer that allows null. Pointer may dangle or point to invalid memory areas. Developers need to ensure pointer safety themselves, so raw pointers should only be used when necessary, such as when interacting with memory-unsafe languages like C.
 
-Nature programming language development recommends using the new keyword for GC heap allocation to get safe pointers.
+Nax programming language development recommends using the new keyword for GC heap allocation to get safe pointers.
 
 ## Struct
 
@@ -644,7 +644,7 @@ Structs must be declared through the `type` keyword, which means defining a new 
 
 ### Basic Syntax
 
-```nature
+```nax
 // Struct declaration
 type person_t = struct {
     string name
@@ -667,7 +667,7 @@ p2.name = 'Tom'  // automatic dereference
 
 Struct default values only support simple constants, do not support closures, function calls and other complex default values.
 
-```nature
+```nax
 type sub_t = struct{
 	var name = 'alice' // supports automatic type inference when default value exists
 }
@@ -688,7 +688,7 @@ var p = person_t{}
 
 ### Nesting and Composition
 
-```nature
+```nax
 type outer = struct {
     int x
     rect r = rect{} 
@@ -716,9 +716,9 @@ type dog = struct {
 
 ### string
 
-String is a built-in data type in nature language, data is stored on the heap. String and dynamic array `[u8]` have the same storage structure on the heap, so strings and `[u8]` can be converted to each other arbitrarily.
+String is a built-in data type in nax language, data is stored on the heap. String and dynamic array `[u8]` have the same storage structure on the heap, so strings and `[u8]` can be converted to each other arbitrarily.
 
-```nature
+```nax
 string s1 = 'hello world' // use single quotes to declare strings in non-special cases
 string s2 = "hello world"
 string s3 = `hello 
@@ -750,7 +750,7 @@ for v in s1 {
 
 Since single quotes are also used to declare strings, if you need to get the char type of a string, you can use the following methods:
 
-```nature
+```nax
 // method 1 through constant definition
 const A = 97
 const B = 99
@@ -763,7 +763,7 @@ u8 c2 = '@'[0]
 
 More string operations can call the string processing library in standard library `import strings`:
 
-```nature
+```nax
 import strings
 
 fn main() {
@@ -783,9 +783,9 @@ fn main() {
 
 ### vec
 
-vec is nature's built-in dynamic array type, supports dynamic expansion, stored on the heap. Concurrent calls are not safe, need to actively add locks.
+vec is nax's built-in dynamic array type, supports dynamic expansion, stored on the heap. Concurrent calls are not safe, need to actively add locks.
 
-```nature
+```nax
 // Declaration and initialization
 [int] list = [1, 2, 3]        // Syntax 1: recommended using [T] declaration
 vec<int> list2 = [1, 2, 3]    // Syntax 2: using vec<T> declaration
@@ -833,9 +833,9 @@ for index,value in list {
 
 ### map
 
-map is nature's built-in mapping table type, used to store key-value pairs. Concurrent calls are not safe, need to actively add locks.
+map is nax's built-in mapping table type, used to store key-value pairs. Concurrent calls are not safe, need to actively add locks.
 
-```nature
+```nax
 // Declaration and initialization
 var m3 = {'a': 1, 'b': 2}              // type inference
 {string:int} m1 = {'a': 1, 'b': 2}     // using {T:T} declaration
@@ -869,9 +869,9 @@ for k, v in m1 {              // traverse both keys and values
 
 ### set
 
-set is nature's built-in collection type, used to store unique elements. set is stored on the heap, elements are not allowed to be duplicated. Concurrent calls are not safe, need to actively add locks.
+set is nax's built-in collection type, used to store unique elements. set is stored on the heap, elements are not allowed to be duplicated. Concurrent calls are not safe, need to actively add locks.
 
-```nature
+```nax
 // Declaration and initialization
 {int} s1 = {-32, -64, 13}     // using {T} declaration
 set<int> s3 = {1, 2, 3}       // using set<T> declaration
@@ -895,9 +895,9 @@ for v in s1 {
 
 ### tup
 
-tuple is nature's built-in type, used to aggregate a group of different types of data in one structure. tuple is stored on the heap, only pointer is kept on stack.
+tuple is nax's built-in type, used to aggregate a group of different types of data in one structure. tuple is stored on the heap, only pointer is kept on stack.
 
-```nature
+```nax
 var tup = (1, 1.1, true) // v declare and assign, multiple elements separated by comma
 
 var tup = (1) // x tuple must contain at least two elements, otherwise cannot distinguish between expression and tup
@@ -912,7 +912,7 @@ tup[0] = 2 // v modify value in tuple
 
 tup supports destructuring assignment:
 
-```nature
+```nax
 
 // v values can be used with var for automatic type inference to continuously create multiple variables
 var (foo, bar, car) = (1, 2, true)
@@ -947,7 +947,7 @@ var (list[0], list[1]) = (2, 4)
 
 arr is fixed-length array, same as data structure in C language.
 
-```nature
+```nax
 [u8;3] array = [1, 2, 3] // declare an array with length 3, element type u8
 array[0] = 12
 array[1] = 24
@@ -956,7 +956,7 @@ var a = array[7]
 
 arr is allocated by default on stack or in data structures, vec is allocated on heap. This can be reflected in size calculation:
 
-```nature
+```nax
 type t1 = struct {
     [u8;12] array
 }
@@ -970,7 +970,7 @@ type t2 = struct {
 var size = @sizeof(t2) // vec is pointer size = 8byte
 ```
 
-Unlike C language, when using array as parameter in nature it's based on value passing.
+Unlike C language, when using array as parameter in nax it's based on value passing.
 
 ## Error Handling
 
@@ -978,7 +978,7 @@ Unlike C language, when using array as parameter in nature it's based on value p
 
 throw syntax usage example:
 
-```nature
+```nax
 // x wrong usage, can't use throw stmt in a fn without an errable! declaration. example: fn rem(...):void!
 fn rem(int dividend, int divisor):int {
 	throw errorf('....')
@@ -995,7 +995,7 @@ fn rem(int dividend, int divisor):int! {
 
 You can use catch syntax to catch errors:
 
-```nature
+```nax
 var result = rem(10, 0) catch e { // e implements throwable interface, can call related methods
     println(e.msg())
     1 // last expression in catch body has value passing effect, can assign 1 to result
@@ -1004,7 +1004,7 @@ var result = rem(10, 0) catch e { // e implements throwable interface, can call 
 
 You can also use try catch to catch multi-line expression errors:
 
-```nature
+```nax
 try {
     var a = 1
     var b = a + 1
@@ -1017,7 +1017,7 @@ try {
 
 If error is not caught, it will propagate up the function call stack until caught by coroutine scheduler and exit the program.
 
-```nature
+```nax
 fn bar():void! {
     throw errorf('error in bar')
 }
@@ -1033,26 +1033,26 @@ fn main():void! {
 
 Compile and run will get error trace stack:
 
-```nature
-coroutine 'main' uncaught error: 'error in bar' at nature-test/main.n:2:22
+```nax
+coroutine 'main' uncaught error: 'error in bar' at nax-test/main.n:2:22
 stack backtrace:
 0:	main.bar
-		at nature-test/main.n:2:22
+		at nax-test/main.n:2:22
 1:	main.foo
-		at nature-test/main.n:6:11
+		at nax-test/main.n:6:11
 2:	main.main
-		at nature-test/main.n:10:11
+		at nax-test/main.n:10:11
 ```
 
 > main function as unified program entry automatically adds `errable(!)` by default, no need for additional declaration
 
 ### Design Philosophy
 
-Nature's error handling is based on a design philosophy similar to Rust's `Result<T,E>`, but the actual performance and syntax API design is closer to the try + catch + throw pattern.
+Nax's error handling is based on a design philosophy similar to Rust's `Result<T,E>`, but the actual performance and syntax API design is closer to the try + catch + throw pattern.
 
 Comparing with Rust:
 
-```nature
+```nax
 
 // int! is equivalent to Result<int,err> in rust
 // int? is equivalent to Option<int> in rust
@@ -1087,13 +1087,13 @@ fn main() {
 }
 ```
 
-Since nature automatically performs error destructuring and upward propagation, in most cases you don't need to handle errors at every level, only catch when really needed.
+Since nax automatically performs error destructuring and upward propagation, in most cases you don't need to handle errors at every level, only catch when really needed.
 
 ### throwable
 
 throwable is a built-in interface, the expression after throw keyword must implement this interface.
 
-```nature
+```nax
 import fmt
 
 type throwable = interface{  
@@ -1121,18 +1121,18 @@ The return value of built-in function errorf is errort type, which implements th
 
 panic is a special error type, panic does not automatically propagate along the function call chain, but directly causes the program to crash and exit. Most common is index out of bounds:
 
-```nature
+```nax
 var list = [1, 2, 3]
 var a = list[4] 
 ```
 
 Compile and run will get error:
 
-`coroutine 'main' panic: 'index out of vec [4] with length 3' at nature-test/main.n:3:18`
+`coroutine 'main' panic: 'index out of vec [4] with length 3' at nax-test/main.n:3:18`
 
 panic can also be caught with catch or try catch, but since panic does not propagate along the call chain, it must be caught immediately and cannot be caught in upper layer functions of the call chain:
 
-```nature
+```nax
 // panic catching method is same as error
 var a = list[4] catch e {
     println(e.msg())
@@ -1144,11 +1144,11 @@ panic('failed')
 
 ## Union Types
 
-Union types allow a variable to hold one of multiple possible types, nature provides a flexible union type system.
+Union types allow a variable to hold one of multiple possible types, nax provides a flexible union type system.
 
 Basic syntax:
 
-```nature
+```nax
 // use | operator to declare union of multiple types
 type nullable<T> = T|null  // nullable type
 type number = int|float    // numeric type
@@ -1160,7 +1160,7 @@ type number = int|float    // numeric type
 
 nullable is implemented based on union type, since it's commonly used, syntax is optimized, using `?` symbol can quickly declare nullable type:
 
-```nature
+```nax
 int? foo = null        // equivalent to nullable<int> foo = null
 string? bar = "hello"  // equivalent to nullable<string> bar = "hello"
 ```
@@ -1169,7 +1169,7 @@ string? bar = "hello"  // equivalent to nullable<string> bar = "hello"
 
 Type assertion uses the same as syntax as type conversion:
 
-```nature
+```nax
 int? foo = 42
 int val = foo as int  // assert union type to specific type
 ```
@@ -1178,7 +1178,7 @@ int val = foo as int  // assert union type to specific type
 
 is syntax is used to check the current stored type of union type:
 
-```nature
+```nax
 int? foo = 42
 bool is_int = foo is int    // true
 bool is_null = foo is null  // false
@@ -1200,7 +1200,7 @@ if !(foo is null) {
 
 match syntax has special optimization for union type, can quickly perform type matching and automatic assertion.
 
-```nature
+```nax
 int? foo = null
 int result = match foo {
     is int v -> v        // auto: var v = foo as int
@@ -1212,7 +1212,7 @@ int result = match foo {
 
 any is a special union type that can contain any type. Small-range union types can be assigned to large-range union types that contain these types, any contains the largest type range:
 
-```nature
+```nax
 any foo = 1
 int? bar = null
 foo = bar // v
@@ -1226,7 +1226,7 @@ nullable2 bar2 = bar // v, nullable2 contains larger type range
 
 Declaration method:
 
-```nature
+```nax
 type measurable = interface{  
     fn area():int  
     fn perimeter():int
@@ -1241,7 +1241,7 @@ type measurable<T> = interface{
 
 Complete declaration example:
 
-```nature
+```nax
 type measurable<T> = interface{  
     fn perimeter():T  
     fn area():T  
@@ -1264,7 +1264,7 @@ fn rectangle.perimeter():i64 {
 
 Interface can be used as function parameter, as long as it implements the interface it can pass function parameter example:
 
-```nature
+```nax
 fn print_shape(measurable<i64> s) {  
     println(s.area(), s.perimeter())  
 }  
@@ -1282,7 +1282,7 @@ fn main() {
 
 If the passed parameter is ptr, it will automatically destructure whether the type contained in ptr implements measurable. type can implement multiple interfaces, multiple interfaces are separated by `,`:
 
-```nature
+```nax
 type measurable<T> = interface{  
     fn perimeter():T  
     fn area():T  
@@ -1310,7 +1310,7 @@ fn rectangle.update(i64 i) {
 
 You can use `is` to determine the specific type of interface:
 
-```nature
+```nax
 fn use_com(combination c):int {  
     if c is square s {  
         // auto as: var s = c as square, c is interface  
@@ -1337,7 +1337,7 @@ fn use_com(combination c):int {
 
 Interface supports nullable:
 
-```nature
+```nax
 fn use(testable? test) {  
     if (test is testable v) { // var v = test as testable  
         println('testable value is', v.nice())  
@@ -1347,11 +1347,11 @@ fn use(testable? test) {
 }
 ```
 
-Interface can also be used as generic constraints, introduced in later generic sections. Nature programming language does not support duck typing, must actively declare implementing an interface.
+Interface can also be used as generic constraints, introduced in later generic sections. Nax programming language does not support duck typing, must actively declare implementing an interface.
 
 Interface supports composition for quick declaration:
 
-```nature
+```nax
 type measurable<T> = interface{  
     fn perimeter():T  
     fn area():T  
@@ -1372,7 +1372,7 @@ type square:combination = i64
 
 Due to composition relationship, if square implements interface combination, it also implements interfaces measurable and updatable by default. As shown in the following example:
 
-```nature
+```nax
 type measurable<T> = interface{  
     fn perimeter():T  
     fn area():T  
@@ -1406,13 +1406,13 @@ fn main():void! {
 
 ## Pattern Matching
 
-Nature provides powerful pattern matching functionality through `match` expressions to implement complex conditional branch logic.
+Nax provides powerful pattern matching functionality through `match` expressions to implement complex conditional branch logic.
 
 ### Basic Syntax
 
 Basic syntax of match expression:
 
-```nature
+```nax
 match subject {
     pattern1 -> expression1
     pattern2 -> expression2
@@ -1425,7 +1425,7 @@ match subject {
 
 Can directly match literal values:
 
-```nature
+```nax
 var a = 12
 match a {
     1 -> println('one')
@@ -1437,7 +1437,7 @@ match a {
 
 Supports string matching:
 
-```nature
+```nax
 match 'hello world' {
     'hello' -> println('greeting')
     'hello world' -> println('full greeting')  // matches successfully
@@ -1449,7 +1449,7 @@ match 'hello world' {
 
 Can carry no subject, in this case as long as pattern expression result is true it can match, but only matches the first expression that results in true and executes corresponding body:
 
-```nature
+```nax
 match {
     12 > 0 && 0 > 0 -> println('case 1')
     (13|(1|2)) == 15 -> println('case 2')  // matches successfully
@@ -1461,7 +1461,7 @@ match {
 ### Automatic Assertion
 
 For union types, you can use `is` for type matching, and variables can be added after the type for automatic derivation.
-```nature
+```nax
 any value = 2.33
 var result = match value {
     is int -> 0.0
@@ -1476,7 +1476,7 @@ result type will be automatically inferred based on the return type of the first
 
 Match branches can use code blocks, the last line expression will serve as the return value of the block scope:
 
-```nature
+```nax
 fn main() {  
     string result = match {  
         (12 > 13) -> {  
@@ -1499,7 +1499,7 @@ fn main() {
 
 Basic syntax uses `<T>` to declare type parameters, where T is the type parameter name. Multiple type parameters can be declared, separated by commas.
 
-```nature
+```nax
 // single type parameter
 type box<T> = struct {
     T value
@@ -1518,7 +1518,7 @@ type list<T> = [T]         // generic array type
 
 Type parameters support nesting:
 
-```nature
+```nax
 type wrapper<T> = struct {
     box<T> inner    // nested use of generic type
 }
@@ -1531,7 +1531,7 @@ var w = wrapper<int>{
 
 ### Generic Functions
 
-```nature
+```nax
 // generic function declaration
 fn sum<T>(T a, T b):T {
     return a + b
@@ -1559,11 +1559,11 @@ fn box<T>.get<U>():U { // x method does not support generic parameters temporari
 
 ### Generic Constraints
 
-> Nature's generic constraints are not yet complete, only validates whether parameters passed to generics satisfy the generic constraint declaration type, but does not validate whether usage in generic functions satisfies generic constraint usage, this issue will be resolved in future updates.
+> Nax's generic constraints are not yet complete, only validates whether parameters passed to generics satisfy the generic constraint declaration type, but does not validate whether usage in generic functions satisfies generic constraint usage, this issue will be resolved in future updates.
 
-Nature's generic constraints support three types, these three constraint types cannot be combined, only one constraint type can be selected:
+Nax's generic constraints support three types, these three constraint types cannot be combined, only one constraint type can be selected:
 
-```nature
+```nax
 // union constraint
 type test_union = int|bool|float  
   
@@ -1592,7 +1592,7 @@ fn test<T:test_interface&test_interface2>(T param) {
 
 ### Usage Example
 
-```nature
+```nax
 // define generic struct
 type pair<T, U> = struct {
     T first
@@ -1624,13 +1624,13 @@ Coroutines are user-space lightweight threads that can run multiple coroutines o
 
 Using `go` keyword:
 
-```nature
+```nax
 var fut = go sum(1, 2)  // create a shared coroutine
 ```
 
 Using `@async` macro, can carry flag parameters to define coroutine behavior:
 
-```nature
+```nax
 var fut = @async(sum(1, 2), co.SAME)  // SAME means new coroutine shares processor with current coroutine
 ```
 
@@ -1638,7 +1638,7 @@ var fut = @async(sum(1, 2), co.SAME)  // SAME means new coroutine shares process
 
 After coroutine creation, it returns a future object. At this time the coroutine is already running, but it won't block the current coroutine. You can use `await()` method to block and wait for coroutine execution completion and get return value:
 
-```nature
+```nax
 import co // standard library co package contains some common coroutine functions
 
 fn sum(int a, int b):int {
@@ -1660,7 +1660,7 @@ fn main() {
 
 mutex (mutual exclusion lock) is a concurrency control mechanism used to protect shared resources, ensuring that only one coroutine can access protected resources at the same time.
 
-```nature
+```nax
 import co.mutex as m
 
 // create mutex
@@ -1680,7 +1680,7 @@ mu.unlock()
 
 Errors in coroutines can also be caught using `catch` syntax:
 
-```nature
+```nax
 fn div(int a, int b):int! {
     if b == 0 {
         throw errorf("division by zero")
@@ -1701,11 +1701,11 @@ If errors in coroutines are not caught, the program will terminate.
 
 ## Channel
 
-channel is a communication mechanism provided by nature for inter-coroutine communication, used to safely pass data between different coroutines.
+channel is a communication mechanism provided by nax for inter-coroutine communication, used to safely pass data between different coroutines.
 
 ### Basic Usage
 
-```nature
+```nax
 // create unbuffered channel
 var ch = chan_new<int>()      // create channel for passing int type data
 var ch_str = chan_new<string>() // create channel for passing string type data
@@ -1724,7 +1724,7 @@ var msg = ch_str.recv()
 
 channel status:
 
-```nature
+```nax
 ch.close()                    // close channel
 bool closed = ch.is_closed()  // check if coroutine is closed
 var ok = ch.is_successful()   //  in closed state can check if recent read or write operation was successful
@@ -1734,7 +1734,7 @@ Sending data in closed state will produce error, can use catch to catch. Unfinis
 
 channel recv operation supports using for iterator iteration:
 
-```nature
+```nax
 fn handle(chan<int> ch) {  
     for v in ch { // compiler automatically calls recv and yield until data is received
         println('recv v ->', v)  
@@ -1750,7 +1750,7 @@ When using channel with buffer, yield waiting only occurs when channel is full.
 
 select statement is used to simultaneously monitor multiple channel operations, syntax structure is similar to match, but only used for channel operations.
 
-```nature
+```nax
 select {
     ch1.on_recv() -> msg {
         // handle data received from ch1
@@ -1772,7 +1772,7 @@ select automatically catches closed error, can check if current awakened channel
 
 **Simple producer-consumer pattern**
 
-```nature
+```nax
 // producer
 go (fn(chan<int> ch):void! {
     ch.send(42)
@@ -1784,7 +1784,7 @@ var value = ch.recv()
 
 **Using buffered channel to implement rate limiter**
 
-```nature
+```nax
 var limiter = chan_new<u8>(10)  // allow maximum 10 concurrent tasks
 for u8 i = 0; i < 100; i+=1 {
     limiter.send(i)             // acquire token
@@ -1797,7 +1797,7 @@ for u8 i = 0; i < 100; i+=1 {
 
 **Using select to implement timeout control**
 
-```nature
+```nax
 var ch = chan_new<string>()
 var timeout = chan_new<bool>()
 
@@ -1813,9 +1813,9 @@ select {
 
 ## Built-in Macros
 
-Nature programming language uses @ symbol for macro calls. The current version does not support custom macros, but has built-in some necessary macro functions:
+Nax programming language uses @ symbol for macro calls. The current version does not support custom macros, but has built-in some necessary macro functions:
 
-```nature
+```nax
 var size = @sizeof(i8) // sizeof reads type stack memory usage
 
 type double = f64
@@ -1837,7 +1837,7 @@ Function tags are a special function declaration syntax used to add metadata to 
 
 `#linkid` tag is used to customize function's linker symbol name:
 
-```nature
+```nax
 #linkid print_message
 fn log(string message):void {
     // function implementation
@@ -1848,18 +1848,18 @@ If log is defined in main.n file, then by default log's symbol in executable fil
 
 linkid is most commonly used to declare C language header files, for example:
 
-```nature
+```nax
 #linkid sleep  
 fn sleep(int second)
 ```
 
-When function has no body, nature treats the function as template function, can be called directly in nature code. Linker will find the corresponding sleep symbol location for correct guided calls.
+When function has no body, nax treats the function as template function, can be called directly in nax code. Linker will find the corresponding sleep symbol location for correct guided calls.
 
 ### \#local
 
 `#local` tag is used to mark function visibility, indicating that the function is only visible within current module:
 
-```nature
+```nax
 #local
 fn internal_helper():void {
     // function implementation
@@ -1870,13 +1870,13 @@ fn internal_helper():void {
 
 ## Modules
 
-Modules are the basic unit for organizing code in nature. Each `.n` file is an independent module.
+Modules are the basic unit for organizing code in nax. Each `.n` file is an independent module.
 
 ### main Module
 
-Every nature program must contain a `main` function as the program entry point:
+Every nax program must contain a `main` function as the program entry point:
 
-```nature
+```nax
 // main.n
 import fmt
 
@@ -1885,13 +1885,13 @@ fn main() {
 }
 ```
 
-The entry file specified in compilation command is treated as main module, such as `nature build main.n`
+The entry file specified in compilation command is treated as main module, such as `nax build main.n`
 
 ### import
 
 Use import keyword to import other modules or standard library:
 
-```nature
+```nax
 // basic import, by default takes user as module ident
 import "user.n"
 
@@ -1914,7 +1914,7 @@ File-based module import has strict path restrictions, only supports relative pa
 
 ## Package Management
 
-Nature installation package includes npkg program as package management software, npkg needs to work with package.toml.
+Nax installation package includes npkg program as package management software, npkg needs to work with package.toml.
 
 ### package.toml
 
@@ -1938,10 +1938,10 @@ local_pkg = { type = "local", version = "v1.0.0", path = "./local" }
 
 ### Dependency Management
 
-Use `npkg sync` command in directory containing package.toml to synchronize packages in dependency management. Packages will be synced to $HOME/.nature/package directory.
+Use `npkg sync` command in directory containing package.toml to synchronize packages in dependency management. Packages will be synced to $HOME/.nax/package directory.
 
 ```sh
-$HOME/.nature/package
+$HOME/.nax/package
 ├── caches
 └── sources
     ├── jihulab.com.nature-lang.os@v1.0.1
@@ -1957,9 +1957,9 @@ $HOME/.nature/package
 
 ### Import Syntax
 
-Nature uses file name as module ident:
+Nax uses file name as module ident:
 
-```nature
+```nax
 import rand                    // import package main module (equivalent to import rand.main)
 import rand.utils.seed         // import specified module, i.e., rand/utils/seed.n file
 import rand.utils.seed as s    // custom module name
@@ -1995,7 +1995,7 @@ rand_v2 = { type = "git", version = "v2.0", url = "jihulab.com/nature-lang/rand"
 
 Then import using different names:
 
-```nature
+```nax
 import rand_v1
 import rand_v2
 ```
@@ -2004,19 +2004,19 @@ Since based on file modules, editor does not detect circular imports, but in act
 
 ## Interacting with C
 
-Besides nature's built-in libc/libuv libraries, we can also reference other static library files in package.toml, compiler will automatically link related architecture static library files. In nature code, declare corresponding function templates through `#linkid` tags and call them. Linker will automatically perform correct linking.
+Besides nax's built-in libc/libuv libraries, we can also reference other static library files in package.toml, compiler will automatically link related architecture static library files. In nax code, declare corresponding function templates through `#linkid` tags and call them. Linker will automatically perform correct linking.
 
-Not only C language, as long as programming languages can generate static libraries, nature can conveniently interact with them. But nature is based on musl libc for static compilation, so static libraries also need to be compiled purely static based on musl libc. Recommend using musl-gcc component to compile static libraries.
+Not only C language, as long as programming languages can generate static libraries, nax can conveniently interact with them. But nax is based on musl libc for static compilation, so static libraries also need to be compiled purely static based on musl libc. Recommend using musl-gcc component to compile static libraries.
 
-Since nature can customize linker and link parameters, static libraries can also be referenced through link parameters, such as:
+Since nax can customize linker and link parameters, static libraries can also be referenced through link parameters, such as:
 
 ```sh
-nature build --ld '/usr/bin/ld' --ldflags '-nostdlib -static -lm -luv' main.n
+nax build --ld '/usr/bin/ld' --ldflags '-nostdlib -static -lm -luv' main.n
 ```
 
-Nature integrates musl libc and macOS C library by default, can directly use related functions, directly call related functions through `import libc`:
+Nax integrates musl libc and macOS C library by default, can directly use related functions, directly call related functions through `import libc`:
 
-```nature
+```nax
 import libc
 
 fn main() {
@@ -2040,7 +2040,7 @@ libz = {
 
 Use `#linkid` tags and function templates to declare C function id and related parameters to be called:
 
-```nature
+```nax
 #linkid gzopen
 fn gzopen(anyptr fname, anyptr mode):anyptr
 
@@ -2050,7 +2050,7 @@ fn sleep(int second)
 
 Call example:
 
-```nature
+```nax
 // zlib.n
 #linkid gzopen
 fn gzopen(anyptr fname, anyptr mode):anyptr
@@ -2071,9 +2071,9 @@ fn main() {
 
 ### Type Mapping
 
-Type mapping relationship between nature and C language:
+Type mapping relationship between nax and C language:
 
-| nature type | C type           | Description                                    |
+| nax type | C type           | Description                                    |
 | ----------- | ---------------- | ---------------------------------------------- |
 | anyptr      | uintptr          | Universal pointer type                         |
 | `rawptr<T>` | T*               | Typed pointer                                  |
@@ -2086,35 +2086,35 @@ Type mapping relationship between nature and C language:
 | f32         | float            | 32-bit floating point                          |
 | f64         | double           | 64-bit floating point                          |
 | `[T;n]`     | `T[n]`           | Fixed length array, N is compile-time constant |
-| struct      | struct           | nature struct uses same alignment and ABI handling as C struct |
+| struct      | struct           | nax struct uses same alignment and ABI handling as C struct |
 
 Get C language strings and pointers:
 
-```nature
+```nax
 import libc
 
 var str = "hello"
 libc.cstr ptr = str.to_cstr()  // get string address
-string str2 = ptr.to_string() // cstr convert to nature string
+string str2 = ptr.to_string() // cstr convert to nax string
 
 // get rawptr type
 rawptr<tm_t> time_ptr = &time_info
 
 // get anyptr type
-// any nature type (except floating point) can be converted to anyptr type
+// any nax type (except floating point) can be converted to anyptr type
 anyptr c_ptr = time_info as anyptr 
 ```
 
 ### Notes
 
-- C language is memory unsafe, so need to pay special attention to memory-related issues. Using rawptr and anyptr can easily bypass nature programming language's safety checks
-- Nature programming language is based on cooperative scheduling, when calling blocking C functions like sleep, read, write etc., will cause nature scheduler to block. Scheduler blocking will prevent other coroutines from running and unable to perform GC processing.
+- C language is memory unsafe, so need to pay special attention to memory-related issues. Using rawptr and anyptr can easily bypass nax programming language's safety checks
+- Nax programming language is based on cooperative scheduling, when calling blocking C functions like sleep, read, write etc., will cause nax scheduler to block. Scheduler blocking will prevent other coroutines from running and unable to perform GC processing.
 
 ## Formatting
 
-Nature fmt tool has not been developed yet, so need some simple writing conventions.
+Nax fmt tool has not been developed yet, so need some simple writing conventions.
 
-```nature
+```nax
 var bar = '' // stmt ending does not need to carry ; 
 
 var global_v = 12 // except constant definitions, all other idents recommend lowercase underscore separation (including file names)

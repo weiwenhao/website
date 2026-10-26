@@ -17,7 +17,7 @@ export default function Playground() {
 
   // 组件加载时从 localStorage 读取保存的代码
   useEffect(() => {
-    const savedCode = localStorage.getItem('naturePlaygroundCode');
+    const savedCode = localStorage.getItem('naxPlaygroundCode');
     if (savedCode) {
       setCode(savedCode);
     }
@@ -54,7 +54,7 @@ export default function Playground() {
   const onChange = (value) => {
     setCode(value);
     // 将代码保存到 localStorage
-    localStorage.setItem('naturePlaygroundCode', value);
+    localStorage.setItem('naxPlaygroundCode', value);
   };
 
   return (
@@ -67,7 +67,7 @@ export default function Playground() {
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Code Editor</h2>
               <Button
-                className="bg-nature-red hover:bg-nature-red/90"
+                className="bg-nax-red hover:bg-nax-red/90"
                 onClick={runCode}
                 disabled={isLoading}
               >
@@ -79,7 +79,7 @@ export default function Playground() {
             <div className="flex-1">
               {/* <textarea
                 className="w-full h-full min-h-[calc(100vh-10rem)] bg-muted rounded p-3 font-mono text-sm outline-none resize-none"
-                placeholder="// Enter your Nature code here"
+                placeholder="// Enter your Nax code here"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 disabled={isLoading}

@@ -20,17 +20,17 @@ const prettyCodeOptions = {
   theme: 'github-light',
   getHighlighter: async (options: { langs?: unknown[]; themes?: string[] }) => {
     // Load custom language definition using fs (server-side only)
-    const natureLangPath = path.join(process.cwd(), 'lib', 'nature-lang.json')
-    const natureLang = JSON.parse(fs.readFileSync(natureLangPath, 'utf8'))
+    const naxLangPath = path.join(process.cwd(), 'lib', 'nax-lang.json')
+    const naxLang = JSON.parse(fs.readFileSync(naxLangPath, 'utf8'))
 
     return await createHighlighter({
       ...options,
-      langs: [natureLang],
+      langs: [naxLang],
       themes: ['github-light']
     })
   },
-  // When no language is specified, default to nature for better syntax highlighting
-  defaultLang: 'nature'
+  // When no language is specified, default to nax for better syntax highlighting
+  defaultLang: 'nax'
 }
 
 export default function RemoteMDXRenderer({ content, className = '' }: RemoteMDXRendererProps) {

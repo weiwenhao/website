@@ -17,7 +17,7 @@ export interface StdLibContent {
 export async function getStdLibContent(slug: string): Promise<StdLibContent | null> {
   try {
     const response = await fetch(
-      `https://raw.githubusercontent.com/nature-lang/nature/refs/heads/master/std/${slug}/README.md`,
+      `https://raw.githubusercontent.com/naxlang/nax/refs/heads/master/std/${slug}/README.md`,
       {
         cache: 'force-cache', // Cache for 1 hour
         next: { revalidate: 3600 } // Revalidate every hour

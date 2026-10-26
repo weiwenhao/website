@@ -99,7 +99,7 @@ export function LandingNav() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Llama2 implementation in Nature language
+                Llama2 implementation in Nax language
               </ListItem>
               <ListItem
                 title="Tetris Game"

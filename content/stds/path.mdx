@@ -8,26 +8,26 @@ The `path` standard library provides basic functionalities for handling file pat
 ### exists
 Checks if a file or directory exists.
 
-```nature
+```nax
 fn exists(string path):bool
 ```
 
 ### isdir
 Checks if the specified path is a directory.
 
-```nature
+```nax
 fn isdir(string path):bool
 ```
 
 ### base
 Gets the last element of the path (filename or directory name).
 
-```nature
+```nax
 fn base(string path):string
 ```
 
 Example:
-```nature
+```nax
 println(path.base("/foo/bar/baz.txt"))  // Output: baz.txt
 println(path.base("/foo/bar/"))         // Output: bar
 println(path.base(""))                  // Output: .
@@ -36,12 +36,12 @@ println(path.base(""))                  // Output: .
 ### dir
 Gets the directory portion of the path.
 
-```nature
+```nax
 fn dir(string path):string
 ```
 
 Example:
-```nature
+```nax
 println(path.dir("/foo/bar/baz.txt"))  // Output: /foo/bar
 println(path.dir("/foo/bar/"))         // Output: /foo/bar
 println(path.dir("/foo"))              // Output: /
@@ -51,12 +51,12 @@ println(path.dir(""))                  // Output: .
 ### join
 Joins multiple path elements into a single path.
 
-```nature
+```nax
 fn join(string dst, ...[string] list):string
 ```
 
 Example:
-```nature
+```nax
 import path
 
 fn main() {

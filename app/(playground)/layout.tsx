@@ -10,7 +10,7 @@ const font = Outfit({
 
 
 export const metadata: Metadata = {
-  title: "Nature Programming Language",
+  title: "Nax Programming Language",
   description: "A modern programming language designed for elegant, efficient, and reliable software development",
 };
 

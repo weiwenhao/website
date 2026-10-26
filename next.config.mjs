@@ -25,11 +25,11 @@ const options = {
   theme: 'github-light',
   getHighlighter: async (options) => {
     // 加载自定义语言定义
-    const natureLang = JSON.parse(fs.readFileSync('./lib/nature-lang.json', 'utf8'));
+    const naxLang = JSON.parse(fs.readFileSync('./lib/nax-lang.json', 'utf8'));
 
     return await createHighlighter({
       ...options,
-      langs: [natureLang],
+      langs: [naxLang],
       themes: ['github-light']
     });
   },

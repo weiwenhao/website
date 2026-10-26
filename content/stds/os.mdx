@@ -10,48 +10,48 @@ The `os` module provides basic operating system-related functionalities, includi
 #### args
 Gets the command-line argument list.
 
-```nature
+```nax
 fn args():[string]
 ```
 
 #### exe
 Gets the path of the current executable file. Implemented by reading the `/proc/self/exe` link.
 
-```nature
+```nax
 fn exe():string!
 ```
 
 #### listdir
 Lists the names of all files and directories under the specified directory. The returned list is sorted.
 
-```nature
+```nax
 fn listdir(string path):[string]!
 ```
 
 #### mkdirs
 Recursively creates directories. If the directory already exists, no operation is performed.
 
-```nature
+```nax
 fn mkdirs(string dir, u32 mode):void!
 ```
 
 #### remove
 Deletes the specified file. If the file does not exist, no operation is performed.
 
-```nature
+```nax
 fn remove(string full_path):void!
 ```
 
 #### rmdir
 Removes a directory. When `recursive` is `true`, recursively deletes the directory and its contents.
 
-```nature
+```nax
 fn rmdir(string dir, bool recursive):void!
 ```
 
 ### Usage Example
 
-```nature
+```nax
 import os
 
 fn main() {
@@ -84,7 +84,7 @@ The `signal` module provides functionalities related to signal handling, used fo
 #### sig_t
 Alias for signal type.
 
-```nature
+```nax
 type sig_t = int
 ```
 
@@ -93,20 +93,20 @@ type sig_t = int
 #### notify()
 Registers a signal handler that sends the specified signals to a channel，signals are empty and listen for all signals.
 
-```nature
+```nax
 fn notify(chan<sig_t> sig_ch, ...[int] signals)
 ```
 
 #### stop()
 Stops the signal handler from sending signals to the channel.
 
-```nature
+```nax
 fn stop(chan<sig_t> sig_ch)
 ```
 
 ### Usage Example
 
-```nature
+```nax
 import os.signal
 
 fn main() {

@@ -1,5 +1,5 @@
 // Standard library list configuration
-// This file contains the complete list of Nature language standard libraries
+// This file contains the complete list of Nax language standard libraries
 // Can be imported by both server and client components
 
 export interface StdLib {
@@ -7,7 +7,7 @@ export interface StdLib {
   slug: string
 }
 
-// Complete standard library list for Nature language
+// Complete standard library list for Nax language
 export const STDLIBS_LIST = [
   'base64', 'co', 'crypto', 'elf', 'fmt', 'fs', 'http', 'io', 'json',
   'libc', 'mem', 'net', 'os', 'path', 'process', 'reflect', 'runtime',

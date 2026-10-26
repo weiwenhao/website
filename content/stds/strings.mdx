@@ -6,21 +6,21 @@ The `strings` standard library provides a series of basic string manipulation fu
 ## Functions
 
 ### from
-Creates a Nature string based on a C string.
+Creates a Nax string based on a C string.
 
-```nature
+```nax
 fn from(anyptr p):string!
 ```
 
 ### join
 Joins a string array into a single string using the specified separator.
 
-```nature
+```nax
 fn join([string] list, string separator):string
 ```
 
 Example:
-```nature
+```nax
 var list = ["hello", "world"]
 println(strings.join(list, " "))  // Output: hello world
 ```
@@ -30,117 +30,117 @@ println(strings.join(list, " "))  // Output: hello world
 ### find
 Finds a substring, returns the position of the first occurrence, returns -1 if not found.
 
-```nature
+```nax
 fn string.find(string sub):int
 ```
 
 ### find_after
 Finds a substring starting from the specified position.
 
-```nature
+```nax
 fn string.find_after(string sub, int after):int
 ```
 
 ### rfind
 Finds a substring from right to left.
 
-```nature
+```nax
 fn string.rfind(string sub, int before):int
 ```
 
 ### contains
 Checks if the string contains the specified substring.
 
-```nature
+```nax
 fn string.contains(string sub):bool
 ```
 
 ### starts_with
 Checks if the string starts with the specified substring.
 
-```nature
+```nax
 fn string.starts_with(string starts):bool
 ```
 
 ### ends_with
 Checks if the string ends with the specified substring.
 
-```nature
+```nax
 fn string.ends_with(string ends):bool
 ```
 
 ### split
 Splits the string using the specified separator.
 
-```nature
+```nax
 fn string.split(string separator):[string]
 ```
 
 ### slice
 Extracts a specified portion of the string.
 
-```nature
+```nax
 fn string.slice(int start, int end):string
 ```
 
 ### trim
 Removes the specified set of characters from both ends of the string.
 
-```nature
+```nax
 fn string.trim([string] list):string
 ```
 
 ### ltrim
 Removes the specified set of characters from the left end of the string.
 
-```nature
+```nax
 fn string.ltrim([string] list):string
 ```
 
 ### rtrim
 Removes the specified set of characters from the right end of the string.
 
-```nature
+```nax
 fn string.rtrim([string] list):string
 ```
 
 ### replace
 Replaces the specified substring within the string.
 
-```nature
+```nax
 fn string.replace(string sub_old, string sub_new):string
 ```
 
 ### reverse
 Reverses the string.
 
-```nature
+```nax
 fn string.reverse():string
 ```
 
 ### to_int
 Converts the string to an integer.
 
-```nature
+```nax
 fn string.to_int():int!
 ```
 
 ### to_float
 
-```nature
+```nax
 fn string.to_float():float!
 ```
 
 ### ascii
 Gets the ASCII code of the first character of the string.
 
-```nature
+```nax
 fn string.ascii():u8
 ```
 
 ## Usage Example
 
-```nature
+```nax
 import strings
 
 fn main() {
@@ -159,7 +159,7 @@ fn main() {
     println(text.trim([" "]))       // Output: "hello"
 
     // String replacing
-    println(str.replace("World", "Nature"))  // Output: Hello, Nature!
+    println(str.replace("World", "Nax"))  // Output: Hello, Nax!
 
     // String conversion
     var num = "123".to_int()

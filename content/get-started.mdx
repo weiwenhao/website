@@ -20,22 +20,22 @@
 
 ## Overview
 
-The nature programming language has reached an early usable version, with a basically stable syntax API that will not change significantly before version 1.0. Future versions will add some necessary and commonly used syntax features such as enum, ternary operators, struct labels, etc.
+The nax programming language has reached an early usable version, with a basically stable syntax API that will not change significantly before version 1.0. Future versions will add some necessary and commonly used syntax features such as enum, ternary operators, struct labels, etc.
 
 Key features to be completed include controllable memory allocator, LLM coding adaptation, DSL test framework, GUI adaptation, and WASM3.0 adaptation.
 
 The current version supports compilation for the following target architectures: linux_amd64, linux_arm64, linux_riscv64, darwin_amd64, darwin_arm64. 
 
-Nature includes a set of test cases and standard libraries to test the usability of basic functionality and syntax, includes a set of small to medium-sized projects to test overall usability, but has not yet been tested in large-scale projects.
+Nax includes a set of test cases and standard libraries to test the usability of basic functionality and syntax, includes a set of small to medium-sized projects to test overall usability, but has not yet been tested in large-scale projects.
 
 ## Installation
 
-1️⃣ Download the binary package suitable for your system from [https://github.com/nature-lang/nature/releases](https://github.com/nature-lang/nature/releases) and extract it.
+1️⃣ Download the binary package suitable for your system from [https://github.com/naxlang/nax/releases](https://github.com/naxlang/nax/releases) and extract it.
 
-2️⃣ Move the nature folder to the `/usr/local` directory. If you need to install nature in another directory, please manually set the NATURE_ROOT environment variable to point to the nature directory.
+2️⃣ Move the nax folder to the `/usr/local` directory. If you need to install nax in another directory, please manually set the NAX_ROOT environment variable to point to the nax directory.
 
 ```sh
-/usr/local/nature/
+/usr/local/nax/
 ├── LICENSE-APACHE
 ├── LICENSE-MIT
 ├── VERSION
@@ -44,29 +44,29 @@ Nature includes a set of test cases and standard libraries to test the usability
 └── std
 ```
 
-3️⃣ Add the `/usr/local/nature/bin` directory to your system environment variables, for example `cat ~/.zshrc`
+3️⃣ Add the `/usr/local/nax/bin` directory to your system environment variables, for example `cat ~/.zshrc`
 
 ```sh
 ...
-export PATH="/usr/local/nature/bin:$PATH"
+export PATH="/usr/local/nax/bin:$PATH"
 ...
 ```
 
-4️⃣ Run the command `nature --version` to check the current version
+4️⃣ Run the command `nax --version` to check the current version
 
 ```sh
-> nature --version
-nature vx.x.x - release build 1970-01-01
+> nax --version
+nax vx.x.x - release build 1970-01-01
 ```
 
-5️⃣ Run the command `nature -h` to view help
+5️⃣ Run the command `nax -h` to view help
 
 ```sh
-> nature -h
-Nature Programming Language Compiler vx.x.x
+> nax -h
+Nax Programming Language Compiler vx.x.x
 
 Usage:
-  nature [command] [flags] [arguments]
+  nax [command] [flags] [arguments]
 ...
 ```
 
@@ -74,31 +74,31 @@ Usage:
 
 Create a main.n file
 
-```nature  
+```nax  
 import fmt  
   
 fn main() {  
-    fmt.printf('hello nature')
+    fmt.printf('hello nax')
 }  
 ```
 
 Compile and run the binary file main
 
 ```sh
-> nature build main.n && ./main
-hello nature
+> nax build main.n && ./main
+hello nax
 ```
 
 Specify compilation target platform and architecture
 
 ```sh
-> nature build --target darwin_amd64 main.n
+> nax build --target darwin_amd64 main.n
 ```
 
 Specify output binary file name as hello
 
 ```sh
-> nature build -o hello main.n
+> nax build -o hello main.n
 ```
 
 ## Project Examples
@@ -115,28 +115,28 @@ Llama2 inference model implementation https://github.com/weiwenhao/llama.n
 
 Tetris game based on raylib https://github.com/weiwenhao/tetris
 
-More syntax examples https://github.com/nature-lang/nature/tree/master/tests/features/cases
+More syntax examples https://github.com/naxlang/nax/tree/master/tests/features/cases
 
 ## Editor Support
 
-The LSP server `nls` is already installed with the nature installation package in the /usr/local/nature/bin directory.
+The LSP server `nls` is already installed with the nax installation package in the /usr/local/nax/bin directory.
 
 ```sh
-ls -lh /usr/local/nature/bin
+ls -lh /usr/local/nax/bin
 total 44696
--rwxr-xr-x@ 1 root  wheel   764K Feb 24 13:18 nature
+-rwxr-xr-x@ 1 root  wheel   764K Feb 24 13:18 nax
 -rwxr-xr-x@ 1 root  wheel   6.1M Feb 24 13:20 nls
 -rwxr-xr-x@ 1 root  wheel    15M Feb 24 13:20 npkg
 ```
 
-Search for "nature language" in the VSCode extension marketplace to download the LSP client and start using it.
+Search for "nax language" in the VSCode extension marketplace to download the LSP client and start using it.
 
 ## Learn More
 
-Syntax documentation [https://nature-lang.org/docs/syntax](https://nature-lang.org/docs/syntax)
+Syntax documentation [https://naxlang.org/docs/syntax](https://naxlang.org/docs/syntax)
 
-Standard library documentation [https://nature-lang.org/stds](https://nature-lang.org/stds/co)
+Standard library documentation [https://naxlang.org/stds](https://naxlang.org/stds/co)
 
-Online playground https://nature-lang.org/playground
+Online playground https://naxlang.org/playground
 
-Contribution guide https://nature-lang.org/docs/contribute
+Contribution guide https://naxlang.org/docs/contribute

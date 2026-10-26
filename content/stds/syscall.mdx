@@ -6,7 +6,7 @@ The `syscall` standard library provides a low-level binding for system calls, en
 ## Constants
 
 ### File Operation Flags
-```nature
+```nax
 int O_RDONLY = 0x0000  // Read-only mode
 int O_WRONLY = 0x0001  // Write-only mode
 int O_RDWR   = 0x0002  // Read/write mode
@@ -17,14 +17,14 @@ int O_TRUNC  = 0x0400  // Truncate content when opening file
 ```
 
 ### File Descriptors
-```nature
+```nax
 int STDIN_FILENO  = 0  // Standard input
 int STDOUT_FILENO = 1  // Standard output
 int STDERR_FILENO = 2  // Standard error
 ```
 
 ### File Type Masks
-```nature
+```nax
 u32 S_IFMT   = 0o170000  // File type bitmask
 u32 S_IFBLK  = 0o060000  // Block device
 u32 S_IFCHR  = 0o020000  // Character device
@@ -36,14 +36,14 @@ u32 S_IFSOCK = 0o140000  // Socket
 ```
 
 ### Network Protocol Families
-```nature
+```nax
 int AF_INET  = 0x2   // IPv4 protocol
 int AF_INET6 = 0xa   // IPv6 protocol
 int AF_UNIX  = 0x1   // Unix domain socket
 ```
 
 ### Socket Types
-```nature
+```nax
 int SOCK_STREAM    = 0x1  // TCP stream socket
 int SOCK_DGRAM     = 0x2  // UDP datagram socket
 int SOCK_RAW       = 0x3  // Raw socket
@@ -55,7 +55,7 @@ int SOCK_SEQPACKET = 0x5  // Sequenced packet socket
 ### stat_t
 File status information struct.
 
-```nature
+```nax
 type stat_t = struct {
     u64 dev           // Device ID
     u64 ino           // inode number
@@ -76,7 +76,7 @@ type stat_t = struct {
 ### sockaddr_in
 IPv4 socket address structure.
 
-```nature
+```nax
 type sockaddr_in = struct {
     u16 sin_family     // Address family (AF_INET)
     u16 sin_port       // Port number
@@ -88,7 +88,7 @@ type sockaddr_in = struct {
 ### sockaddr_in6
 IPv6 socket address structure.
 
-```nature
+```nax
 type sockaddr_in6 = struct {
     u16 sin6_family   // Address family (AF_INET6)
     u16 sin6_port     // Port number
@@ -105,65 +105,65 @@ type sockaddr_in6 = struct {
 #### open
 Opens a file.
 
-```nature
+```nax
 fn open(string filename, int flags, u32 perm):int!
 ```
 
 #### read
 Reads data from a file descriptor.
 
-```nature
+```nax
 fn read(int fd, anyptr buf, int len):int!
 ```
 
 #### write
 Writes data to a file descriptor.
 
-```nature
+```nax
 fn write(int fd, anyptr buf, int len):int!
 ```
 
 #### close
 Closes a file descriptor.
 
-```nature
+```nax
 fn close(int fd):void!
 ```
 
 #### stat
 Gets file status information.
 
-```nature
+```nax
 fn stat(string filename):stat_t!
 ```
 
 ### Process Control
 
 #### fork
-Creates a child process. This is a low-level system function, considered unsafe, and will cause the original Nature multithreading scheduler to become invalid.
+Creates a child process. This is a low-level system function, considered unsafe, and will cause the original Nax multithreading scheduler to become invalid.
 
-```nature
+```nax
 fn fork():int!
 ```
 
 #### exec
 Executes a new program.
 
-```nature
+```nax
 fn exec(string path, [string] argv, [string] envp):void!
 ```
 
 #### exit
 Terminates the current process.
 
-```nature
+```nax
 fn exit(int status):void!
 ```
 
 #### kill()
 Sends a signal to a process.
 
-```nature
+```nax
 fn kill(int pid, int sig):void!
 ```
 
@@ -172,28 +172,28 @@ fn kill(int pid, int sig):void!
 #### socket
 Creates a socket.
 
-```nature
+```nax
 fn socket(int domain, int t, int protocol):int!
 ```
 
 #### bind
 Binds a socket address.
 
-```nature
+```nax
 fn bind<T>(int sockfd, T addr):void!
 ```
 
 #### listen
 Listens for connections.
 
-```nature
+```nax
 fn listen(int sockfd, int backlog):void!
 ```
 
 #### accept
 Accepts a connection.
 
-```nature
+```nax
 fn accept<T>(int sockfd, ptr<T> addr):int!
 ```
 
@@ -202,7 +202,7 @@ fn accept<T>(int sockfd, ptr<T> addr):int!
 `import syscall`
 
 ### File Operation Example
-```nature
+```nax
 // Read file status
 var st = syscall.stat("test.txt")
 println(st.size)  // Output file size

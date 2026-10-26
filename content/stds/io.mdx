@@ -10,7 +10,7 @@ The `io` library defines basic I/O interfaces and implementations, including mem
 
 Represents a source from which data can be read.
 
-```nature
+```nax
 type reader = interface{
     fn read([u8] buf):int! // Reads data from the source into buf, returns the number of bytes read. Returns an error on failure.
 }
@@ -20,7 +20,7 @@ type reader = interface{
 
 Represents a target to which data can be written.
 
-```nature
+```nax
 type writer = interface{
     fn write([u8] buf):int! // Writes the data in buf to the target, returns the number of bytes written. Returns an error on failure.
 }
@@ -30,7 +30,7 @@ type writer = interface{
 
 Represents an I/O object that supports setting the read/write position.
 
-```nature
+```nax
 type seeker = interface{
     fn seek(int offset, int whence):int! // Sets the offset, returns the new absolute offset. Returns an error on failure.
 }
@@ -40,7 +40,7 @@ type seeker = interface{
 
 `buffer` is a variable-sized memory byte buffer that implements the `reader` and `writer` interfaces.
 
-```nature
+```nax
 type buffer: reader, writer = struct{
     [u8] buf   // Underlying byte slice for storing data
     int offset // Offset of the current read position
@@ -89,7 +89,7 @@ If the buffer is empty, returns an empty slice.
 
 `buf_reader` provides buffering for another `reader` object `rd`. It implements the `reader` interface.
 
-```nature
+```nax
 type buf_reader<T: reader>: reader = struct{
     T rd           // The underlying reader
     [u8] buf       // Internal buffer, defaults to 4096 bytes

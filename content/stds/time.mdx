@@ -8,7 +8,7 @@ The `time` standard library provides basic functionalities for handling time-rel
 ### time_t
 Time struct, used to represent a point in time and related information.
 
-```nature
+```nax
 type time_t = struct {
     i64 sec     // Seconds-level timestamp
     i64 nsec    // Nanoseconds part
@@ -21,12 +21,12 @@ type time_t = struct {
 ### now
 Creates a `time_t` instance based on the current time.
 
-```nature
+```nax
 fn now():time_t
 ```
 
 Example:
-```nature
+```nax
 var t = time.now()
 println(t.datetime())  // Output: 2024-01-01 12:00:00
 ```
@@ -34,12 +34,12 @@ println(t.datetime())  // Output: 2024-01-01 12:00:00
 ### unix
 Gets the current Unix timestamp (seconds-level).
 
-```nature
+```nax
 fn unix():i64
 ```
 
 Example:
-```nature
+```nax
 var timestamp = time.unix
 println(timestamp)  // Output: 1704067200
 ```
@@ -49,34 +49,34 @@ println(timestamp)  // Output: 1704067200
 ### timestamp
 Gets the seconds-level timestamp.
 
-```nature
+```nax
 fn time_t.timestamp():i64
 ```
 
 ### ms_timestamp
 Gets the milliseconds-level timestamp.
 
-```nature
+```nax
 fn time_t.ms_timestamp():i64
 ```
 
 ### ns_timestamp
 Gets the nanoseconds-level timestamp.
 
-```nature
+```nax
 fn time_t.ns_timestamp():i64
 ```
 
 ### datetime
 Formats the time as a readable date-time string (format: YYYY-MM-DD HH:mm:ss).
 
-```nature
+```nax
 fn time_t.datetime():string
 ```
 
 ## Usage Example
 
-```nature
+```nax
 import time
 
 fn main() {

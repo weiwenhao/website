@@ -10,8 +10,8 @@ export default {
   theme: {
   	extend: {
   		colors: {
-			'nature-red': '#ED4845',
-			'nature-blue': '#3170A7',
+			'nax-red': '#ED4845',
+			'nax-blue': '#3170A7',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

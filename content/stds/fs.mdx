@@ -8,7 +8,7 @@ The `fs` library provides basic functionalities for interacting with the filesys
 
 Struct representing time, containing seconds and nanoseconds.
 
-```nature
+```nax
 type timespec_t = struct {
     u64 sec   // Seconds
     u64 nsec  // Nanoseconds
@@ -19,7 +19,7 @@ type timespec_t = struct {
 
 Struct representing file status information.
 
-```nature
+```nax
 type stat_t = struct {
     u64 dev     // Device ID
     u64 mode    // File mode (permissions, etc.)
@@ -44,7 +44,7 @@ type stat_t = struct {
 
 Represents an open file descriptor, implementing the `io.reader`, `io.writer`, `io.seeker` interfaces.
 
-```nature
+```nax
 // Matches runtime.fs_context_t
 type file_t:io.reader, io.writer, io.seeker = struct{
     int fd       // File descriptor
@@ -150,7 +150,7 @@ Gets a special file object that discards all written data (`/dev/null`), opened 
 
 ## Usage Example
 
-```nature
+```nax
 import fs
 import syscall
 

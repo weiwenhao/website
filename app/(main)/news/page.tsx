@@ -10,7 +10,7 @@ export default async function NewsPage() {
         {newsList.length === 0 && <li className="text-gray-500">暂无新闻</li>}
         {newsList.map(news => (
           <li key={news.slug} className="border-b pb-4">
-            <Link href={`/news/${news.slug}`} className="text-xl no-underline font-semibold text-nature-red transition-colors duration-200 hover:text-red-700">
+            <Link href={`/news/${news.slug}`} className="text-xl no-underline font-semibold text-nax-red transition-colors duration-200 hover:text-red-700">
               {news.title}
             </Link>
             <div className="text-gray-500 text-sm mt-1">{news.date?.slice(0, 10)}</div>

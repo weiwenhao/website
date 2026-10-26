@@ -8,7 +8,7 @@ The `process` library provides functionalities for creating and managing child p
 
 Struct used to store state information after process execution completes.
 
-```nature
+```nax
 type state_t = struct{
     string stdout    // Process's standard output content
     string stderr    // Process's standard error output content
@@ -21,7 +21,7 @@ type state_t = struct{
 
 Struct representing a running or exited child process.
 
-```nature
+```nax
 type process_t = struct{
     int pid          // Process ID
     anyptr args      // Internal arguments pointer (implementation details)
@@ -39,7 +39,7 @@ type process_t = struct{
 
 Struct used to configure and prepare an external command for execution.
 
-```nature
+```nax
 type command_t = struct{
     string name      // Name of the command or program to be executed
     [string] args    // List of arguments passed to the command
@@ -109,7 +109,7 @@ Reads data from the child process's standard error pipe.
 
 ## Usage Example
 
-```nature
+```nax
 import process
 import io
 
@@ -123,7 +123,7 @@ fn main():void! {
 
 Custom buf (Example using `io.buffer`, unrelated to `process` execution flow)
 
-```nature
+```nax
 import io
 
 fn main():void! {

@@ -8,7 +8,7 @@ The `http` standard library provides basic functionalities for creating HTTP ser
 ### server_t
 HTTP server struct, used for creating and managing HTTP server instances.
 
-```nature
+```nax
 type server_t = struct {
     fn():void! handler_fn
     string addr
@@ -22,7 +22,7 @@ type server_t = struct {
 ### request_t
 HTTP request struct, containing all relevant information about the request.
 
-```nature
+```nax
 type request_t = struct {
     u8 method
     {string:string} headers
@@ -38,7 +38,7 @@ type request_t = struct {
 ### response_t
 HTTP response struct, used for building HTTP responses.
 
-```nature
+```nax
 type response_t = struct {
     string version
     {string:string} headers
@@ -56,12 +56,12 @@ type response_t = struct {
 ### server
 Creates a new HTTP server instance.
 
-```nature
+```nax
 fn server():ptr<server_t>
 ```
 
 Example:
-```nature
+```nax
 var app = http.server()
 ```
 
@@ -70,70 +70,70 @@ var app = http.server()
 ### listen
 Starts the HTTP server and listens on the specified port.
 
-```nature
+```nax
 fn server_t.listen(int port):void!
 ```
 
 ### get
 Registers a GET request route handler.
 
-```nature
+```nax
 fn server_t.get(string path, callback_fn callback)
 ```
 
 ### post
 Registers a POST request route handler.
 
-```nature
+```nax
 fn server_t.post(string path, callback_fn callback)
 ```
 
 ### put
 Registers a PUT request route handler.
 
-```nature
+```nax
 fn server_t.put(string path, callback_fn callback)
 ```
 
 ### delete
 Registers a DELETE request route handler.
 
-```nature
+```nax
 fn server_t.delete(string path, callback_fn callback)
 ```
 
 ### patch
 Registers a PATCH request route handler.
 
-```nature
+```nax
 fn server_t.patch(string path, callback_fn callback)
 ```
 
 ### options
 Registers an OPTIONS request route handler.
 
-```nature
+```nax
 fn server_t.options(string path, callback_fn callback)
 ```
 
 ### head
 Registers a HEAD request route handler.
 
-```nature
+```nax
 fn server_t.head(string path, callback_fn callback)
 ```
 
 ### all
 Registers a route handler for all HTTP methods.
 
-```nature
+```nax
 fn server_t.all(string path, callback_fn callback)
 ```
 
 ### close
 Closes the HTTP server.
 
-```nature
+```nax
 fn server_t.close()
 ```
 
@@ -142,20 +142,20 @@ fn server_t.close()
 ### send
 Sets the response body content.
 
-```nature
+```nax
 fn response_t.send(string msg)
 ```
 
 ## Usage Example
 
-```nature
+```nax
 import http
 
 fn main() {
     var app = http.server()
 
     app.get('/', fn(http.request_t req, ptr<http.response_t> res) {
-        res.send('hello nature')
+        res.send('hello nax')
     })
 
 

@@ -1,6 +1,7 @@
 {
-  "name": "nature",
-  "scopeName": "source.nature",
+  "name": "nax",
+  "scopeName": "source.nax",
+  "aliases": ["nature"],
   "patterns": [
     { "include": "#comments" },
     { "include": "#strings" },
@@ -15,11 +16,11 @@
     "comments": {
       "patterns": [
         {
-          "name": "comment.line.double-slash.nature",
+          "name": "comment.line.double-slash.nax",
           "match": "//.*$"
         },
         {
-          "name": "comment.block.nature",
+          "name": "comment.block.nax",
           "begin": "/\\*",
           "end": "\\*/"
         }
@@ -28,29 +29,29 @@
     "strings": {
       "patterns": [
         {
-          "name": "string.quoted.single.nature",
+          "name": "string.quoted.single.nax",
           "begin": "'",
           "end": "'",
           "patterns": [
             {
-              "name": "constant.character.escape.nature",
+              "name": "constant.character.escape.nax",
               "match": "\\\\."
             }
           ]
         },
         {
-          "name": "string.quoted.double.nature",
+          "name": "string.quoted.double.nax",
           "begin": "\"",
           "end": "\"",
           "patterns": [
             {
-              "name": "constant.character.escape.nature",
+              "name": "constant.character.escape.nax",
               "match": "\\\\."
             }
           ]
         },
         {
-          "name": "string.quoted.backtick.nature",
+          "name": "string.quoted.backtick.nax",
           "begin": "`",
           "end": "`"
         }
@@ -59,27 +60,27 @@
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.declaration.nature",
+          "name": "keyword.declaration.nax",
           "match": "\\b(var|type|fn|import|new)\\b"
         },
         {
-          "name": "keyword.control.nature",
+          "name": "keyword.control.nax",
           "match": "\\b(if|else|for|in|break|continue|return|match|select)\\b"
         },
         {
-          "name": "keyword.error.nature",
+          "name": "keyword.error.nax",
           "match": "\\b(try|catch|throw)\\b"
         },
         {
-          "name": "keyword.concurrent.nature",
+          "name": "keyword.concurrent.nax",
           "match": "\\b(go)\\b"
         },
         {
-          "name": "constant.language.boolean.nature",
+          "name": "constant.language.boolean.nax",
           "match": "\\b(true|false)\\b"
         },
         {
-          "name": "keyword.operator.type.nature",
+          "name": "keyword.operator.type.nax",
           "match": "\\b(as|is)\\b"
         }
       ]
@@ -87,26 +88,26 @@
     "types": {
       "patterns": [
         {
-          "name": "storage.type.primitive.nature",
+          "name": "storage.type.primitive.nax",
           "match": "\\b(void|any|null|anyptr|bool|string|int|uint|float|i8|i16|i32|i64|u8|u16|u32|u64|f32|f64)\\b"
         },
         {
-          "name": "storage.type.composite.nature",
+          "name": "storage.type.composite.nax",
           "match": "\\b(struct|chan|arr|vec|map|set|tup|ptr|rawptr|enum|union)\\b"        }
       ]
     },
     "functions": {
       "patterns": [
         {
-          "name": "entity.name.function.nature",
+          "name": "entity.name.function.nax",
           "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
         },
         {
-          "name": "meta.function.declaration.nature",
+          "name": "meta.function.declaration.nax",
           "match": "\\b(fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
           "captures": {
-            "1": { "name": "keyword.declaration.function.nature" },
-            "2": { "name": "entity.name.function.nature" }
+            "1": { "name": "keyword.declaration.function.nax" },
+            "2": { "name": "entity.name.function.nax" }
           }
         }
       ]
@@ -114,23 +115,23 @@
     "numbers": {
       "patterns": [
         {
-          "name": "constant.numeric.integer.nature",
+          "name": "constant.numeric.integer.nax",
           "match": "\\b\\d+\\b"
         },
         {
-          "name": "constant.numeric.float.nature",
+          "name": "constant.numeric.float.nax",
           "match": "\\b\\d+\\.\\d+\\b"
         },
         {
-          "name": "constant.numeric.hex.nature",
+          "name": "constant.numeric.hex.nax",
           "match": "\\b0x[0-9a-fA-F]+\\b"
         },
         {
-          "name": "constant.numeric.binary.nature",
+          "name": "constant.numeric.binary.nax",
           "match": "\\b0b[01]+\\b"
         },
         {
-          "name": "constant.numeric.octal.nature",
+          "name": "constant.numeric.octal.nax",
           "match": "\\b0o[0-7]+\\b"
         }
       ]
@@ -138,23 +139,23 @@
     "operators": {
       "patterns": [
         {
-          "name": "keyword.operator.arithmetic.nature",
+          "name": "keyword.operator.arithmetic.nax",
           "match": "[+\\-*/%]|\\+\\+|\\-\\-"
         },
         {
-          "name": "keyword.operator.comparison.nature",
+          "name": "keyword.operator.comparison.nax",
           "match": "==|!=|<=|>=|<|>"
         },
         {
-          "name": "keyword.operator.logical.nature",
+          "name": "keyword.operator.logical.nax",
           "match": "&&|\\|\\||!"
         },
         {
-          "name": "keyword.operator.assignment.nature",
+          "name": "keyword.operator.assignment.nax",
           "match": "=|\\+=|\\-=|\\*=|/=|%="
         },
         {
-          "name": "keyword.operator.bitwise.nature",
+          "name": "keyword.operator.bitwise.nax",
           "match": "&|\\||\\^|~|<<|>>"
         }
       ]
@@ -162,27 +163,27 @@
     "punctuation": {
       "patterns": [
         {
-          "name": "punctuation.separator.nature",
+          "name": "punctuation.separator.nax",
           "match": "[,;:]"
         },
         {
-          "name": "punctuation.terminator.nature",
+          "name": "punctuation.terminator.nax",
           "match": "\\."
         },
         {
-          "name": "punctuation.accessor.nature",
+          "name": "punctuation.accessor.nax",
           "match": "\\."
         },
         {
-          "name": "punctuation.section.braces.nature",
+          "name": "punctuation.section.braces.nax",
           "match": "[{}]"
         },
         {
-          "name": "punctuation.section.brackets.nature",
+          "name": "punctuation.section.brackets.nax",
           "match": "[\\[\\]]"
         },
         {
-          "name": "punctuation.section.parens.nature",
+          "name": "punctuation.section.parens.nax",
           "match": "[()]"
         }
       ]

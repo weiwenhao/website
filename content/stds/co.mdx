@@ -10,7 +10,7 @@ The `co` module provides basic coroutine functionalities, including coroutine cr
 #### SOLO
 A flag used to mark coroutines.
 
-```nature
+```nax
 var SAME = 1 << 2
 ```
 
@@ -19,27 +19,27 @@ var SAME = 1 << 2
 #### sleep
 Makes the current coroutine sleep for a specified number of milliseconds.
 
-```nature
+```nax
 fn sleep(int ms)
 ```
 
 #### yield
 Voluntarily yields the execution of the current coroutine.
 
-```nature
+```nax
 fn yield()
 ```
 
 #### arg
 Gets the coroutine's arguments.
 
-```nature
+```nax
 fn arg():anyptr
 ```
 
 ### Usage Example
 
-```nature
+```nax
 import co
 
 fn main() {
@@ -61,7 +61,7 @@ The `mutex` module provides coroutine mutex functionality, used to implement mut
 #### mutex_t
 Mutex struct.
 
-```nature
+```nax
 type mutex_t = struct {
     i64 state
     i64 sema
@@ -75,27 +75,27 @@ type mutex_t = struct {
 #### lock()
 Acquires the mutex. If the mutex is already held, the current coroutine will be blocked until it acquires the lock.
 
-```nature
+```nax
 fn mutex_t.lock()
 ```
 
 #### try_lock()
 Attempts to acquire the mutex. If the mutex is already held, immediately returns `false`, otherwise acquires the lock and returns `true`.
 
-```nature
+```nax
 fn mutex_t.try_lock():bool
 ```
 
 #### unlock()
 Releases the mutex.
 
-```nature
+```nax
 fn mutex_t.unlock()
 ```
 
 ### Usage Example
 
-```nature
+```nax
 import co.mutex
 
 fn main() {
