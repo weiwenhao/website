@@ -17,6 +17,8 @@ const nextConfig = {
   // The Chinese site lives at /cn, served by the website-cn-zone project (website-cn built with BASE_PATH=/cn)
   async rewrites() {
     return [
+      // Without this rule /cn is proxied as /cn/, which the zone redirects back to /cn (redirect loop)
+      { source: '/cn', destination: 'https://website-cn-zone.vercel.app/cn' },
       { source: '/cn/:path*', destination: 'https://website-cn-zone.vercel.app/cn/:path*' },
     ]
   },
