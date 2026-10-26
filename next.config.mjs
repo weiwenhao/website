@@ -14,6 +14,12 @@ import fs from 'fs';
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  // The Chinese site lives at /cn, served by the website-cn-zone project (website-cn built with BASE_PATH=/cn)
+  async rewrites() {
+    return [
+      { source: '/cn/:path*', destination: 'https://website-cn-zone.vercel.app/cn/:path*' },
+    ]
+  },
   // Optionally, add any other Next.js config below
 }
 
