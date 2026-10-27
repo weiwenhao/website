@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import TableOfContents from '@/components/features/table-of-contents'
 
 export default async function Page({
@@ -6,7 +7,15 @@ export default async function Page({
     params: Promise<{ slug: string }>
   }) {
     const { slug } = await params
-    const { default: Post } = await import(`@/content/${slug}.mdx`)
+    let mod
+    try {
+      mod = await import(`@/content/${slug}.mdx`)
+    } catch (error) {
+      // Unknown slug -> 404; anything else (e.g. a broken MDX file) should still surface as an error
+      if ((error as { code?: string }).code === 'MODULE_NOT_FOUND') notFound()
+      throw error
+    }
+    const { default: Post } = mod
    
     
     return (

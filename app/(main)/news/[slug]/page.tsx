@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 
 export default async function Page({
@@ -6,7 +7,15 @@ export default async function Page({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const { default: Post, frontmatter } = await import(`@/content/news/${slug}.mdx`)
+  let mod
+  try {
+    mod = await import(`@/content/news/${slug}.mdx`)
+  } catch (error) {
+    // Unknown slug -> 404; anything else (e.g. a broken MDX file) should still surface as an error
+    if ((error as { code?: string }).code === 'MODULE_NOT_FOUND') notFound()
+    throw error
+  }
+  const { default: Post, frontmatter } = mod
 
   return (
     <div className="flex flex-col items-center xl:flex-row gap-8 xl:gap-12 max-w-7xl mx-auto px-4 py-4">
