@@ -134,7 +134,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="flex justify-center items-center gap-8 my-8">
+            <div className="flex flex-wrap justify-center items-center gap-8 my-8">
               <Link
                 href="https://github.com/cn-lang"
                 target="_blank"
@@ -173,6 +173,19 @@ export default function Home() {
                   className="h-12 w-12 rounded-full"
                 />
                 <span className="text-sm text-gray-700 dark:text-gray-300">mmachatschek</span>
+              </Link>
+              <Link
+                href="https://github.com/infinilabs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-opacity hover:opacity-80 flex flex-row items-center gap-2"
+              >
+                <img
+                  src="https://github.com/infinilabs.png"
+                  alt="infinilabs logo"
+                  className="h-12 w-12 rounded-full"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">infinilabs</span>
               </Link>
             </div>
           </section>
